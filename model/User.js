@@ -1,6 +1,14 @@
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
 const UserSchema = new Schema({
+    dateCreated: {
+        type: Date,
+        default: Date.now()
+    },
+    dateUpdated: {
+        type: Date,
+        default: Date.now()
+    },
     firstName: {
         type: String,
         required: true
