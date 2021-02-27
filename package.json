@@ -6,6 +6,7 @@
     "mongoose": "^5.11.18"
   },
   "devDependencies": {
+    "morgan": "^1.10.0",
     "node-sass": "^5.0.0"
   },
   "scripts": {
