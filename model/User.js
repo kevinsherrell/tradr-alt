@@ -20,7 +20,7 @@ const UserSchema = new Schema({
     },
     img: {
         type: String,
-        // default: null
+        default: null
     },
     listings: [{
         type: Schema.Types.ObjectId,
@@ -28,11 +28,11 @@ const UserSchema = new Schema({
     }],
     dateCreated: {
         type: Date,
-        // default: Date.now(),
+        default: Date.now(),
     },
     dateUpdated: {
         type: Date,
-        // default: Date.now(),
-    },
+        default: Date.now(),
+    }
 })
 module.exports = mongoose.model('User', UserSchema);

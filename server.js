@@ -18,7 +18,8 @@ app.use(morgan('dev'));
 app.use(methodOverride('_method'));
 
 // routes
-app.use('/', require('./controller/auth.js'));
+app.use('/auth', require('./controller/auth.js'));
+app.use('/user', require('./controller/users.js'));
 
 
 // database connection
