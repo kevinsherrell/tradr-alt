@@ -8,7 +8,7 @@ require('dotenv').config();
 const session = require('express-session');
 const MONGO_URI = process.env.MONGO_URI
 const port = process.env.PORT;
-
+const isAuthenticated = require('./validation/isAuthenticated');
 // view engine
 app.set('view engine', 'ejs');
 
@@ -22,12 +22,14 @@ app.use(session({
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false
-}))
+}));
 
 // routes
 app.use('/auth', require('./controller/auth.js'));
 app.use('/user', require('./controller/users.js'));
 app.use('/seed', require('./controller/users.js'));
+app.use('/listing', isAuthenticated, require('./controller/listings.js'));
+
 // database connection
 mongoose.connect(MONGO_URI, {useNewUrlParser: true}, () => console.log("Connected to database"));
 
@@ -37,4 +39,4 @@ app.listen(port, () => console.log(`server is listening on port: ${port}`));
 
 // Current Issues -
 //      Data order does not match the models.
-            // Temporary solution: Data is in correct order when I manually order of the object to match schema in res.send();
+// Temporary solution: Data is in correct order when I manually order of the object to match schema in res.send();
