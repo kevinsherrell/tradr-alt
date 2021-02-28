@@ -1,14 +1,6 @@
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
 const UserSchema = new Schema({
-    dateCreated: {
-        type: Date,
-        default: Date.now()
-    },
-    dateUpdated: {
-        type: Date,
-        default: Date.now()
-    },
     firstName: {
         type: String,
         required: true
@@ -27,12 +19,20 @@ const UserSchema = new Schema({
         required: true
     },
     img: {
-        type: String
+        type: String,
+        // default: null
     },
     listings: [{
         type: Schema.Types.ObjectId,
         ref: "Listing"
     }],
-
+    dateCreated: {
+        type: Date,
+        // default: Date.now(),
+    },
+    dateUpdated: {
+        type: Date,
+        // default: Date.now(),
+    },
 })
 module.exports = mongoose.model('User', UserSchema);
