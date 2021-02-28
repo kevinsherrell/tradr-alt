@@ -23,7 +23,7 @@ app.use('/user', require('./controller/users.js'));
 
 
 // database connection
-mongoose.connect(MONGO_URI, {useNewUrlParser: true}, () => console.log("Connected to database"));
+mongoose.connect(MONGO_URI, {useNewUrlParser: true}, {useUnifiedTopology: true}, () => console.log("Connected to database"));
 
 // server listen
 app.listen(port, () => console.log(`server is listening on port: ${port}`));
@@ -31,3 +31,4 @@ app.listen(port, () => console.log(`server is listening on port: ${port}`));
 
 // Current Issues -
 //      Data order does not match the models.
+            // Temporary solution: Data is in correct order when I manually order of the object to match schema in res.send();

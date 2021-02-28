@@ -8,20 +8,29 @@ authRouter.post('/signup', (req, res) => {
     User.findOne({email: req.body.email}, (err, user) => {
         if (user) {
             res.status(400).send("user already exists")
-        }
-        else{
+        } else {
             const newUser = new User(req.body);
+            console.log(User.firstName)
             newUser.save()
                 .then(user => {
-                    res.send(user);
+                    console.log(user);
+                    res.send({
+                        _id: user._id,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        email: user.email,
+                        img: user.img,
+                        listings: user.listings,
+                        dateCreated: user.dateCreated,
+                        dateUpdated: user.dateUpdated
+                    });
                 })
                 .catch(err => res.send(err));
         }
 
     })
 });
-// POST - log current user in
+// POST - log in user
 
-// GET - get all users
 
 module.exports = authRouter;

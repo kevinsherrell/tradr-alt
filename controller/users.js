@@ -13,6 +13,7 @@ userRouter.get('/all', (req, res) => {
         res.status(200).send(users);
     });
 });
+
 // GET - get user by id
 userRouter.get('/:id', (req,res)=>{
     User.findOne({_id: req.params.id}, (err, user)=>{
@@ -22,6 +23,5 @@ userRouter.get('/:id', (req,res)=>{
         res.status(200).send(user);
     })
 })
-// GET - get all users
 
 module.exports = userRouter;

@@ -3,36 +3,37 @@ const {Schema} = mongoose;
 const UserSchema = new Schema({
     firstName: {
         type: String,
-        required: true
+        required: true,
     },
     lastName: {
         type: String,
-        required: true
+        required: true,
     },
     zipCode: {
         type: String,
-        required: true
+        required: true,
     },
     email: {
         type: String,
         unique: true,
-        required: true
+        required: true,
     },
     img: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "Listing",
         default: null
     },
-    listings: [{
-        type: Schema.Types.ObjectId,
-        ref: "Listing"
-    }],
+    listings: {
+        type: [Schema.Types.ObjectId],
+        ref: 'Listing',
+    },
     dateCreated: {
         type: Date,
-        default: Date.now(),
+        default: Date.now,
     },
     dateUpdated: {
         type: Date,
-        default: Date.now(),
+        default: Date.now,
     }
 })
 module.exports = mongoose.model('User', UserSchema);
