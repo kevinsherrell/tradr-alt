@@ -18,6 +18,10 @@ const UserSchema = new Schema({
         unique: true,
         required: true,
     },
+    password: {
+        type: String,
+        required: true
+    },
     img: {
         type: Schema.Types.ObjectId,
         ref: "Listing",

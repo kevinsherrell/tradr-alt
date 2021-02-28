@@ -1,7 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const authRouter = express.Router();
 const User = require('../model/User.js');
+
+authRouter.get('/current', (req, res)=>{
+    res.send(req.session.currentUser);
+});
 
 // POST - create user
 authRouter.post('/signup', (req, res) => {
@@ -9,9 +14,9 @@ authRouter.post('/signup', (req, res) => {
         if (user) {
             res.status(400).send("user already exists")
         } else {
-            const newUser = new User(req.body);
+            req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
             console.log(User.firstName)
-            newUser.save()
+            User.create(req.body)
                 .then(user => {
                     console.log(user);
                     res.send({
@@ -19,6 +24,7 @@ authRouter.post('/signup', (req, res) => {
                         firstName: user.firstName,
                         lastName: user.lastName,
                         email: user.email,
+                        password: user.password,
                         img: user.img,
                         listings: user.listings,
                         dateCreated: user.dateCreated,
@@ -27,10 +33,31 @@ authRouter.post('/signup', (req, res) => {
                 })
                 .catch(err => res.send(err));
         }
-
     })
 });
 // POST - log in user
+authRouter.post('/login', (req, res)=>{
+    User.findOne({email: req.body.email}, (err, user)=>{
+        if(err){
+            res.status(500).send(err);
+        }else if(!user){
+            res.send("username or password invalid");
+        }else{
+            if(bcrypt.compareSync(req.body.password, user.password)){
+                req.session.currentUser = user;
+                console.log(req.session)
+                res.send(user)
+            }else{
+                res.send("username or password invalid");
 
+        }
+    }})
+})
+authRouter.delete('/logout', (req, res)=>{
+    req.session.destroy(()=>{
+        console.log(req.session);
+        res.send("user is logged logged out")
+    })
 
+})
 module.exports = authRouter;
