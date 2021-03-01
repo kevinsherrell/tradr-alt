@@ -24,13 +24,13 @@ const UserSchema = new Schema({
     },
     img: {
         type: Schema.Types.ObjectId,
-        ref: "Listing",
+        ref: "listings",
         default: null
     },
-    listings: {
-        type: [Schema.Types.ObjectId],
-        ref: 'Listing',
-    },
+    listings: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Listings',
+    }],
     dateCreated: {
         type: Date,
         default: Date.now,
@@ -40,4 +40,4 @@ const UserSchema = new Schema({
         default: Date.now,
     }
 })
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Users', UserSchema);

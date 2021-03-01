@@ -31,7 +31,10 @@ authRouter.post('/signup', (req, res) => {
                         dateUpdated: user.dateUpdated
                     });
                 })
-                .catch(err => res.send(err));
+                .catch(err => {
+                    console.log("Signup Error");
+                    res.send(err)
+                });
         }
     })
 });
@@ -39,6 +42,7 @@ authRouter.post('/signup', (req, res) => {
 authRouter.post('/login', (req, res)=>{
     User.findOne({email: req.body.email}, (err, user)=>{
         if(err){
+            console.log("Login Error");
             res.status(500).send(err);
         }else if(!user){
             res.send("username or password invalid");

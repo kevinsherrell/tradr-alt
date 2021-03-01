@@ -3,24 +3,33 @@ const mongoose = require('mongoose');
 const userRouter = express.Router();
 const User = require('../model/User.js');
 
+
 // GET - get all users
 userRouter.get('/all', (req, res) => {
     console.log('user route working');
-    User.find((err, users) => {
-        if (err) {
-            res.status(500).send(err);
-        }
-        res.status(200).send(users);
-    });
+    // User.find((err, users) => {
+    //     if (err) {
+    //         res.status(500).send(err);
+    //     }
+    //     res.status(200).send(users);
+    // })
+    User.find()
+        .populate('listings')
+        .exec((err, users) => {
+            if (err) {
+                res.status(500).send(err);
+            }
+            res.send(users);
+        })
 });
 // GET - seed user data
 
-userRouter.get('/seed',  (req, res) => {
+userRouter.get('/seed', (req, res) => {
     console.log("Seed is working");
     // const newUsers = [
     //
     // ]
-    User.insertMany([  {
+    User.insertMany([{
         firstName: 'Kevin',
         lastName: "Sherrell",
         zipCode: "62223",
@@ -71,23 +80,25 @@ userRouter.get('/seed',  (req, res) => {
         zipCode: "10003",
         email: "email10@email.com",
     }])
-        .then(users=>{
+        .then(users => {
             res.send(users)
-        }).catch(err=>{
+        }).catch(err => {
+        console.log('user error');
         res.send(err);
     })
 
 });
 // GET - get user by id
 userRouter.get('/:id', (req, res) => {
-    User.findOne({_id: req.params.id}, (err, user) => {
-        if (err) {
-            res.status(500).send(err);
-        }
-        res.status(200).send(user);
-    })
+    User.findOne({_id: req.params.id})
+        .populate('listings')
+        .exec((err, user) => {
+            if (err) {
+                res.status(500).send(err);
+            }
+            res.status(200).send(user);
+        })
 })
-
 
 
 module.exports = userRouter;
