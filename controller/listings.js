@@ -3,15 +3,40 @@ const mongoose = require('mongoose');
 const listingRouter = express.Router();
 const Listing = require('../model/Listing.js');
 const User = require('../model/User.js');
-const Image = require('../model/Image');
+const Image = require('../model/Image.js');
 const multer = require('multer');
-const upload = multer({dest: '../public/images'});
+const path = require('path');
+const {v4: uuidv4} = require('uuid');
+// Storage
+const storage = multer.diskStorage({
+    destination: 'public/images',
+    filename: function (req, file, cb) {
+        cb(null, uuidv4() + "-" + Date.now() + path.extname(file.originalname));
+    }
+})
+const upload = multer({storage: storage});
 
-listingRouter.post('/post', upload.array('images', 5), (req, res, next) => {
+listingRouter.post('/post', upload.array('myImage', 5), (req, res, next) => {
     req.body.user = req.session.currentUser._id;
     req.body.location = req.session.currentUser.zipCode;
     Listing.create(req.body)
         .then(listing => {
+
+            console.log(req.files);
+            req.files.forEach((file) => {
+                const newImage = new Image({
+                    type: 'listing',
+                    listing: listing._id,
+                    url: file.path
+                });
+                listing.images.push(newImage._id)
+                listing.save();
+                newImage.save()
+                    .then(image => {
+                        console.log('success');
+                    }).catch(err => res.send(err));
+            })
+
             User.findOne({_id: req.body.user}, (err, user) => {
                 if (err) {
                     res.status(500).send(err)
@@ -22,19 +47,14 @@ listingRouter.post('/post', upload.array('images', 5), (req, res, next) => {
                     .catch(err => {
                         res.send(err);
                     })
-
-            }).then(()=>{
-                Image.create({
-                    req.files()
-                })
-            })
+            });
             res.send(listing);
         }).catch(err => {
         console.log("listing error");
         res.send(err.message);
     });
 })
-listingRouter.post('/upload', (req, res)=>{
-
+listingRouter.post('/upload', upload.single('random'), (req, res) => {
+    console.log(req.file);
 })
 module.exports = listingRouter;

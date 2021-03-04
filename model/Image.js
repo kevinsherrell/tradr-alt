@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
-const ListingSchema = new Schema({
+const ImageSchema = new Schema({
     dateCreated: {
         type: Date,
         default: Date.now()
@@ -25,4 +25,4 @@ const ListingSchema = new Schema({
         required: true
     }
 })
-module.exports = mongoose.model('Listing', ListingSchema);
+module.exports = mongoose.model('Image', ImageSchema);
