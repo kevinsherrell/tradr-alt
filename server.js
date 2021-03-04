@@ -6,12 +6,12 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 require('dotenv').config();
 const session = require('express-session');
-
+const ejs = require('ejs');
 
 const MONGO_URI = process.env.MONGO_URI
 const port = process.env.PORT;
 const isAuthenticated = require('./validation/isAuthenticated');
-// view engine
+// views engine
 app.set('view engine', 'ejs');
 
 // middleware
@@ -30,7 +30,7 @@ app.use(session({
 app.use('/auth', require('./controller/auth.js'));
 app.use('/user', require('./controller/users.js'));
 app.use('/seed', require('./controller/users.js'));
-app.use('/listing', isAuthenticated, require('./controller/listings.js'));
+app.use('/listing', require('./controller/listings.js'));
 // database connection
 mongoose.connect(MONGO_URI, {useNewUrlParser: true}, () => console.log("Connected to database"));
 

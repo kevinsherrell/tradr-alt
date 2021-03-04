@@ -7,15 +7,24 @@ const Image = require('../model/Image.js');
 const multer = require('multer');
 const path = require('path');
 const {v4: uuidv4} = require('uuid');
+
 // Storage
 const storage = multer.diskStorage({
-    destination: 'public/images',
+    destination: './public/images',
     filename: function (req, file, cb) {
         cb(null, uuidv4() + "-" + Date.now() + path.extname(file.originalname));
     }
 })
 const upload = multer({storage: storage});
 
+listingRouter.get('/', (req, res) => {
+    Listing.find()
+        .populate('images')
+        .then(listings => {
+            console.log(listings)
+            res.render('listing', {data: listings})
+        })
+})
 listingRouter.post('/post', upload.array('myImage', 5), (req, res, next) => {
     req.body.user = req.session.currentUser._id;
     req.body.location = req.session.currentUser.zipCode;
@@ -27,7 +36,7 @@ listingRouter.post('/post', upload.array('myImage', 5), (req, res, next) => {
                 const newImage = new Image({
                     type: 'listing',
                     listing: listing._id,
-                    url: file.path
+                    url: file.filename
                 });
                 listing.images.push(newImage._id)
                 listing.save();
@@ -54,6 +63,7 @@ listingRouter.post('/post', upload.array('myImage', 5), (req, res, next) => {
         res.send(err.message);
     });
 })
+
 listingRouter.post('/upload', upload.single('random'), (req, res) => {
     console.log(req.file);
 })
