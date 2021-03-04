@@ -64,12 +64,20 @@ listingRouter.post('/post', upload.array('listingImage', 5), (req, res, next) =>
         res.send(err.message);
     });
 })
-listingRouter.put('/update/:user', (req, res) => {
-    Listing.findOneAndUpdate({user: req.params.user}, req.body, {new: true}, (err, updatedListing) => {
+listingRouter.put('/update/:id', (req, res) => {
+    Listing.findOneAndUpdate({_id: req.params.id}, req.body, {new: true}, (err, updatedListing) => {
         if (err) {
             res.status(500).send(err);
         }
         res.status(201).send(updatedListing);
+    })
+})
+listingRouter.delete('/:id',(req,res)=>{
+    Listing.findOneAndDelete({_id: req.params.id}, (err, result)=>{
+        if(err){
+            res.status(500).send(err);
+        }
+        res.status(200).send("success");
     })
 })
 module.exports = listingRouter;
