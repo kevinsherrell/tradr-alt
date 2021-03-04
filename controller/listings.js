@@ -24,7 +24,8 @@ listingRouter.get('/', (req, res) => {
             console.log(listings)
             res.render('listing', {data: listings})
         })
-})
+});
+
 listingRouter.post('/post', upload.array('myImage', 5), (req, res, next) => {
     req.body.user = req.session.currentUser._id;
     req.body.location = req.session.currentUser.zipCode;
@@ -64,7 +65,4 @@ listingRouter.post('/post', upload.array('myImage', 5), (req, res, next) => {
     });
 })
 
-listingRouter.post('/upload', upload.single('random'), (req, res) => {
-    console.log(req.file);
-})
 module.exports = listingRouter;

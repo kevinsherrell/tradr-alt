@@ -2,17 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const userRouter = express.Router();
 const User = require('../model/User.js');
-
-
+const Listing = require('../model/Listing.js');
+const Image = require('../model/Image.js');
 // GET - get all users
 userRouter.get('/all', (req, res) => {
     console.log('user route working');
-    // User.find((err, users) => {
-    //     if (err) {
-    //         res.status(500).send(err);
-    //     }
-    //     res.status(200).send(users);
-    // })
     User.find()
         .populate('listings')
         .exec((err, users) => {
@@ -89,16 +83,38 @@ userRouter.get('/seed', (req, res) => {
 
 });
 // GET - get user by id
-userRouter.get('/:id', (req, res) => {
-    User.findOne({_id: req.params.id})
-        .populate('listings')
-        .exec((err, user) => {
-            if (err) {
-                res.status(500).send(err);
-            }
-            res.status(200).send(user);
-        })
+userRouter.get('/:id', async (req, res) => {
+    try {
+        // Delete current user
+        const deleteUser = await User.findOneAndDelete({_id: req.params.id});
+        // Delete listings belonging to the user
+        // const deleteListings = await Listing.deleteMany({user: req.params.id});
+        return res.status(200).send('user and listings have been deleted');
+    } catch (err) {
+        res.status(500);
+        res.send(err);
+    }
 })
 
+userRouter.delete('/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        await User.findOneAndDelete({_id: id});
+        await Listing.find({user: id}, (err, listings) => {
+            listings.forEach((listing) => {
+                console.log(listing);
+                Image.deleteMany({listing: listing._id}, (err, result) => {
+                    console.log(result)
+                })
+            })
+        })
+        await Listing.deleteMany({user: id}, (err, listings) => {
+            console.log(listings);
+        });
+        res.send('success');
+    } catch (err) {
+        res.send(err);
+    }
 
+})
 module.exports = userRouter;
