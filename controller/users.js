@@ -101,14 +101,32 @@ userRouter.delete('/:id', async (req, res) => {
     try {
         await User.findOneAndDelete({_id: id});
         await Listing.find({user: id}, (err, listings) => {
+            if(err){
+                res.status(500).send(err);
+            }
             listings.forEach((listing) => {
                 console.log(listing);
+                // Delete all images associated with this listing
                 Image.deleteMany({listing: listing._id}, (err, result) => {
+                    if(err){
+                        res.status(500).send(err);
+                    }
                     console.log(result)
+                })
+                // Delete avatar image associated with this user
+                Image.deleteOne({user: id},(err, result)=>{
+                    if(err){
+                        res.status(500).send(err);
+                    }
+                    console.log(result);
                 })
             })
         })
+        // Delete all listings associated with this user
         await Listing.deleteMany({user: id}, (err, listings) => {
+            if(err){
+                res.status(500).send(err);
+            }
             console.log(listings);
         });
         res.send('success');

@@ -26,7 +26,7 @@ listingRouter.get('/', (req, res) => {
         })
 });
 
-listingRouter.post('/post', upload.array('myImage', 5), (req, res, next) => {
+listingRouter.post('/post', upload.array('listingImage', 5), (req, res, next) => {
     req.body.user = req.session.currentUser._id;
     req.body.location = req.session.currentUser.zipCode;
     Listing.create(req.body)
