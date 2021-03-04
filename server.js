@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 require('dotenv').config();
 const session = require('express-session');
+
+
 const MONGO_URI = process.env.MONGO_URI
 const port = process.env.PORT;
 const isAuthenticated = require('./validation/isAuthenticated');
@@ -29,7 +31,6 @@ app.use('/auth', require('./controller/auth.js'));
 app.use('/user', require('./controller/users.js'));
 app.use('/seed', require('./controller/users.js'));
 app.use('/listing', isAuthenticated, require('./controller/listings.js'));
-
 // database connection
 mongoose.connect(MONGO_URI, {useNewUrlParser: true}, () => console.log("Connected to database"));
 
