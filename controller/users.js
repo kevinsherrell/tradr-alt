@@ -136,8 +136,8 @@ userRouter.delete('/:id', async (req, res) => {
 
 })
 
-userRouter.put('/update', (req, res) => {
-    User.findByIdAndUpdate({_id: req.session.currentUser._id}, req.body, {new: true}, (err, updatedUser) => {
+userRouter.put('/update/:id', (req, res) => {
+    User.findByIdAndUpdate({_id: req.params.id}, req.body, {new: true}, (err, updatedUser) => {
         if (err) {
             res.status(500).send(err);
         }

@@ -64,5 +64,12 @@ listingRouter.post('/post', upload.array('listingImage', 5), (req, res, next) =>
         res.send(err.message);
     });
 })
-
+listingRouter.put('/update/:user', (req, res) => {
+    Listing.findOneAndUpdate({user: req.params.user}, req.body, {new: true}, (err, updatedListing) => {
+        if (err) {
+            res.status(500).send(err);
+        }
+        res.status(201).send(updatedListing);
+    })
+})
 module.exports = listingRouter;
