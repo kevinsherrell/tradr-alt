@@ -101,21 +101,21 @@ userRouter.delete('/:id', async (req, res) => {
     try {
         await User.findOneAndDelete({_id: id});
         await Listing.find({user: id}, (err, listings) => {
-            if(err){
+            if (err) {
                 res.status(500).send(err);
             }
             listings.forEach((listing) => {
                 console.log(listing);
                 // Delete all images associated with this listing
                 Image.deleteMany({listing: listing._id}, (err, result) => {
-                    if(err){
+                    if (err) {
                         res.status(500).send(err);
                     }
                     console.log(result)
                 })
                 // Delete avatar image associated with this user
-                Image.deleteOne({user: id},(err, result)=>{
-                    if(err){
+                Image.deleteOne({user: id}, (err, result) => {
+                    if (err) {
                         res.status(500).send(err);
                     }
                     console.log(result);
@@ -124,7 +124,7 @@ userRouter.delete('/:id', async (req, res) => {
         })
         // Delete all listings associated with this user
         await Listing.deleteMany({user: id}, (err, listings) => {
-            if(err){
+            if (err) {
                 res.status(500).send(err);
             }
             console.log(listings);
@@ -134,5 +134,14 @@ userRouter.delete('/:id', async (req, res) => {
         res.send(err);
     }
 
+})
+
+userRouter.put('/update', (req, res) => {
+    User.findByIdAndUpdate({_id: req.session.currentUser._id}, req.body, {new: true}, (err, updatedUser) => {
+        if (err) {
+            res.status(500).send(err);
+        }
+        res.status(201).send(updatedUser);
+    })
 })
 module.exports = userRouter;

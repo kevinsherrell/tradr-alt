@@ -28,9 +28,9 @@ app.use(session({
 
 // routes
 app.use('/auth', require('./controller/auth.js'));
-app.use('/user', require('./controller/users.js'));
+app.use('/user', isAuthenticated, require('./controller/users.js'));
 app.use('/seed', require('./controller/users.js'));
-app.use('/listing', require('./controller/listings.js'));
+app.use('/listing', isAuthenticated,require('./controller/listings.js'));
 // database connection
 mongoose.connect(MONGO_URI, {useNewUrlParser: true}, () => console.log("Connected to database"));
 
