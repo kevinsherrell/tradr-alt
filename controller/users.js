@@ -16,8 +16,8 @@ userRouter.get('/all', (req, res) => {
             res.send(users);
         })
 });
-// GET - seed user data
 
+// GET - seed user data
 userRouter.get('/seed', (req, res) => {
     console.log("Seed is working");
     // const newUsers = [
@@ -95,7 +95,7 @@ userRouter.get('/:id', async (req, res) => {
         res.send(err);
     }
 })
-
+// DELETE - delete user by id
 userRouter.delete('/:id', async (req, res) => {
     const id = req.params.id;
     try {
@@ -135,7 +135,7 @@ userRouter.delete('/:id', async (req, res) => {
     }
 
 })
-
+// PUT - update user
 userRouter.put('/update/:id', (req, res) => {
     User.findByIdAndUpdate({_id: req.params.id}, req.body, {new: true}, (err, updatedUser) => {
         if (err) {

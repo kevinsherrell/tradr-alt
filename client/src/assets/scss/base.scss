@@ -1,0 +1,74 @@
+@import "client/src/assets/scss/queryMixins";
+@import "client/src/assets/scss/header/header";
+//@import "dashboard";
+@import "client/src/assets/scss/main";
+@import "client/src/assets/scss/listingPage";
+@import "client/src/assets/scss/header/post-item";
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+*{
+  font-family: 'Roboto', sans-serif;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background-color: white;
+  height: 54px;
+
+
+}
+a{
+  color: inherit;
+}
+
+input:focus, select:focus{
+  outline-color: green;
+}
+select option{
+  border: none;
+  box-shadow: none;
+
+}
+.container{
+  max-width: 95%;
+  margin: 0 auto;
+}
+.hidden{
+  display: none;
+}
+
+
+.grid{
+  display: grid;
+}
+.flex{
+  display: flex;
+}
+.block{
+  display: block;
+}
+@include responsive($tablet-landscape){
+  .container{
+    max-width: 95%;
+    //max-width: 85%;
+  }
+}
+@include responsive($large-desktop){
+  .container{
+    //max-width: 70%;
+    max-width: 95%;
+  }
+}
+@include responsive($xl-desktop){
+.container{
+  max-width: 75%;
+  //max-width: 60%;
+}
+}

@@ -17,11 +17,13 @@ const storage = multer.diskStorage({
 })
 const upload = multer({storage: storage});
 
-
 authRouter.get('/current', (req, res) => {
     res.send(req.session.currentUser);
 });
-
+// Get - signup page
+authRouter.get('/signup',(req,res)=>{
+    res.render('signup');
+})
 // POST - create user
 authRouter.post('/signup', (req, res) => {
     upload.single('userImage')(req, res, (err) => {
@@ -34,6 +36,9 @@ authRouter.post('/signup', (req, res) => {
     })
 
     User.findOne({email: req.body.email}, (err, user) => {
+
+
+
         if (user) {
             res.status(400).send("user already exists")
         } else {
@@ -47,21 +52,12 @@ authRouter.post('/signup', (req, res) => {
                         user: user._id,
                         url: req.file.filename
                     })
+                    const data = [user,newImage];
                     user.img = newImage._id;
                     user.save();
                     newImage.save();
                     console.log(user);
-                    res.send({
-                        _id: user._id,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        email: user.email,
-                        password: user.password,
-                        img: user.img,
-                        listings: user.listings,
-                        dateCreated: user.dateCreated,
-                        dateUpdated: user.dateUpdated
-                    });
+                    res.send("success");
                 })
                 .catch(err => {
                     console.log("Signup Error");

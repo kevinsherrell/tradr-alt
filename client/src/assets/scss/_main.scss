@@ -1,0 +1,304 @@
+// components
+// Main.js
+// ListAnItem.js
+// ItemListing.js
+@import 'client/src/assets/scss/queryMixins';
+
+
+.home {
+  width: 100%;
+  margin-top: 54px;
+
+  &__inner-container {
+    display: flex;
+  }
+}
+
+.sidebar {
+  display: none;
+
+  &__category-header {
+  }
+
+  &__category-list {
+  }
+
+  &__category-list-item {
+    padding: 5px 0;
+  }
+
+  &__category-list-link {
+    &:hover {
+      text-decoration: underline;
+      opacity: .6;
+    }
+  }
+
+  &__update-form {
+    display: flex;
+  }
+
+  &__update-form-condition-header {
+  }
+
+  &__update-form-condition-list {
+  }
+
+  &__update-form-condition-list-item {
+  }
+
+  &__update-form-condition-list-link {
+  }
+
+  &__update-form-price-header {
+  }
+
+  &__update-form-price-wrapper {
+  }
+
+  &__update-form-price-input {
+  }
+
+  &__update-form-distance-header {
+  }
+
+  &__update-form-distance-wrapper {
+  }
+
+  &__update-form-distance-input {
+  }
+
+  &__update-form-submit {
+  }
+}
+
+.content {
+  width: 100%;
+
+  &__sort-header {
+    display: flex;
+    position: relative;
+    margin: 20px 0;
+    color: #687F9E;
+  }
+
+  &__sort-menu-wrapper {
+    position: relative;
+    padding-left: 10px;
+
+    &:hover {
+      cursor: grab;
+    }
+  }
+
+  &__sort-menu-btn {
+  }
+
+  &__sort-menu-icon {
+    font-size: 16px;
+  }
+
+  &__sort-menu-drop-down {
+    &--open {
+      position: absolute;
+      top: 100%;
+      z-index: 1;
+      overflow: hidden;
+      border-radius: 0 0px 15px 15px;
+      border: 1px solid #687F9E;
+      width: 200px;
+      height: auto;
+      transition: height 100ms;
+      background-color: white;
+    }
+
+    &--closed {
+      position: absolute;
+      visibility: hidden;
+      height: 0;
+    }
+  }
+
+  &__sort-menu-drop-down-list {
+    width: 100%;
+  }
+
+  &__sort-menu-drop-down-item {
+    padding: 10px;
+
+    &:hover {
+      background-color: #687F9E;
+      color: white;
+    }
+  }
+
+  &__sort-description {
+    margin-left: auto;
+  }
+
+  &__listings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 10px;
+  }
+
+}
+
+.item-listing {
+  display: flex;
+  position: relative;
+  border-radius: 10px;
+  flex-direction: column;
+  min-height: 250px;
+  min-width: 300px;
+  overflow: hidden;
+  border: 1px solid #687F9E;
+
+  &__image {
+    //background-image: url("https://source.unsplash.com/random/300x300");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 205px;
+  }
+
+  &__item-info {
+    background-color: white;
+    width: 100%;
+  }
+
+  &__item-info-title {
+    font-size: 14px;
+    padding: 5px;
+    width: 100%;
+    color: #687F9E;
+  }
+
+  &__item-info-price {
+    font-size: 14px;
+    padding: 5px;
+    width: 100%;
+    color: #687F9E;
+  }
+
+  &__item-info-location {
+    font-size: 14px;
+    padding: 5px;
+    width: 100%;
+    color: #687F9E;
+  }
+}
+
+.list-an-item {
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+  bottom: 0;
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  width: 100%;
+
+  &__link {
+    border-radius: 10px;
+    padding: 5px;
+    display: block;
+    width: 100%;
+    border: none;
+    background-color: #687F9E;
+    color: white;
+  }
+}
+
+@include responsive($large-desktop) {
+  .sidebar {
+    display: initial;
+    padding: 10px;
+    border-right: 1px solid black;
+    overflow: hidden;
+
+    color: #687F9E;
+    margin-top: 20px;
+    position: fixed;
+    left: 2.5%;
+    width: 18%;
+    min-height: 50%;
+
+    &__listAnItem {
+      padding: 10px;
+      text-align: center;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      color: white;
+      background-color: #687F9E;
+
+      &:hover {
+        cursor: grab;
+      }
+    }
+
+    &__update-form {
+      flex-direction: column;
+    }
+
+    &__update-form-condition-header {
+      margin: 10px 0;
+    }
+
+    &__update-form-price-header {
+      margin: 10px 0;
+    }
+
+    &__update-form-price-input {
+      padding-left: 6px;
+      width: 30%;
+    }
+
+    &__update-form-distance-header {
+      margin: 10px 0;
+    }
+
+    &__update-form-distance-input {
+      padding-left: 6px;
+      width: 30%;
+    }
+
+    &__update-form-submit {
+      margin-top: 25px;
+      padding: 5px;
+      width: 60%;
+      background-color: #687F9E;
+      color: white;
+      border: none;
+      border-radius: 10px;
+
+      &:hover {
+        cursor: grab;
+      }
+    }
+  }
+  .content {
+    margin-left: 20%;
+    right: 0;
+    width: 80%;
+
+    &__listings {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-gap: 10px;
+    }
+  }
+  .list-an-item {
+    display: none;
+  }
+}
+
+@include responsive($xl-desktop) {
+  .sidebar {
+    left: 11.9%;
+    width: 14%;
+  }
+}
+
+
+

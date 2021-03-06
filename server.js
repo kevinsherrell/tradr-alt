@@ -7,6 +7,7 @@ const methodOverride = require('method-override');
 require('dotenv').config();
 const session = require('express-session');
 const ejs = require('ejs');
+const expressLayouts = require('express-ejs-layouts');
 
 const MONGO_URI = process.env.MONGO_URI
 const port = process.env.PORT;
@@ -14,6 +15,11 @@ const isAuthenticated = require('./validation/isAuthenticated');
 // views engine
 app.set('view engine', 'ejs');
 
+
+// Main entry point to application
+app.get('/', (req, res)=>{
+    res.render('index');
+})
 // middleware
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended: false}));
