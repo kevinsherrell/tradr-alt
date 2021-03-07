@@ -1,7 +1,7 @@
 const Validator = require('validator');
 const isEmpty = require('./isEmpty');
 
-const validateLoginInput = data =>{
+const validateListingInput = data =>{
      // data is referring to req.
     let errors = {};
 
@@ -44,4 +44,4 @@ const validateLoginInput = data =>{
     }
 }
 
-module.exports = validateLoginInput;
+module.exports = validateListingInput;
