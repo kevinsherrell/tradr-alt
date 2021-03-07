@@ -8,7 +8,7 @@ require('dotenv').config();
 const session = require('express-session');
 const ejs = require('ejs');
 const expressLayouts = require('express-ejs-layouts');
-
+const cors = require('cors');
 const MONGO_URI = process.env.MONGO_URI
 const port = process.env.PORT;
 const isAuthenticated = require('./validation/isAuthenticated');
@@ -31,6 +31,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
+app.use(cors());
 
 // routes
 app.use('/auth', require('./controller/auth.js'));
