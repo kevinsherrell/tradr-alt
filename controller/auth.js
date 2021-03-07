@@ -26,7 +26,7 @@ authRouter.get('/current', (req, res) => {
 
 // POST - create user
 authRouter.post('/signup', upload.single('userImage'),(req, res) => {
-
+    console.log(req.body);
     const {errors, isValid} = validateSignupInput(req.body);
 
 
@@ -96,7 +96,9 @@ authRouter.post('/login', (req, res) => {
                 console.log(req.session)
                 res.send(user)
             } else {
-                res.send("username or password invalid");
+                errors.password = 'email or password invalid';
+                errors.email = 'email or password invalid'
+                res.send(errors);
 
             }
         }
