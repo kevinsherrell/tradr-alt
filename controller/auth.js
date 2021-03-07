@@ -57,7 +57,8 @@ authRouter.post('/signup', (req, res) => {
                     user.save();
                     newImage.save();
                     console.log(user);
-                    res.send("success");
+                    // Send current user to the front end
+                    res.send(user);
                 })
                 .catch(err => {
                     console.log("Signup Error");

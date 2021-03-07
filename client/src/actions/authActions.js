@@ -17,7 +17,7 @@ export const userSignup = (signupData, closeMenu) => dispatch => {
         })).then(error => console.log(error))
 }
 export const userLogin = (loginData, closeMenu) => dispatch => {
-    axios.post("http://localhost:8080/api/user/login", loginData)
+    axios.post("http://localhost:3080/auth/login", loginData)
         .then(response => {
                 dispatch({
                     type: LOGIN_USER,

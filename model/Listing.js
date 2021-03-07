@@ -29,7 +29,7 @@ const ListingSchema = new Schema({
     },
     tradeOnly: {
         type: Boolean,
-        default: false,
+        default: false
     },
     price: {
         type: Number,
