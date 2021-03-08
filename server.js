@@ -5,10 +5,12 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 require('dotenv').config();
-const session = require('express-session');
 const ejs = require('ejs');
 const expressLayouts = require('express-ejs-layouts');
 const cors = require('cors');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
 const MONGO_URI = process.env.MONGO_URI
 const port = process.env.PORT;
 const isAuthenticated = require('./validation/isAuthenticated');
@@ -17,7 +19,7 @@ app.set('view engine', 'ejs');
 
 
 // Main entry point to application
-app.get('/', (req, res)=>{
+app.get('/', (req, res) => {
     res.render('index');
 })
 // middleware
@@ -26,21 +28,33 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(methodOverride('_method'));
-app.use(session({
-    secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: false
-}));
+
 app.use(cors());
 
+// mongoose.connect(MONGO_URI, {useNewUrlParser: true}, () => console.log("Connected to database"));
+const connection = mongoose.createConnection(MONGO_URI, {userNewUrlParser: true});
+
+
+app.use(
+    session({
+        secret: process.env.SECRET,
+        resave: false,
+        saveUninitialized: false,
+        store: MongoStore.create({
+            mongooseConnection: connection,
+            collection: 'sessions'
+        }),
+        cookie: {
+            maxAge: 1000 * 60 * 60
+        }
+    })
+)
 // routes
 app.use('/auth', require('./controller/auth.js'));
 app.use('/user', isAuthenticated, require('./controller/users.js'));
 app.use('/seed', require('./controller/users.js'));
-app.use('/listing', isAuthenticated,require('./controller/listings.js'));
+app.use('/listing', isAuthenticated, require('./controller/listings.js'));
 // database connection
-mongoose.connect(MONGO_URI, {useNewUrlParser: true}, () => console.log("Connected to database"));
-
 // server listen
 app.listen(port, () => console.log(`server is listening on port: ${port}`));
 

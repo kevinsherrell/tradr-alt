@@ -75,26 +75,26 @@ authRouter.get('/current', (req, res) => {
 authRouter.post('/signup',(req, res) => {
     console.log(req.body);
     const {errors, isValid} = validateSignupInput(req.body);
-
+    if (!isValid) {
+        res.status(400).send(errors);
+    }
     User.findOne({email: req.body.email}, (err, user) => {
         if (user) {
             errors.email = "There is already a user with this email address";
             res.status(400).send(errors);
         } else {
             req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
-            console.log(User.firstName)
             User.create(req.body)
                 .then(user => {
+                    // req.session.currentUser = user;
+                    // console.log("req.session",req.session);
                     // Send current user to the front end
                     res.send(user);
                 })
                 .catch(err => {
-                    if (!isValid) {
-                        res.status(400).send(errors);
-                    }else{
-                        console.log("Signup Error");
+                        console.log("signuperror",err);
                         res.send(err)
-                    }
+
                 });
         }
     })
@@ -115,7 +115,7 @@ authRouter.post('/login', (req, res) => {
         } else {
             if (bcrypt.compareSync(req.body.password, user.password)) {
                 req.session.currentUser = user;
-                console.log(req.session)
+                console.log("req.session",req.session);
                 res.send(user)
             } else {
                 errors.password = 'email or password invalid';

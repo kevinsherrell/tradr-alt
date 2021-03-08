@@ -44,7 +44,6 @@ class LoginSignup extends React.Component {
             password: this.state.password,
             confirmPassword: this.state.confirmPassword,
             zipCode: this.state.location,
-
             // img: "https://source.unsplash.com/random/300×300"
         }
         closeMenu = this.props.toggleLoginSignup;
