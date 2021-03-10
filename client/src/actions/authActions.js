@@ -19,6 +19,12 @@ export const userSignup = (signupData, closeMenu) => dispatch => {
 
 }
 export const userLogin = (loginData, closeMenu) => dispatch => {
+    // axios({
+    //     method: 'post',
+    //     url: "http://localhost:3080/auth/login",
+    //     data: loginData,
+    //     withCredentials: true,
+    // })
     axios.post("http://localhost:3080/auth/login", loginData)
         .then(response => {
                 dispatch({
