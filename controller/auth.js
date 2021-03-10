@@ -89,7 +89,8 @@ authRouter.post('/signup', (req, res) => {
             req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
             User.create(req.body)
                 .then(user => {
-                    return res.send(user);
+                    req.session.currentUser = user;
+                    return res.send(req.session);
                 })
                 .catch(err => {
                     return res.send(err);
