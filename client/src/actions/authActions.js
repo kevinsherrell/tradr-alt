@@ -1,6 +1,8 @@
 import {LOGIN_ERROR, LOGIN_USER, LOGOUT_USER, SIGNUP_ERROR, SIGNUP_USER} from "./types";
 import axios from "axios";
 
+// axios.defaults.withCredentials = true;
+
 export const userSignup = (signupData, closeMenu) => dispatch => {
     axios.post("http://localhost:3080/auth/signup", signupData)
         .then(response => {
