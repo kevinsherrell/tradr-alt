@@ -25,16 +25,7 @@ app.use(cors({
     credentials: true,
     exposedHeaders: ['set-cookies']
 }));
-const corsOptions = {
-    origin: "http://localhost:3000",
-    methods:['GET','POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type','Authorization','Origin','Accept', 'X-Requested-With'],
-    credentials: true,
-    exposedHeaders: ['set-cookies']
-}
-// app.use((req,res,next)=>{
-//     res.header('Allow-Control-Allow-Origin', 'http://localhost:3000');
-// })
+
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.json());
@@ -51,7 +42,8 @@ app.use(session({
         path: '/',
         secure: false,
         maxAge: 1000 * 60 * 60,
-    }
+    },
+
 
 }))
 // routes

@@ -22,6 +22,16 @@ const storage = multer.diskStorage({
 })
 const upload = multer({storage: storage});
 
+
+// Retrieve Session
+authRouter.post('/reconnect',(req, res)=>{
+        User.findById({_id: req.session.cookie.id})
+            .then(user=>{
+                req.session.currentUser = user;
+                res.status(200).send(req.session);
+            })
+})
+
 authRouter.get('/current', (req, res) => {
     res.send(req.session.currentUser);
 });
@@ -114,6 +124,7 @@ authRouter.post('/login', (req, res) => {
         } else {
             if (bcrypt.compareSync(req.body.password, user.password)) {
                 req.session.currentUser = user;
+                req.session.cookie.id = user._id
                 console.log("req.session", req.session);
                 return res.send(req.session)
             } else {
