@@ -4,42 +4,54 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
+const cors = require('cors');
 const session = require('express-session');
-const ejs = require('ejs');
-const expressLayouts = require('express-ejs-layouts');
-
 const MONGO_URI = process.env.MONGO_URI
 const port = process.env.PORT;
 const isAuthenticated = require('./validation/isAuthenticated');
-// views engine
-app.set('view engine', 'ejs');
-
 
 // Main entry point to application
-app.get('/', (req, res)=>{
+app.get('/', (req, res) => {
     res.render('index');
 })
 // middleware
+// app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods:['GET','POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type','Authorization','Origin','Accept', 'X-Requested-With'],
+    credentials: true,
+    exposedHeaders: ['set-cookies']
+}));
+
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(methodOverride('_method'));
-app.use(session({
-    secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: false
-}));
-
-// routes
-app.use('/auth', require('./controller/auth.js'));
-app.use('/user', isAuthenticated, require('./controller/users.js'));
-app.use('/seed', require('./controller/users.js'));
-app.use('/listing', isAuthenticated,require('./controller/listings.js'));
-// database connection
 mongoose.connect(MONGO_URI, {useNewUrlParser: true}, () => console.log("Connected to database"));
 
+app.use(session({
+    secret: process.env.SECRET,
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        httpOnly: true,
+        path: '/',
+        secure: false,
+        maxAge: 1000 * 60 * 60,
+    },
+
+
+}))
+// routes
+app.use('/auth',require('./controller/auth.js'));
+app.use('/user', require('./controller/users.js'));
+app.use('/seed', require('./controller/users.js'));
+app.use('/listing', isAuthenticated, require('./controller/listings.js'));
+// database connection
 // server listen
 app.listen(port, () => console.log(`server is listening on port: ${port}`));
 

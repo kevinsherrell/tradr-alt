@@ -8,7 +8,6 @@ import ListingPage from "./components/listingPage/ListingPage";
 
 import store from './store'
 
-
 function App() {
     return (
         <Provider store={store}>

@@ -1,9 +1,12 @@
 import {LOGIN_ERROR, LOGIN_USER, LOGOUT_USER, SIGNUP_ERROR, SIGNUP_USER} from "./types";
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
+
 export const userSignup = (signupData, closeMenu) => dispatch => {
-    axios.post("http://localhost:8080/api/user", signupData)
+    axios.post("http://localhost:3080/auth/signup", signupData)
         .then(response => {
+            console.log(response);
             dispatch({
                 type: SIGNUP_USER,
                 payload: response.data
@@ -15,9 +18,16 @@ export const userSignup = (signupData, closeMenu) => dispatch => {
             type: SIGNUP_ERROR,
             payload: error.response.data
         })).then(error => console.log(error))
+
 }
 export const userLogin = (loginData, closeMenu) => dispatch => {
-    axios.post("http://localhost:8080/api/user/login", loginData)
+    // axios({
+    //     method: 'post',
+    //     url: "http://localhost:3080/auth/login",
+    //     data: loginData,
+    //     withCredentials: true,
+    // })
+    axios.post("http://localhost:3080/auth/login", loginData)
         .then(response => {
                 dispatch({
                     type: LOGIN_USER,

@@ -4,6 +4,7 @@ const userRouter = express.Router();
 const User = require('../model/User.js');
 const Listing = require('../model/Listing.js');
 const Image = require('../model/Image.js');
+const isAuthenticated = require('../validation/isAuthenticated');
 // GET - get all users
 userRouter.get('/all', (req, res) => {
     console.log('user route working');
@@ -84,64 +85,66 @@ userRouter.get('/seed', (req, res) => {
 });
 // GET - get user by id
 userRouter.get('/:id', async (req, res) => {
-    try {
-        // Delete current user
-        const deleteUser = await User.findOneAndDelete({_id: req.params.id});
-        // Delete listings belonging to the user
-        // const deleteListings = await Listing.deleteMany({user: req.params.id});
-        return res.status(200).send('user and listings have been deleted');
-    } catch (err) {
-        res.status(500);
-        res.send(err);
-    }
+    User.findById({_id: req.params.id})
+        .then(user => {
+            return res.send(user);
+        })
+        .catch(err => {
+            return res.send(err);
+        })
 })
 // DELETE - delete user by id
-userRouter.delete('/:id', async (req, res) => {
-    const id = req.params.id;
-    try {
-        await User.findOneAndDelete({_id: id});
-        await Listing.find({user: id}, (err, listings) => {
-            if (err) {
-                res.status(500).send(err);
-            }
-            listings.forEach((listing) => {
-                console.log(listing);
-                // Delete all images associated with this listing
-                Image.deleteMany({listing: listing._id}, (err, result) => {
-                    if (err) {
-                        res.status(500).send(err);
-                    }
-                    console.log(result)
-                })
-                // Delete avatar image associated with this user
-                Image.deleteOne({user: id}, (err, result) => {
-                    if (err) {
-                        res.status(500).send(err);
-                    }
-                    console.log(result);
+userRouter.delete('/:id', (req, res) => {
+    isAuthenticated(req, res, async () => {
+        const id = req.params.id;
+        try {
+            await User.findOneAndDelete({_id: id});
+            await Listing.find({user: id}, (err, listings) => {
+                if (err) {
+                    res.status(500).send(err);
+                }
+                listings.forEach((listing) => {
+                    console.log(listing);
+                    // Delete all images associated with this listing
+                    Image.deleteMany({listing: listing._id}, (err, result) => {
+                        if (err) {
+                            res.status(500).send(err);
+                        }
+                        console.log(result)
+                    })
+                    // Delete avatar image associated with this user
+                    Image.deleteOne({user: id}, (err, result) => {
+                        if (err) {
+                            res.status(500).send(err);
+                        }
+                        console.log(result);
+                    })
                 })
             })
-        })
-        // Delete all listings associated with this user
-        await Listing.deleteMany({user: id}, (err, listings) => {
-            if (err) {
-                res.status(500).send(err);
-            }
-            console.log(listings);
-        });
-        res.send('success');
-    } catch (err) {
-        res.send(err);
-    }
+            // Delete all listings associated with this user
+            await Listing.deleteMany({user: id}, (err, listings) => {
+                if (err) {
+                    res.status(500).send(err);
+                }
+                console.log(listings);
+            });
+            res.send('success');
+        } catch (err) {
+            res.send(err);
+        }
+    })
 
 })
 // PUT - update user
 userRouter.put('/update/:id', (req, res) => {
-    User.findByIdAndUpdate({_id: req.params.id}, req.body, {new: true}, (err, updatedUser) => {
-        if (err) {
-            res.status(500).send(err);
-        }
-        res.status(201).send(updatedUser);
-    })
+    isAuthenticated(req, res, () => {
+        User.findByIdAndUpdate({_id: req.params.id}, req.body, {new: true}, (err, updatedUser) => {
+            if (err) {
+                return res.status(500).send(err);
+            }
+            return res.status(201).send(updatedUser);
+        })
+    });
+
 })
 module.exports = userRouter;

@@ -7,6 +7,7 @@ const Image = require('../model/Image.js');
 const multer = require('multer');
 const path = require('path');
 const {v4: uuidv4} = require('uuid');
+const isAuthenticated = require('../validation/isAuthenticated');
 
 // Storage
 const storage = multer.diskStorage({
@@ -30,55 +31,63 @@ listingRouter.get('/', (req, res) => {
 listingRouter.post('/post', upload.array('listingImage', 5), (req, res, next) => {
     req.body.user = req.session.currentUser._id;
     req.body.location = req.session.currentUser.zipCode;
-    Listing.create(req.body)
-        .then(listing => {
+    isAuthenticated(req, res, () => {
+        Listing.create(req.body)
+            .then(listing => {
 
-            console.log(req.files);
-            req.files.forEach((file) => {
-                const newImage = new Image({
-                    type: 'listing',
-                    listing: listing._id,
-                    url: file.filename
+                console.log(req.files);
+                req.files.forEach((file) => {
+                    const newImage = new Image({
+                        type: 'listing',
+                        listing: listing._id,
+                        url: file.filename
+                    });
+                    listing.images.push(newImage._id)
+                    listing.save();
+                    newImage.save()
+                        .then(image => {
+                            console.log('success');
+                        }).catch(err => res.send(err));
+                })
+
+                User.findOne({_id: req.body.user}, (err, user) => {
+                    if (err) {
+                        res.status(500).send(err)
+                    }
+                    user.listings.push(listing._id);
+                    user.save()
+                        .then(() => console.log("user has been updated with listing"))
+                        .catch(err => {
+                            res.send(err);
+                        })
                 });
-                listing.images.push(newImage._id)
-                listing.save();
-                newImage.save()
-                    .then(image => {
-                        console.log('success');
-                    }).catch(err => res.send(err));
-            })
+                res.send(listing);
+            }).catch(err => {
+            console.log("listing error");
+            res.send(err.message);
+        });
+    })
 
-            User.findOne({_id: req.body.user}, (err, user) => {
-                if (err) {
-                    res.status(500).send(err)
-                }
-                user.listings.push(listing._id);
-                user.save()
-                    .then(() => console.log("user has been updated with listing"))
-                    .catch(err => {
-                        res.send(err);
-                    })
-            });
-            res.send(listing);
-        }).catch(err => {
-        console.log("listing error");
-        res.send(err.message);
-    });
 })
 listingRouter.put('/update/:id', (req, res) => {
-    Listing.findOneAndUpdate({_id: req.params.id}, req.body, {new: true}, (err, updatedListing) => {
-        if (err) {
-            res.status(500).send(err);
-        }
-        res.status(201).send(updatedListing);
+    isAuthenticated(req, res, () => {
+        Listing.findOneAndUpdate({_id: req.params.id}, req.body, {new: true}, (err, updatedListing) => {
+            if (err) {
+                res.status(500).send(err);
+            }
+            res.status(201).send(updatedListing);
+        })
     })
 })
-listingRouter.delete('/:id',(req,res)=>{
-    Listing.findOneAndDelete({_id: req.params.id}, (err, result)=>{
-        if(err){
-            res.status(500).send(err);
-        }
-        res.status(200).send("success");
+listingRouter.delete('/:id', (req, res) => {
+    isAuthenticated(req, res, () => {
+        Listing.findOneAndDelete({_id: req.params.id}, (err, result) => {
+            if (err) {
+                res.status(500).send(err);
+            }
+            res.status(200).send("success");
+        })
     })
+
 })
 module.exports = listingRouter;
