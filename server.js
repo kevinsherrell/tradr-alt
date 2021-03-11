@@ -17,12 +17,24 @@ app.get('/', (req, res) => {
     res.render('index');
 })
 // middleware
+// app.use(cors());
 app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: false,
+    origin: "http://localhost:3000",
+    methods:['GET','POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type','Authorization','Origin','Accept', 'X-Requested-With'],
+    credentials: true,
     exposedHeaders: ['set-cookies']
 }));
-
+const corsOptions = {
+    origin: "http://localhost:3000",
+    methods:['GET','POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type','Authorization','Origin','Accept', 'X-Requested-With'],
+    credentials: true,
+    exposedHeaders: ['set-cookies']
+}
+// app.use((req,res,next)=>{
+//     res.header('Allow-Control-Allow-Origin', 'http://localhost:3000');
+// })
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.json());
@@ -43,7 +55,7 @@ app.use(session({
 
 }))
 // routes
-app.use('/auth', cors(),require('./controller/auth.js'));
+app.use('/auth',require('./controller/auth.js'));
 app.use('/user', require('./controller/users.js'));
 app.use('/seed', require('./controller/users.js'));
 app.use('/listing', isAuthenticated, require('./controller/listings.js'));
