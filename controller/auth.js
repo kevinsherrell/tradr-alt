@@ -142,7 +142,10 @@ authRouter.delete('/logout', (req, res) => {
     isAuthenticated(req, res, () => {
         req.session.destroy(() => {
             console.log(req.session);
-            res.send("user is logged logged out")
+            res.clearCookie('connect.sid', {
+                path: '/',
+                httpOnly: true
+            }).send("user is logged logged out")
         })
     })
 
