@@ -1,4 +1,4 @@
-import {LOGIN_ERROR, LOGIN_USER, LOGOUT_USER, SIGNUP_ERROR, SIGNUP_USER} from "./types";
+import {LOGIN_ERROR, LOGIN_USER, LOGOUT_USER,LOGOUT_ERROR, SIGNUP_ERROR, SIGNUP_USER} from "./types";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
@@ -44,7 +44,14 @@ export const userLogin = (loginData, closeMenu) => dispatch => {
         }))
 }
 export const userLogout = () => dispatch => {
-    return {
-        type: LOGOUT_USER
-    }
+    axios.delete("http://localhost:3070/auth/logout")
+        .then(response=>{
+            dispatch({
+                type:LOGIN_USER,
+                payload: response.data
+            })
+        }).catch(error=>dispatch({
+        type: LOGOUT_ERROR,
+        payload: error.response.data
+    }))
 }

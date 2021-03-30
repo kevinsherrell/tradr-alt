@@ -1,6 +1,6 @@
 import {
     LOGIN_USER,
-    SIGNUP_USER, LOGIN_ERROR, SIGNUP_ERROR, LOGOUT_USER
+    SIGNUP_USER, LOGIN_ERROR, SIGNUP_ERROR, LOGOUT_USER, LOGOUT_ERROR
 } from "../actions/types";
 
 const initialState = {
@@ -31,6 +31,11 @@ export default function (state = initialState, action) {
                 ...state,
                 authenticated: false,
                 authenticatedUser: undefined
+            }
+        case LOGOUT_ERROR:
+            return{
+                ...state,
+                authError: action.payload
             }
         case SIGNUP_USER:
             return {
