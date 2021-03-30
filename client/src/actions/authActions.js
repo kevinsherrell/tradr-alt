@@ -4,7 +4,7 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 export const userSignup = (signupData, closeMenu) => dispatch => {
-    axios.post("http://localhost:3080/auth/signup", signupData)
+    axios.post("http://localhost:3070/auth/signup", signupData)
         .then(response => {
             console.log(response);
             dispatch({

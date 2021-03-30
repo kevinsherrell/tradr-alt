@@ -8,6 +8,8 @@ import ListingPage from "./components/listingPage/ListingPage";
 
 import store from './store'
 
+console.log(document.cookie)
+
 function App() {
     return (
         <Provider store={store}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux'
-
+import axios from 'axios';
 import ListAnItem from "./ListAnItem";
 import ItemListing from "./ItemListing";
 import PostItem from "./PostItem";
@@ -31,6 +31,10 @@ class Main extends React.Component {
     }
 
     componentDidMount() {
+        axios.post('/auth/reconnect')
+            .then(response=>{
+                console.log(response)
+            }).catch(err=>console.log(err))
 
         this.props.fetchAllListings()
 
