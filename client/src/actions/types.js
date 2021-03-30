@@ -10,6 +10,7 @@ export const FETCH_USER_BY_ID = "FETCH_USER_BY_ID";
 // AUTH ACTIONS
 export const LOGIN_USER = "LOGIN_USER"
 export const LOGOUT_USER = "LOGOUT_USER"
+export const LOGOUT_ERROR = "LOGOUT_ERROR"
 export const LOGIN_ERROR = "LOGIN_ERROR"
 export const SIGNUP_USER = "SIGNUP_USER"
 export const SIGNUP_ERROR = "SIGNUP_ERROR"
