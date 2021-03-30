@@ -69,13 +69,42 @@ listingRouter.post('/post', upload.array('listingImage', 5), (req, res, next) =>
     })
 
 })
-listingRouter.put('/update/:id', (req, res) => {
+listingRouter.put('/update/:id', upload.array("listingImage"), (req, res) => {
+    const id = req.params.id
     isAuthenticated(req, res, () => {
-        Listing.findOneAndUpdate({_id: req.params.id}, req.body, {new: true}, (err, updatedListing) => {
+        Listing.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, listing) => {
             if (err) {
-                res.status(500).send(err);
+               return res.status(500).send(err);
             }
-            res.status(201).send(updatedListing);
+            if (listing) {
+
+                if(req.files){
+
+                    req.files.forEach((file) => {
+                        const newImage = new Image({
+                            type: 'listing',
+                            listing: listing._id,
+                            url: file.filename
+                        });
+                        listing.images.push(newImage._id)
+                        listing.save();
+                        newImage.save()
+                            .then(image => {
+                                console.log('success');
+                            }).catch(err => res.send(err));
+                        return res.send(listing)
+                    })
+                }
+                if(req.files.length === 0){
+                    res.send(listing)
+                }
+
+                // listing.save().then(listing=>res.send(listing)).catch(err=>res.send(err))
+            }else{
+                return res.send("no listing found")
+            }
+
+
         })
     })
 })
