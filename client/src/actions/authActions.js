@@ -27,7 +27,7 @@ export const userLogin = (loginData, closeMenu) => dispatch => {
     //     data: loginData,
     //     withCredentials: true,
     // })
-    axios.post("http://localhost:3080/auth/login", loginData)
+    axios.post("http://localhost:3070/auth/login", loginData)
         .then(response => {
                 dispatch({
                     type: LOGIN_USER,
