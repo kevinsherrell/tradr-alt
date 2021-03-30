@@ -8,6 +8,8 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const cors = require('cors');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
+
 const MONGO_URI = process.env.MONGO_URI
 const port = process.env.PORT;
 const isAuthenticated = require('./validation/isAuthenticated');
@@ -33,10 +35,15 @@ app.use(morgan('dev'));
 app.use(methodOverride('_method'));
 mongoose.connect(MONGO_URI, {useNewUrlParser: true}, () => console.log("Connected to database"));
 
+const store = MongoStore.create({
+    mongoUrl: MONGO_URI
+})
+
 app.use(session({
     secret: process.env.SECRET,
     saveUninitialized: false,
     resave: false,
+    store: store,
     cookie: {
         httpOnly: true,
         path: '/',

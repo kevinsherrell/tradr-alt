@@ -25,11 +25,13 @@ const upload = multer({storage: storage});
 
 // Retrieve Session
 authRouter.post('/reconnect',(req, res)=>{
-        User.findById({_id: req.session.cookie.id})
-            .then(user=>{
-                req.session.currentUser = user;
-                res.status(200).send(req.session);
-            })
+    req.session.cookie.name = 'random'
+    console.log(req.session.currentUser)
+        // User.findById({_id: req.session.cookie.id})
+        //     .then(user=>{
+        //         req.session.currentUser = user;
+        //         res.status(200).send(req.session);
+        //     })
 })
 
 authRouter.get('/current', (req, res) => {
@@ -147,3 +149,18 @@ authRouter.delete('/logout', (req, res) => {
 
 })
 module.exports = authRouter;
+
+/*
+How should sessions and cookies work - brainstorming
+when user is created add session id to the user in the database
+on frontend check cookie against the session id in the database
+when the use logs out delete the session id from the database and destroy the cookie.
+
+OR create a session store
+session information is stored within the database
+a cookie is sent to the browser with the session id
+when a user closes the window or refreshes the page, the session collection is searched by the session id contained in the cookie.
+If the cookie matches the session id, the user is automatically authenticated.
+When the user logs out, the session is destroyed and removed from the database.
+
+ */
