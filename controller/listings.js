@@ -157,6 +157,6 @@ listingRouter.get('/:id', (req, res) => {
             res.status(500).send(err)
         }
         res.send(listing);
-    })
+    }).populate('images')
 })
 module.exports = listingRouter;

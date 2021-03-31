@@ -60,7 +60,8 @@ export const fetchListingById = (id) => dispatch => {
             })
         )
         .then(response => {
-            axios.get(`http://localhost:8080/api/user/${response.payload.user} `)
+            console.log(response.payload)
+            axios.get(`http://localhost:3070/user/${response.payload.user} `)
                 .then(user => dispatch({
                     type: FETCH_USER_BY_ID,
                     payload: user.data
