@@ -12,7 +12,7 @@ import axios from "axios";
 
 export const fetchAllListings = () => dispatch => {
     console.log("fetching")
-    axios.get("http://localhost:8080/api/listing/all")
+    axios.get("http://localhost:3070/listing/")
         .then(response => dispatch({
             type: FETCH_ALL_LISTINGS,
             payload: response.data
@@ -37,7 +37,7 @@ export const postListing = (listingData) => dispatch => {
     console.log("create listing")
 
 
-    axios.post("http://localhost:8080/api/listing", listingData)
+    axios.post("http://localhost:3070/listing", listingData)
         .then(response => dispatch({
             type: CREATE_LISTING,
             payload: response.data
@@ -49,7 +49,7 @@ export const postListing = (listingData) => dispatch => {
 export const fetchListingById = (id) => dispatch => {
     console.log("fetching listing by id")
     console.log(id)
-    axios.get(`http://localhost:8080/api/listing/${id}`)
+    axios.get(`http://localhost:3070/listing/${id}`)
         .then(response => dispatch(
             {
                 type: FETCH_LISTING_BY_ID,
@@ -71,7 +71,7 @@ export const fetchListingById = (id) => dispatch => {
 
 }
 export const deleteListing = (id,history) => dispatch => {
-    axios.delete(`http://localhost:8080/api/listing/${id}`)
+    axios.delete(`http://localhost:3070/listing/${id}`)
         .then(response => dispatch({
             type: DELETE_LISTING,
             payload: response.data

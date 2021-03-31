@@ -20,6 +20,7 @@ const storage = multer.diskStorage({
 })
 const upload = multer({storage: storage});
 
+// get all listings
 listingRouter.get('/', (req, res) => {
     Listing.find()
         .populate('images')
@@ -29,11 +30,9 @@ listingRouter.get('/', (req, res) => {
             // res.render('listing', {data: listings})
         })
 });
-
 // current users listings
 listingRouter.get('/myListings', (req, res) => {
     isAuthenticated(req, res, () => {
-        // res.send(req.session.currentUser)
         Listing.find({user: req.session.currentUser})
             .then(listings => {
                 res.send(listings)
@@ -41,6 +40,7 @@ listingRouter.get('/myListings', (req, res) => {
             .catch(err => res.send(err))
     })
 })
+// post new listing
 listingRouter.post('/post', upload.array('listingImage', 5), (req, res, next) => {
     req.body.user = req.session.currentUser._id;
     req.body.location = req.session.currentUser.zipCode;
@@ -82,6 +82,7 @@ listingRouter.post('/post', upload.array('listingImage', 5), (req, res, next) =>
     })
 
 })
+// update a listing by id
 listingRouter.put('/update/:id', upload.array("listingImage"), (req, res) => {
     const id = req.params.id
     isAuthenticated(req, res, () => {
@@ -120,6 +121,7 @@ listingRouter.put('/update/:id', upload.array("listingImage"), (req, res) => {
         })
     })
 })
+// delete a listing by id
 listingRouter.delete('/:id', (req, res) => {
     isAuthenticated(req, res, () => {
         Listing.findOneAndDelete({_id: req.params.id}, (err, listing) => {
