@@ -6,7 +6,7 @@ import {fetchListingById} from "../../actions/listingActions";
 
 function ItemListing(props) {
 
-// console.log(props)
+console.log(props)
 
     const getListingData = (id) => {
         props.fetchListingById(id)
@@ -19,7 +19,7 @@ function ItemListing(props) {
     let id = props.id;
 
     const styles = {
-        backgroundImage: `url(${props.imageUrl})`,
+        backgroundImage: `url(/images/${props.images[0].url})`,
     }
 
     return (

@@ -176,7 +176,6 @@ class Main extends React.Component {
                 </div>
                 {browserWidth < 650 && (
                     <ListAnItem/>
-
                 )}
 
                 <ListAnItem togglePostItem={this.togglePostItem}/>
