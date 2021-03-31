@@ -18,15 +18,15 @@ console.log(props)
 
     let id = props._id;
 
-    const styles = {
-        backgroundImage: `url(/images/${props.images[0].url})`,
+    const backgroundImage = {
+        backgroundImage: props.images && `url(/images/${props.images[0].url})`,
     }
-
+    console.log(backgroundImage)
     return (
         <React.Fragment>
             <Link to={`/listing/${props._id}`} onClick={() => getListingData(id)}>
                 <div className="item-listing">
-                    <div className="item-listing__image" style={styles}>
+                    <div className="item-listing__image" style={ backgroundImage}>
 
                     </div>
                     <div className="item-listing__item-info">

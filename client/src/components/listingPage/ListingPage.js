@@ -7,6 +7,7 @@ import {deleteListing} from "../../actions/listingActions";
 
 import image from '../../assets/images/listing-pic.jpg'
 import map from '../../assets/images/storelocator_clothing.png'
+import axios from "axios";
 
 
 class ListingPage extends React.Component {
@@ -62,11 +63,12 @@ class ListingPage extends React.Component {
 
                         <section className="listing-page__listing-image-section">
                             <img className={'listing-page__listing-image'}
-                                 src={`/images/${listingPage && listingPage.images[0].url}`}
+                                 src={`/images/${listingPage.images && listingPage.images[0].url}`}
                                  alt=""/>
 
                             <p className={'listing-page__price-btn'}>{listingPage.price < 1 ? "Trade Only" : `Trade + $${listingPage.price}`}</p>
-                            <p className={'listing-page__photo-btn'}>View photos ({listingPage.images && listingPage.images.length})</p>
+                            <p className={'listing-page__photo-btn'}>View photos
+                                ({listingPage.images && listingPage.images.length})</p>
 
 
                         </section>
@@ -120,8 +122,11 @@ class ListingPage extends React.Component {
                     </div>
                     <h4 className={'listing-page__listings-near-you-header container'}>Similar listings near you:</h4>
                     <div className="listing-page__listings-near-you-wrapper container grid">
-                        {listingPageUser.listing ? listingPageUser.listing.map(listing => <ItemListing
-                            key={listing.id} {...listing}/>) : undefined}
+                        {listingPageUser.listings ? listingPageUser.listings.map(listing => {
+                            return <ItemListing key={listing._id} {...listing}
+                                                backgroundImage={{backgroundImage: `url(/images/${listing.images[0].url})`}}/>
+
+                        }) : undefined}
                     </div>
                 </div>
 

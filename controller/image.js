@@ -9,5 +9,11 @@ const upload = multer({dest: '../public/images'});
 imageRouter.post('/',(req, res)=>{
 
 })
-
+imageRouter.get('/all/:listing', (req, res)=>{
+    Image.find({user: req.params.listing})
+        .then(images=>{
+            res.send(images)
+        })
+        .catch(err=>res.send(err))
+})
 module.exports = imageRouter;
