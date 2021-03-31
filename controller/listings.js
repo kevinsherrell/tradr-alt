@@ -30,6 +30,17 @@ listingRouter.get('/', (req, res) => {
         })
 });
 
+// current users listings
+listingRouter.get('/myListings', (req, res) => {
+    isAuthenticated(req, res, () => {
+        // res.send(req.session.currentUser)
+        Listing.find({user: req.session.currentUser})
+            .then(listings => {
+                res.send(listings)
+            })
+            .catch(err => res.send(err))
+    })
+})
 listingRouter.post('/post', upload.array('listingImage', 5), (req, res, next) => {
     req.body.user = req.session.currentUser._id;
     req.body.location = req.session.currentUser.zipCode;
@@ -135,6 +146,15 @@ listingRouter.delete('/:id', (req, res) => {
             })
             res.status(200).send("success");
         })
+    })
+})
+// get listing by id
+listingRouter.get('/:id', (req, res) => {
+    Listing.findById(req.params.id, (err, listing) => {
+        if (err) {
+            res.status(500).send(err)
+        }
+        res.send(listing);
     })
 })
 module.exports = listingRouter;
