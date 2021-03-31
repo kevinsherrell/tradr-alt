@@ -136,11 +136,5 @@ listingRouter.delete('/:id', (req, res) => {
             res.status(200).send("success");
         })
     })
-
-    // delete images associated with the listing
-    //     search for images by the listing field which will be associated with the listing id
-    //        iterate over each of these images and delete each from both the database and the filesystem
-    // delete listing
-
 })
 module.exports = listingRouter;
