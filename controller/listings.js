@@ -25,7 +25,7 @@ listingRouter.get('/', (req, res) => {
     Listing.find()
         .populate('images')
         .then(listings => {
-            console.log(listings)
+            // console.log(listings)
             res.send(listings);
             // res.render('listing', {data: listings})
         })

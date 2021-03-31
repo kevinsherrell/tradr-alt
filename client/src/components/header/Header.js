@@ -19,6 +19,7 @@ class Header extends React.Component {
     }
 
     componentDidMount() {
+
         /*reports width of the browser every time it is resized, then sets it to state "browserWidth*/
         window.addEventListener('resize', () => {
             this.setState({

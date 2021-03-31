@@ -6,6 +6,7 @@ import ItemListing from "./ItemListing";
 import PostItem from "./PostItem";
 
 import {fetchAllListings, fetchAllListingsByCategory} from "../../actions/listingActions";
+import {retrieveSession} from "../../actions/authActions";
 import uuid from 'uuid';
 
 
@@ -31,10 +32,7 @@ class Main extends React.Component {
     }
 
     componentDidMount() {
-        axios.post('/auth/reconnect')
-            .then(response=>{
-                console.log(response)
-            }).catch(err=>console.log(err))
+        this.props.retrieveSession()
 
         this.props.fetchAllListings()
 
@@ -190,6 +188,6 @@ const mapStateToProps = state => ({
     listingData: state.listingData
 })
 
-export default connect(mapStateToProps, {fetchAllListings, fetchAllListingsByCategory})(Main);
+export default connect(mapStateToProps, {fetchAllListings, fetchAllListingsByCategory, retrieveSession})(Main);
 
 

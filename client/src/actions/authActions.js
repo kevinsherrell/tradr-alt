@@ -1,4 +1,4 @@
-import {LOGIN_ERROR, LOGIN_USER, LOGOUT_USER,LOGOUT_ERROR, SIGNUP_ERROR, SIGNUP_USER} from "./types";
+import {LOGIN_ERROR, LOGIN_USER, LOGOUT_USER,LOGOUT_ERROR, SIGNUP_ERROR, SIGNUP_USER, RETRIEVE_SESSION, RETRIEVE_SESSION_ERROR} from "./types";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
@@ -54,4 +54,18 @@ export const userLogout = () => dispatch => {
         type: LOGOUT_ERROR,
         payload: error.response.data
     }))
+}
+
+export const retrieveSession = ()=> dispatch=>{
+    axios.post('http://localhost:3070/auth/reconnect')
+        .then(response=>{
+            dispatch({
+                type: RETRIEVE_SESSION,
+                payload: response.data
+            })
+        })
+        .catch(error=>dispatch({
+            type: RETRIEVE_SESSION_ERROR,
+            payload: error.response.data
+        }))
 }

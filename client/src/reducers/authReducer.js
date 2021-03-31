@@ -1,6 +1,6 @@
 import {
     LOGIN_USER,
-    SIGNUP_USER, LOGIN_ERROR, SIGNUP_ERROR, LOGOUT_USER, LOGOUT_ERROR
+    SIGNUP_USER, LOGIN_ERROR, SIGNUP_ERROR, LOGOUT_USER, LOGOUT_ERROR, RETRIEVE_SESSION
 } from "../actions/types";
 
 const initialState = {
@@ -48,6 +48,11 @@ export default function (state = initialState, action) {
                 ...state,
                 authenticated: false,
                 authError: action.payload
+            }
+        case RETRIEVE_SESSION:
+            return{
+                ...state,
+                authenticated: action.payload ? true : false
             }
         default:
             return state;
