@@ -66,7 +66,7 @@ class ListingPage extends React.Component {
                                  alt=""/>
 
                             <p className={'listing-page__price-btn'}>{listingPage.price < 1 ? "Trade Only" : `Trade + $${listingPage.price}`}</p>
-                            <p className={'listing-page__photo-btn'}>View photos (5)</p>
+                            <p className={'listing-page__photo-btn'}>View photos ({listingPage.images && listingPage.images.length})</p>
 
 
                         </section>
@@ -89,7 +89,7 @@ class ListingPage extends React.Component {
                                 {listingPage.description}
                             </p>
                             <h4 className={'listing-page__wanted-header'}>Will trade for:</h4>
-                            <p className={'listing-page__wanted'}>{listingPage.itemsWanted}</p>
+                            <p className={'listing-page__wanted'}>{listingPage.tradeFor}</p>
 
                             {authenticatedUser && authenticatedUser.id === listingPage.user ? (
                                 <p className="listing-page__delete" onClick={this.deleteListing}>Delete This Post</p>
