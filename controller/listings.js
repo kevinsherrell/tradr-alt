@@ -9,6 +9,8 @@ const path = require('path');
 const {v4: uuidv4} = require('uuid');
 const isAuthenticated = require('../validation/isAuthenticated');
 
+const fs = require('fs');
+
 // Storage
 const storage = multer.diskStorage({
     destination: './public/images',
@@ -74,11 +76,11 @@ listingRouter.put('/update/:id', upload.array("listingImage"), (req, res) => {
     isAuthenticated(req, res, () => {
         Listing.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, listing) => {
             if (err) {
-               return res.status(500).send(err);
+                return res.status(500).send(err);
             }
             if (listing) {
 
-                if(req.files){
+                if (req.files) {
 
                     req.files.forEach((file) => {
                         const newImage = new Image({
@@ -95,12 +97,11 @@ listingRouter.put('/update/:id', upload.array("listingImage"), (req, res) => {
                         return res.send(listing)
                     })
                 }
-                if(req.files.length === 0){
+                if (req.files.length === 0) {
                     res.send(listing)
                 }
 
-                // listing.save().then(listing=>res.send(listing)).catch(err=>res.send(err))
-            }else{
+            } else {
                 return res.send("no listing found")
             }
 
@@ -110,13 +111,36 @@ listingRouter.put('/update/:id', upload.array("listingImage"), (req, res) => {
 })
 listingRouter.delete('/:id', (req, res) => {
     isAuthenticated(req, res, () => {
-        Listing.findOneAndDelete({_id: req.params.id}, (err, result) => {
+        Listing.findOneAndDelete({_id: req.params.id}, (err, listing) => {
             if (err) {
                 res.status(500).send(err);
             }
+            Image.find({listing: listing._id}, (err, data) => {
+                if (err) {
+                    res.status(500).send(err);
+                }
+                if (data.length !== 0) {
+                    data.forEach(image => {
+                        const path = `./public/images/${image.url}`
+                        fs.unlink(path, (err) => {
+                            if (err) {
+                                console.log(err)
+                            }
+                        })
+                        image.remove()
+                            .then(image => console.log('success'))
+                            .catch(err => console.log(err))
+                    })
+                }
+            })
             res.status(200).send("success");
         })
     })
+
+    // delete images associated with the listing
+    //     search for images by the listing field which will be associated with the listing id
+    //        iterate over each of these images and delete each from both the database and the filesystem
+    // delete listing
 
 })
 module.exports = listingRouter;
