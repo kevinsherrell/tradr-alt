@@ -57,7 +57,7 @@ app.use(session({
 app.use('/auth',require('./controller/auth.js'));
 app.use('/user', require('./controller/users.js'));
 app.use('/seed', require('./controller/users.js'));
-app.use('/listing', isAuthenticated, require('./controller/listings.js'));
+app.use('/listing', require('./controller/listings.js'));
 // database connection
 // server listen
 app.listen(port, () => console.log(`server is listening on port: ${port}`));

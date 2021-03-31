@@ -13,10 +13,13 @@ import axios from "axios";
 export const fetchAllListings = () => dispatch => {
     console.log("fetching")
     axios.get("http://localhost:3070/listing/")
-        .then(response => dispatch({
-            type: FETCH_ALL_LISTINGS,
-            payload: response.data
-        }))
+        .then(response => {
+            console.log(response)
+            dispatch({
+                type: FETCH_ALL_LISTINGS,
+                payload: response.data
+            })
+        })
 
         .catch(err => {
             console.log(err)
