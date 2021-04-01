@@ -3,18 +3,18 @@ import {
     FETCH_ALL_LISTINGS_BY_CATEGORY,
     FETCH_ALL_LISTINGS_BY_CATEGORY_ERROR,
     FETCH_LISTING_BY_ID,
+    FETCH_ALL_LISTINGS_BY_ID,
+    FETCH_ALL_LISTINGS_BY_ID_ERROR,
     CREATE_LISTING,
     FETCH_USER_BY_ID,
     DELETE_LISTING,
-    DELETE_LISTING_ERROR
+    DELETE_LISTING_ERROR,
 } from "./types";
 import axios from "axios";
 
 export const fetchAllListings = () => dispatch => {
-    console.log("fetching")
     axios.get("http://localhost:3070/listing/")
         .then(response => {
-            console.log(response)
             dispatch({
                 type: FETCH_ALL_LISTINGS,
                 payload: response.data
@@ -25,6 +25,21 @@ export const fetchAllListings = () => dispatch => {
             console.log(err)
         })
 }
+// fetches all listings by a certain user
+export const fetchAllListingsById = (user)=> dispatch =>{
+    axios.get(`http://localhost:3070/listing/all/${user}`)
+        .then(response=>{
+            dispatch({
+                type: FETCH_ALL_LISTINGS_BY_ID,
+                payload: response.data
+            })
+        })
+        .catch(error=>dispatch({
+            type: FETCH_ALL_LISTINGS_BY_ID_ERROR,
+            payload: error.response.data
+        }))
+}
+
 export const fetchAllListingsByCategory = (category)=> dispatch => {
     axios.get(`http://localhost:8080/api/listing?category=${category}`)
         .then(response=>dispatch({
@@ -37,7 +52,6 @@ export const fetchAllListingsByCategory = (category)=> dispatch => {
         }))
 }
 export const postListing = (listingData) => dispatch => {
-    console.log("create listing")
 
 
     axios.post("http://localhost:3070/listing", listingData)
@@ -50,8 +64,6 @@ export const postListing = (listingData) => dispatch => {
     })
 }
 export const fetchListingById = (id) => dispatch => {
-    console.log("fetching listing by id")
-    console.log(id)
     axios.get(`http://localhost:3070/listing/${id}`)
         .then(response => dispatch(
             {
@@ -59,19 +71,18 @@ export const fetchListingById = (id) => dispatch => {
                 payload: response.data
             })
         )
-        .then(response => {
-            console.log(response.payload)
-            axios.get(`http://localhost:3070/user/${response.payload.user} `)
-                .then(user => dispatch({
-                    type: FETCH_USER_BY_ID,
-                    payload: user.data
-                })).then(response => {
-                console.log(response)
-            })
-                .catch(err => {
-                    console.log(err)
-                })
-        })
+        .catch(err=>console.log(err))
+        // .then(response => {
+        //     axios.get(`http://localhost:3070/user/${response.payload.user} `)
+        //         .then(user => dispatch({
+        //             type: FETCH_USER_BY_ID,
+        //             payload: user.data
+        //         })).then(response => {
+        //     })
+        //         .catch(err => {
+        //             console.log(err)
+        //         })
+        // })
 
 }
 export const deleteListing = (id,history) => dispatch => {

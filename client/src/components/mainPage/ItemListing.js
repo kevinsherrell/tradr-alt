@@ -6,7 +6,6 @@ import {fetchListingById} from "../../actions/listingActions";
 
 function ItemListing(props) {
 
-console.log(props)
 
     const getListingData = (id) => {
         props.fetchListingById(id)
@@ -21,7 +20,6 @@ console.log(props)
     const backgroundImage = {
         backgroundImage: props.images && `url(/images/${props.images[0].url})`,
     }
-    console.log(backgroundImage)
     return (
         <React.Fragment>
             <Link to={`/listing/${props._id}`} onClick={() => getListingData(id)}>

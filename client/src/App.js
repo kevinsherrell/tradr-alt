@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {Provider} from 'react-redux';
 
 import Header from './components/header/Header';
@@ -8,16 +8,19 @@ import ListingPage from "./components/listingPage/ListingPage";
 
 import store from './store'
 
-console.log(document.cookie)
 
 function App() {
     return (
         <Provider store={store}>
-            <div className="App">
-                <Header/>
-                <Route exact path={"/"} component={Main}/>
-                <Route exact path={`/listing/:id`} component={ListingPage}/>
-            </div>
+            <Router>
+                <div className="App">
+                    <Header/>
+                    <Switch>
+                        <Route exact path={"/"} component={Main}/>
+                        <Route exact path={`/listing/:id`} component={ListingPage}/>
+                    </Switch>
+                </div>
+            </Router>
         </Provider>
     );
 }

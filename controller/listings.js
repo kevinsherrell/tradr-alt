@@ -30,6 +30,15 @@ listingRouter.get('/', (req, res) => {
             // res.render('listing', {data: listings})
         })
 });
+// get all listings by id
+listingRouter.get('/all/:user_id', (req, res) => {
+    let user_id = mongoose.Types.ObjectId(req.params.user_id);
+    console.log(user_id)
+    Listing.find({user: req.params.user_id})
+        .then(listings => res.send(listings))
+        .catch(err => res.send(err))
+})
+
 // current users listings
 listingRouter.get('/myListings', (req, res) => {
     isAuthenticated(req, res, () => {

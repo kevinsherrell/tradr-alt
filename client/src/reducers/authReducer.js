@@ -10,11 +10,10 @@ const initialState = {
 }
 
 export default function (state = initialState, action) {
-    console.log(action)
 
     switch (action.type) {
         case LOGIN_USER:
-            console.log(action.payload)
+            // console.log(action.payload)
             return {
                 ...state,
                 authenticated: true,
@@ -27,7 +26,7 @@ export default function (state = initialState, action) {
                 authError: action.payload
             }
         case LOGOUT_USER:
-            console.log("LOGOUT_USER")
+            // console.log("LOGOUT_USER")
             return {
                 ...state,
                 authenticated: false,

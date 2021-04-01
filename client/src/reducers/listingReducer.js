@@ -5,66 +5,84 @@ import {
     FETCH_USER_BY_ID,
     DELETE_LISTING,
     DELETE_LISTING_ERROR,
-    FETCH_ALL_LISTINGS_BY_CATEGORY, FETCH_ALL_LISTINGS_BY_CATEGORY_ERROR
+    FETCH_ALL_LISTINGS_BY_CATEGORY, FETCH_ALL_LISTINGS_BY_CATEGORY_ERROR, FETCH_ALL_LISTINGS_BY_ID,FETCH_ALL_LISTINGS_BY_ID_ERROR
 } from "../actions/types";
 
 const initialState={
     listings: [],
+    // listings by the authenticated user
+    listingsByCurrentUser:[],
+    // listing by poster of the listing we are currently viewing
+    listingsByLister: [],
     listingPage: {},
-    listingPageUser: {},
+    // listingPageUser: {},
     listingError: {}
 }
 
 export default function(state = initialState, action){
     switch(action.type){
         case FETCH_ALL_LISTINGS:
-            console.log("FETCH_ALL_LISTINGS")
-            console.log(action)
+            // console.log("FETCH_ALL_LISTINGS")
+            // console.log(action)
             return {
                 ...state,
                 listings: action.payload
             }
         case FETCH_ALL_LISTINGS_BY_CATEGORY:
-            console.log("FETCH_ALL_LISTINGS_BY_CATEGORY")
-            console.log(action)
+            // console.log("FETCH_ALL_LISTINGS_BY_CATEGORY")
+            // console.log(action)
             return {
                 ...state,
                 listings: action.payload
             }
         case FETCH_ALL_LISTINGS_BY_CATEGORY_ERROR:
-            console.log("FETCH_ALL_LISTINGS_BY_CATEGORY_ERROR")
-            console.log(action)
+            // console.log("FETCH_ALL_LISTINGS_BY_CATEGORY_ERROR")
+            // console.log(action)
             return {
                 ...state,
                 listingError: action.payload
             }
         case FETCH_LISTING_BY_ID:
-            console.log('FETCH_LISTING_BY_ID')
-            console.log(action)
+            // console.log('FETCH_LISTING_BY_ID')
+            // console.log(action)
             return {
                 ...state,
                 listingPage: action.payload
             }
-        case FETCH_USER_BY_ID:
-            console.log("FETCH_USER_BY_ID")
+        case FETCH_ALL_LISTINGS_BY_ID:
+            // console.log('FETCH_ALL_LISTINGS_BY_ID')
             console.log(action)
             return{
                 ...state,
-                listingPageUser: action.payload
+                listingsByLister: action.payload
             }
+        case FETCH_ALL_LISTINGS_BY_ID_ERROR:
+            // console.log('FETCH_ALL_LISTINGS_BY_ID_ERROR')
+            console.log(action)
+            return{
+                ...state,
+                listingError: action.payload
+            }
+        // case FETCH_USER_BY_ID:
+        //     // console.log("FETCH_USER_BY_ID")
+        //     // console.log(action)
+        //     return{
+        //         ...state,
+        //         listingPageUser: action.payload
+        //     }
         case CREATE_LISTING:
-            console.log("CREATE LISTING")
+            // console.log("CREATE LISTING")
             return{
                 ...state,
                 listings: [action.payload, ...state.listings]
             }
         case DELETE_LISTING:
-            console.log("DELETE_LISTING")
+            // console.log("DELETE_LISTING")
             return{
                 ...state
             }
         case DELETE_LISTING_ERROR:
-            console.log("DELETE_LISTING_ERROR")
+            // console.log("DELETE_LISTING_ERROR")
             return{
                 ...state,
                 listingError: action.payload,

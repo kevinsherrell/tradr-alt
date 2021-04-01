@@ -44,8 +44,6 @@ class Main extends React.Component {
     }
 
     render() {
-        console.log("rendered")
-        console.log(this.state)
         const listings = this.props.listingData.listings
         const {browserWidth} = this.state.browserWidth
         const mapListings = listings.map(listing => {
@@ -145,7 +143,7 @@ class Main extends React.Component {
                     </div>
                     <div className={"content"}>
                         <section className="content__sort-header ">
-                            <div className={'content__sort-menu-wrapper'} onClick={this.state.handleCatMenu}>
+                            <div className={'content__sort-menu-wrapper'} onClick={this.handleCatMenu}>
                                 <p className={'content__sort-menu-btn'}>Sort/Filter: All <i
                                     className="content__sort-menu-icon material-icons">keyboard_arrow_down</i></p>
 
