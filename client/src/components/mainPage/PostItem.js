@@ -105,20 +105,17 @@ class PostItem extends Component {
                                 <div className="post-item__form-image">
                                     <label className={"post-item__form-image-label"}>Image</label>
                                     {/*New - image upload*/}
-                                    <input name={"imageUrl"} type="file"
+                                    <input name={"file"}
+                                           type="file"
                                            className={'post-item__form-image-input'}
-                                           placeholder={"Image Url"}
-                                           value={this.state.imageUrl}
                                            onChange={this.onFileChange}
                                     />
-                                    <>
-                                        {this.state.imageUpload.map((image, index) => {
-                                            return (
-                                                <UploadInput imageUrl={this.state.imageUrl}
-                                                             onFileChange={this.onFileChange}/>
-                                            )
-                                        })}
-                                    </>
+                                    {this.state.imageUpload.map((image, index) => {
+                                        return (
+                                            <UploadInput imageUrl={this.state.imageUrl}
+                                                         onFileChange={this.onFileChange}/>
+                                        )
+                                    })}
                                     <button onClick={this.addNewPhoto}>add new photo</button>
 
                                     {/*Original - image url*/}

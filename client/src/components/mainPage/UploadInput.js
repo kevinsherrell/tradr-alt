@@ -7,11 +7,10 @@ class UploadInput extends Component{
 
     render(){
         return (
-            <input name={"imageUrl"} type="file"
+            <input name={"imageUrl"}
+                   type="file"
                    className={'post-item__form-image-input'}
-                   placeholder={"Image Url"}
-                   value={this.props.imageUrl}
-                   onChange={this.props.onFileChange}
+                   onChange={(e)=>this.props.onFileChange(e)}
             />
         )
     }
