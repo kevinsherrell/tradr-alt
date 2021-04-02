@@ -3,18 +3,17 @@ import {connect} from 'react-redux'
 
 import ItemListing from "../mainPage/ItemListing";
 
-import {deleteListing} from "../../actions/listingActions";
+import {deleteListing, fetchAllListingsById} from "../../actions/listingActions";
 
 import image from '../../assets/images/listing-pic.jpg'
 import map from '../../assets/images/storelocator_clothing.png'
+import axios from "axios";
 
 
 class ListingPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: {}
-        }
+    state = {
+        // user: this.props.listingData.listingPageUser,
+        // listing: this.props.listingData.listingPage
     }
 
     style = {
@@ -47,11 +46,27 @@ class ListingPage extends React.Component {
         }
 
     }
+    getAllListingDataByUser = (user) => {
+        console.log(this.props.listingData.listingPage && this.props.listingData.listingPage)
+        this.props.fetchAllListingsById(user)
+    }
 
+    componentDidMount = () => {
+        console.log(this.props.listingData.listingPage.user)
+        let user_id = this.props.listingData.listingPage.user
+        this.props.fetchAllListingsById(user_id)
+        // axios.get(`http://localhost:3070/listing/all/${user_id}`)
+        //     .then(listings=>{
+        //             this.setState({
+        //                 ...this.state,
+        //                 userListings: listings
+        //             })
+        //     })
+        //     .catch(err=>console.log(err))
+    }
 
     render() {
-
-        const {listings, listingPage, listingPageUser} = this.props.listingData
+        const {listings, listingPage, listingPageUser, listingsByLister} = this.props.listingData
         const {authenticatedUser} = this.props.auth
         return (
             <div className="listing-page">
@@ -62,11 +77,12 @@ class ListingPage extends React.Component {
 
                         <section className="listing-page__listing-image-section">
                             <img className={'listing-page__listing-image'}
-                                 src={`${listingPage && listingPage.imageUrl}`}
+                                 src={`/images/${listingPage.images && listingPage.images[0].url}`}
                                  alt=""/>
 
                             <p className={'listing-page__price-btn'}>{listingPage.price < 1 ? "Trade Only" : `Trade + $${listingPage.price}`}</p>
-                            <p className={'listing-page__photo-btn'}>View photos (5)</p>
+                            <p className={'listing-page__photo-btn'}>View photos
+                                ({listingPage.images && listingPage.images.length})</p>
 
 
                         </section>
@@ -89,7 +105,7 @@ class ListingPage extends React.Component {
                                 {listingPage.description}
                             </p>
                             <h4 className={'listing-page__wanted-header'}>Will trade for:</h4>
-                            <p className={'listing-page__wanted'}>{listingPage.itemsWanted}</p>
+                            <p className={'listing-page__wanted'}>{listingPage.tradeFor}</p>
 
                             {authenticatedUser && authenticatedUser.id === listingPage.user ? (
                                 <p className="listing-page__delete" onClick={this.deleteListing}>Delete This Post</p>
@@ -115,13 +131,16 @@ class ListingPage extends React.Component {
                         Strife: </h4>
 
                     <div className="listing-page__listings-by-user-wrapper container">
-                        {listingPageUser.listing ? listingPageUser.listing.map(listing => <ItemListing
-                            key={listing.id}{...listing}/>) : undefined}
+                        {listingsByLister && listingsByLister.map(listing => <ItemListing
+                            key={listing.id}{...listing}/>)}
                     </div>
                     <h4 className={'listing-page__listings-near-you-header container'}>Similar listings near you:</h4>
                     <div className="listing-page__listings-near-you-wrapper container grid">
-                        {listingPageUser.listing ? listingPageUser.listing.map(listing => <ItemListing
-                            key={listing.id} {...listing}/>) : undefined}
+                        {/*{this.props.listingData.listingsByLister && listingPageUser.listingData.listingsByLister.map(listing => {*/}
+                        {/*    return <ItemListing key={listing._id} {...listing}*/}
+                        {/*                        backgroundImage={{backgroundImage: `url(/images/${listing.images[0].url})`}}/>*/}
+
+                        {/*}) }*/}
                     </div>
                 </div>
 
@@ -135,4 +154,4 @@ const mapStateToProps = state => ({
     auth: state.auth,
     listingData: state.listingData
 })
-export default connect(mapStateToProps, {deleteListing})(ListingPage);
+export default connect(mapStateToProps, {deleteListing, fetchAllListingsById})(ListingPage);

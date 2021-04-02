@@ -1,23 +1,29 @@
 import React from 'react';
-import {Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {Provider} from 'react-redux';
 
 import Header from './components/header/Header';
 import Main from "./components/mainPage/Main";
 import ListingPage from "./components/listingPage/ListingPage";
 
-import store from './store'
+import {PersistGate} from 'redux-persist/integration/react'
+import {store, persistor} from './store'
 
-console.log(document.cookie)
 
 function App() {
     return (
         <Provider store={store}>
-            <div className="App">
-                <Header/>
-                <Route exact path={"/"} component={Main}/>
-                <Route exact path={`/listing/:id`} component={ListingPage}/>
-            </div>
+            <PersistGate persistor={persistor}>
+                <Router>
+                    <div className="App">
+                        <Header/>
+                        <Switch>
+                            <Route exact path={`/listing/:id`} component={ListingPage}/>
+                            <Route exact path={"/"} component={Main}/>
+                        </Switch>
+                    </div>
+                </Router>
+            </PersistGate>
         </Provider>
     );
 }

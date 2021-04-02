@@ -25,11 +25,21 @@ listingRouter.get('/', (req, res) => {
     Listing.find()
         .populate('images')
         .then(listings => {
-            console.log(listings)
+            // console.log(listings)
             res.send(listings);
             // res.render('listing', {data: listings})
         })
 });
+// get all listings by id
+listingRouter.get('/all/:user_id', (req, res) => {
+    let user_id = mongoose.Types.ObjectId(req.params.user_id);
+    console.log(user_id)
+    Listing.find({user: req.params.user_id})
+        .populate('images')
+        .then(listings => res.send(listings))
+        .catch(err => res.send(err))
+})
+
 // current users listings
 listingRouter.get('/myListings', (req, res) => {
     isAuthenticated(req, res, () => {
@@ -157,6 +167,6 @@ listingRouter.get('/:id', (req, res) => {
             res.status(500).send(err)
         }
         res.send(listing);
-    })
+    }).populate('images')
 })
 module.exports = listingRouter;

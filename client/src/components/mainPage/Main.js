@@ -6,6 +6,7 @@ import ItemListing from "./ItemListing";
 import PostItem from "./PostItem";
 
 import {fetchAllListings, fetchAllListingsByCategory} from "../../actions/listingActions";
+import {retrieveSession} from "../../actions/authActions";
 import uuid from 'uuid';
 
 
@@ -31,10 +32,7 @@ class Main extends React.Component {
     }
 
     componentDidMount() {
-        axios.post('/auth/reconnect')
-            .then(response=>{
-                console.log(response)
-            }).catch(err=>console.log(err))
+        this.props.retrieveSession()
 
         this.props.fetchAllListings()
 
@@ -46,8 +44,6 @@ class Main extends React.Component {
     }
 
     render() {
-        console.log("rendered")
-        console.log(this.state)
         const listings = this.props.listingData.listings
         const {browserWidth} = this.state.browserWidth
         const mapListings = listings.map(listing => {
@@ -147,7 +143,7 @@ class Main extends React.Component {
                     </div>
                     <div className={"content"}>
                         <section className="content__sort-header ">
-                            <div className={'content__sort-menu-wrapper'} onClick={this.state.handleCatMenu}>
+                            <div className={'content__sort-menu-wrapper'} onClick={this.handleCatMenu}>
                                 <p className={'content__sort-menu-btn'}>Sort/Filter: All <i
                                     className="content__sort-menu-icon material-icons">keyboard_arrow_down</i></p>
 
@@ -176,7 +172,6 @@ class Main extends React.Component {
                 </div>
                 {browserWidth < 650 && (
                     <ListAnItem/>
-
                 )}
 
                 <ListAnItem togglePostItem={this.togglePostItem}/>
@@ -191,6 +186,6 @@ const mapStateToProps = state => ({
     listingData: state.listingData
 })
 
-export default connect(mapStateToProps, {fetchAllListings, fetchAllListingsByCategory})(Main);
+export default connect(mapStateToProps, {fetchAllListings, fetchAllListingsByCategory, retrieveSession})(Main);
 
 

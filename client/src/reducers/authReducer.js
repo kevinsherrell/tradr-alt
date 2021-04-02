@@ -1,6 +1,6 @@
 import {
     LOGIN_USER,
-    SIGNUP_USER, LOGIN_ERROR, SIGNUP_ERROR, LOGOUT_USER, LOGOUT_ERROR
+    SIGNUP_USER, LOGIN_ERROR, SIGNUP_ERROR, LOGOUT_USER, LOGOUT_ERROR, RETRIEVE_SESSION, RETRIEVE_SESSION_ERROR
 } from "../actions/types";
 
 const initialState = {
@@ -10,10 +10,10 @@ const initialState = {
 }
 
 export default function (state = initialState, action) {
-    console.log(action)
 
     switch (action.type) {
         case LOGIN_USER:
+            // console.log(action.payload)
             return {
                 ...state,
                 authenticated: true,
@@ -26,7 +26,7 @@ export default function (state = initialState, action) {
                 authError: action.payload
             }
         case LOGOUT_USER:
-            console.log("LOGOUT_USER")
+            // console.log("LOGOUT_USER")
             return {
                 ...state,
                 authenticated: false,
@@ -45,6 +45,18 @@ export default function (state = initialState, action) {
             }
         case SIGNUP_ERROR:
             return {
+                ...state,
+                authenticated: false,
+                authError: action.payload
+            }
+        case RETRIEVE_SESSION:
+            return{
+                ...state,
+                authenticated: action.payload ? true : false,
+                authenticatedUser: action.payload
+            }
+        case RETRIEVE_SESSION_ERROR:
+            return{
                 ...state,
                 authenticated: false,
                 authError: action.payload

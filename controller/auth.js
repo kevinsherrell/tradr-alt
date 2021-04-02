@@ -27,6 +27,10 @@ const upload = multer({storage: storage});
 authRouter.post('/reconnect',(req, res)=>{
     req.session.cookie.name = 'random'
     console.log(req.session.currentUser)
+    if(req.session){
+        res.send(req.session.currentUser)
+    }
+    // res.send()
         // User.findById({_id: req.session.cookie.id})
         //     .then(user=>{
         //         req.session.currentUser = user;

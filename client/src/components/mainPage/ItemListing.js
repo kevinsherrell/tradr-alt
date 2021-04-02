@@ -5,8 +5,7 @@ import {connect} from 'react-redux'
 import {fetchListingById} from "../../actions/listingActions";
 
 function ItemListing(props) {
-
-// console.log(props)
+console.log(props)
 
     const getListingData = (id) => {
         props.fetchListingById(id)
@@ -16,17 +15,16 @@ function ItemListing(props) {
         })
     }
 
-    let id = props.id;
+    let id = props._id;
 
-    const styles = {
-        backgroundImage: `url(${props.imageUrl})`,
+    const backgroundImage = {
+        backgroundImage: props.images && `url(/images/${props.images[0].url})`,
     }
-
     return (
         <React.Fragment>
-            <Link to={`/listing/${props.id}`} onClick={() => getListingData(id)}>
+            <Link to={`/listing/${props._id}`} onClick={() => getListingData(id)}>
                 <div className="item-listing">
-                    <div className="item-listing__image" style={styles}>
+                    <div className="item-listing__image" style={ backgroundImage}>
 
                     </div>
                     <div className="item-listing__item-info">
