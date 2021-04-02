@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {fetchListingById} from "../../actions/listingActions";
 
 function ItemListing(props) {
-
+console.log(props)
 
     const getListingData = (id) => {
         props.fetchListingById(id)

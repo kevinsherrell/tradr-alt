@@ -46,12 +46,12 @@ class ListingPage extends React.Component {
         }
 
     }
-    getAllListingDataByUser = (user)=>{
+    getAllListingDataByUser = (user) => {
         console.log(this.props.listingData.listingPage && this.props.listingData.listingPage)
         this.props.fetchAllListingsById(user)
     }
 
-    componentDidMount = ()=> {
+    componentDidMount = () => {
         console.log(this.props.listingData.listingPage.user)
         let user_id = this.props.listingData.listingPage.user
         this.props.fetchAllListingsById(user_id)
@@ -66,7 +66,7 @@ class ListingPage extends React.Component {
     }
 
     render() {
-        const {listings, listingPage, listingPageUser} = this.props.listingData
+        const {listings, listingPage, listingPageUser, listingsByLister} = this.props.listingData
         const {authenticatedUser} = this.props.auth
         return (
             <div className="listing-page">
@@ -131,8 +131,8 @@ class ListingPage extends React.Component {
                         Strife: </h4>
 
                     <div className="listing-page__listings-by-user-wrapper container">
-                        {/*{listingPageUser.listing && listingPageUser.listing.map(listing => <ItemListing*/}
-                        {/*    key={listing.id}{...listing}/>)}*/}
+                        {listingsByLister && listingsByLister.map(listing => <ItemListing
+                            key={listing.id}{...listing}/>)}
                     </div>
                     <h4 className={'listing-page__listings-near-you-header container'}>Similar listings near you:</h4>
                     <div className="listing-page__listings-near-you-wrapper container grid">
