@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import {postListing} from "../../actions/listingActions";
+import UploadInput from "./UploadInput";
 
 class PostItem extends Component {
     state = {
@@ -13,7 +14,8 @@ class PostItem extends Component {
         itemsWanted: "",
         imageUrl: "",
         description: "",
-        images: []
+        images: [],
+        imageUpload: []
     }
     handleCategory = (e) => {
         this.setState({
@@ -45,11 +47,20 @@ class PostItem extends Component {
             imageUrl: this.state.imageUrl,
             description: this.state.description
         }
-
         this.props.postListing(listingData)
-
-
     }
+    addNewPhoto = (e) => {
+        e.preventDefault()
+        this.setState({
+            imageUpload: [...this.state.imageUpload, 'image']
+        })
+    }
+
+    imageUpload = this.state.imageUpload.map((image, index) => {
+        return (
+            <UploadInput imageUrl={this.state.imageUrl} onFileChange={this.onFileChange}/>
+        )
+    })
 
     render() {
         console.log(this.props)
@@ -100,9 +111,15 @@ class PostItem extends Component {
                                            value={this.state.imageUrl}
                                            onChange={this.onFileChange}
                                     />
-
-
-
+                                    <>
+                                        {this.state.imageUpload.map((image, index) => {
+                                            return (
+                                                <UploadInput imageUrl={this.state.imageUrl}
+                                                             onFileChange={this.onFileChange}/>
+                                            )
+                                        })}
+                                    </>
+                                    <button onClick={this.addNewPhoto}>add new photo</button>
 
                                     {/*Original - image url*/}
                                     {/*<input name={"imageUrl"} type="text" className={'post-item__form-image-input'}*/}
