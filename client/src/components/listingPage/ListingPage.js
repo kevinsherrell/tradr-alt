@@ -54,14 +54,15 @@ class ListingPage extends React.Component {
     componentDidMount = ()=> {
         console.log(this.props.listingData.listingPage.user)
         let user_id = this.props.listingData.listingPage.user
-        axios.get(`http://localhost:3070/listing/all/${user_id}`)
-            .then(listings=>{
-                    this.setState({
-                        ...this.state,
-                        userListings: listings
-                    })
-            })
-            .catch(err=>console.log(err))
+        this.props.fetchAllListingsById(user_id)
+        // axios.get(`http://localhost:3070/listing/all/${user_id}`)
+        //     .then(listings=>{
+        //             this.setState({
+        //                 ...this.state,
+        //                 userListings: listings
+        //             })
+        //     })
+        //     .catch(err=>console.log(err))
     }
 
     render() {

@@ -51,7 +51,7 @@ export default function(state = initialState, action){
             }
         case FETCH_ALL_LISTINGS_BY_ID:
             // console.log('FETCH_ALL_LISTINGS_BY_ID')
-            console.log(action)
+            console.log(action.payload)
             return{
                 ...state,
                 listingsByLister: action.payload

@@ -16,8 +16,8 @@ function App() {
                 <div className="App">
                     <Header/>
                     <Switch>
-                        <Route exact path={"/"} component={Main}/>
                         <Route exact path={`/listing/:id`} component={ListingPage}/>
+                        <Route exact path={"/"} component={Main}/>
                     </Switch>
                 </div>
             </Router>
