@@ -52,9 +52,13 @@ export const fetchAllListingsByCategory = (category)=> dispatch => {
         }))
 }
 export const postListing = (listingData) => dispatch => {
+    const config = {
+        headers: {
+            'content-type': "application/json"
+        }
+    }
 
-
-    axios.post("http://localhost:3070/listing", listingData)
+    axios.post("http://localhost:3070/listing/post", listingData)
         .then(response => dispatch({
             type: CREATE_LISTING,
             payload: response.data
