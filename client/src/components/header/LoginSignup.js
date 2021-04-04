@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-
+import ReactDOM from 'react-dom'
 import {userLogin, userSignup} from "../../actions/authActions";
 
 class LoginSignup extends React.Component {
@@ -14,19 +14,37 @@ class LoginSignup extends React.Component {
         password: "",
         confirmPassword: "",
         zipCode: "",
+        image: []
         // added -  file to state
         // file: null
     };
-    fileInput = React.createRef();
+    form = React.createRef();
+    onSubmitSignup = (e) => {
+        e.preventDefault();
+        this.fileUpload()
+    }
+
+    fileUpload = (closeMenu) => {
+        closeMenu = this.props.toggleLoginSignup;
+        const formData = new FormData(ReactDOM.findDOMNode(this.form.current))
+        this.props.userSignup(formData, closeMenu)
+        console.log("formData", formData)
+    }
+
+    onFileChange = (e) => {
+        this.setState({
+            image: [...this.state.image, e.target.files[0]]
+        })
+    }
+
+
     onChange = (e) => {
         this.setState({[e.target.name]: e.target.value})
     };
-    onFileChange = (e)=>{
-        // added - set files to e.target.files[0]
-        this.setState({file: this.fileInput.current.files[0].name})
-        console.log(this.state);
-    }
     onSubmitLogin = (e, closeMenu) => {
+        e.preventDefault();
+
+
         let loginData = {
             email: this.state.email,
             password: this.state.password
@@ -35,23 +53,9 @@ class LoginSignup extends React.Component {
         this.props.userLogin(loginData, closeMenu)
     }
 
-    onSubmitSignup = (e, closeMenu) => {
-        e.preventDefault();
-        let signupData = {
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            email: this.state.email,
-            password: this.state.password,
-            confirmPassword: this.state.confirmPassword,
-            zipCode: this.state.location,
-            // img: "https://source.unsplash.com/random/300×300"
-        }
-        closeMenu = this.props.toggleLoginSignup;
-        this.props.userSignup(signupData, closeMenu);
-    }
+
 
     render() {
-        console.log(this.state);
         return (
             <>
                 <div className="login-signup__overlay" onClick={this.props.toggleLoginSignup}></div>
@@ -64,7 +68,7 @@ class LoginSignup extends React.Component {
                         <h4 className="login-signup__sub-header">The #1 online bartering platform</h4>
 
                         {this.props.signup && (
-                            <form className="login-signup__signup-form">
+                            <form className="login-signup__signup-form" ref={this.form}>
                                 <div className="signup-form__row-1">
                                     <div className="signup-form__first-name">
                                         <input type="text" name={'firstName'} className="signup-form__first-name-input"
@@ -97,20 +101,22 @@ class LoginSignup extends React.Component {
                                 </div>
                                 <div className="signup-form__row-3">
                                     <div className="signup-form__location">
-                                        <input type="text" name={'location'} maxLength={"5"}
-                                               className="signup-form__location-input" value={this.state.location}
+                                        <input type="text" name={'zipCode'} maxLength={"5"}
+                                               className="signup-form__location-input" value={this.state.zipCode}
                                                onChange={this.onChange} placeholder={"Location (Zip Code)"}/>
                                     </div>
                                 </div>
                                 {/*FILE UPLOAD*/}
-                                {/*<div className="signup-form__row-4">*/}
-                                {/*    <div className="signup-form__location">*/}
-                                {/*        <input type="file" name={'userImage'}*/}
-                                {/*               ref={this.fileInput}*/}
-                                {/*               className="signup-form__location-input" value={this.state.location}*/}
-                                {/*               onChange={this.onFileChange} placeholder={"add your image"}/>*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
+                                <div className="signup-form__row-4">
+                                    <div className="signup-form__location">
+                                        <input
+                                            type="file"
+                                            name={'userImage'}
+                                            className="signup-form__location-input"
+                                            onChange={this.onFileChange}
+                                        />
+                                    </div>
+                                </div>
                                 {/*=====================================================================================*/}
 
                                 <p className={"signup-form__submit"} onClick={(e) => this.onSubmitSignup(e)}>Sign up</p>

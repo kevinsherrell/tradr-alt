@@ -43,36 +43,8 @@ class PostItem extends Component {
         // this.props.postListing(listingData)
     }
     fileUpload = (files) => {
-        let listingData = {
-            // user: this.state.user,
-            title: this.state.title,
-            tradeOnly: this.state.price > 0 ? false : true,
-            price: this.state.price,
-            category: this.state.category,
-            tradeFor: this.state.tradeFor,
-            description: this.state.description
-        }
-        // formData.append('listingImage', files)
         const formData = new FormData(ReactDOM.findDOMNode(this.form.current))
-        // const formData = new FormData()
-        // formData.append('title', this.state.title)
-        // formData.append('category', this.state.category)
-        // formData.append('description', this.state.description)
-        // formData.append('tradeFor', this.state.tradeFor)
-        // files.forEach(file => {
-        //     formData.append('listingImage', file)
-        // })
-
-        console.log(formData)
         this.props.postListing(formData)
-        // axios.post('http://localhost:3070/listing', formData, {
-        //     headers: {
-        //         'content-type': 'multipart/form-data',
-        //         // 'content-type': 'application/json',
-        //     }
-        // })
-        //     .then(response => console.log(response))
-        //     .catch(error => console.log(error))
     }
     addNewPhoto = (e) => {
         e.preventDefault()

@@ -24,18 +24,18 @@ const upload = multer({storage: storage});
 
 
 // Retrieve Session
-authRouter.post('/reconnect',(req, res)=>{
+authRouter.post('/reconnect', (req, res) => {
     req.session.cookie.name = 'random'
     console.log(req.session.currentUser)
-    if(req.session){
+    if (req.session) {
         res.send(req.session.currentUser)
     }
     // res.send()
-        // User.findById({_id: req.session.cookie.id})
-        //     .then(user=>{
-        //         req.session.currentUser = user;
-        //         res.status(200).send(req.session);
-        //     })
+    // User.findById({_id: req.session.cookie.id})
+    //     .then(user=>{
+    //         req.session.currentUser = user;
+    //         res.status(200).send(req.session);
+    //     })
 })
 
 authRouter.get('/current', (req, res) => {
@@ -43,77 +43,69 @@ authRouter.get('/current', (req, res) => {
 });
 
 // POST - create user
-// authRouter.post('/signup', upload.single('userImage'),(req, res) => {
-//     console.log(req.body);
-//     const {errors, isValid} = validateSignupInput(req.body);
-//     // upload.single('userImage')(req, res, (err) => {
-//     //     if (err instanceof multer.MulterError) {
-//     //         res.send([...multer.MulterError])
-//     //     } else if (err) {
-//     //         res.send(err);
-//     //     }
-//     //     console.log()
-//     // })
-//
-//     User.findOne({email: req.body.email}, (err, user) => {
-//         if (user) {
-//             errors.email = "There is already a user with this email address";
-//             res.status(400).send(errors);
-//         } else {
-//             req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
-//             console.log(User.firstName)
-//             User.create(req.body)
-//                 .then(user => {
-//                     const newImage = new Image({
-//                         type: 'user',
-//                         user: user._id,
-//                         url: req.file.filename
-//                     })
-//                     const data = [user, newImage];
-//                     user.img = newImage._id;
-//                     user.save();
-//                     newImage.save();
-//                     console.log(user);
-//                     // Send current user to the front end
-//                     res.send(user);
-//                 })
-//                 .catch(err => {
-//                     if (!isValid) {
-//                         res.status(400).send(errors);
-//                     }else{
-//                         console.log("Signup Error");
-//                         res.send(err)
-//                     }
-//                 });
-//         }
-//     })
-// });
-// POST - log in user
-// POST - create user (without image upload) delete when debugging is finished
-authRouter.post('/signup', (req, res) => {
-    console.log(req.sessionID);
+authRouter.post('/signup', upload.single('userImage'), (req, res) => {
+
     const {errors, isValid} = validateSignupInput(req.body);
-    if (!isValid) {
-        return res.status(400).send(errors);
-    }
-    // res.send("user creation endpoint has been reached");
+
     User.findOne({email: req.body.email}, (err, user) => {
         if (user) {
             errors.email = "There is already a user with this email address";
-            return res.status(400).send(errors);
+            res.status(400).send(errors);
         } else {
             req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+            console.log(User.firstName)
             User.create(req.body)
                 .then(user => {
-                    req.session.currentUser = user;
-                    return res.send(req.session);
+                    const newImage = new Image({
+                        type: 'user',
+                        user: user._id,
+                        url: req.file.filename
+                    })
+                    const data = [user, newImage];
+                    user.img = newImage._id;
+                    user.save();
+                    newImage.save();
+                    console.log(user);
+                    // Send current user to the front end
+                    res.send(req.session);
                 })
                 .catch(err => {
-                    return res.send(err);
-                })
+                    if (!isValid) {
+                        res.status(400).send(errors);
+                    } else {
+                        console.log("Signup Error");
+                        res.send(err)
+                    }
+                });
         }
     })
 });
+// POST - log in user
+// POST - create user (without image upload) delete when debugging is finished
+// authRouter.post('/signup', (req, res) => {
+//     console.log(req.sessionID);
+//     const {errors, isValid} = validateSignupInput(req.body);
+//     if (!isValid) {
+//         return res.status(400).send(errors);
+//     }
+//     // res.send("user creation endpoint has been reached");
+//     User.findOne({email: req.body.email}, (err, user) => {
+//         if (user) {
+//             errors.email = "There is already a user with this email address";
+//             return res.status(400).send(errors);
+//         } else {
+//             req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+//             User.create(req.body)
+//                 .then(user => {
+//                     req.session.currentUser = user;
+//                     return res.send(req.session);
+//                 })
+//                 .catch(err => {
+//                     return res.send(err);
+//                 })
+//         }
+//     })
+// });
 authRouter.post('/login', (req, res) => {
     console.log(req.body);
     const {isValid, errors} = validateLoginInput(req.body);

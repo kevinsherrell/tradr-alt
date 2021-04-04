@@ -51,14 +51,14 @@ export default function(state = initialState, action){
             }
         case FETCH_ALL_LISTINGS_BY_ID:
             // console.log('FETCH_ALL_LISTINGS_BY_ID')
-            console.log(action.payload)
+            // console.log(action.payload)
             return{
                 ...state,
                 listingsByLister: action.payload
             }
         case FETCH_ALL_LISTINGS_BY_ID_ERROR:
             // console.log('FETCH_ALL_LISTINGS_BY_ID_ERROR')
-            console.log(action)
+            // console.log(action)
             return{
                 ...state,
                 listingError: action.payload
