@@ -86,7 +86,7 @@ userRouter.get('/seed', (req, res) => {
 // GET - get user by id
 userRouter.get('/:id', async (req, res) => {
     User.findById({_id: req.params.id})
-        // .populate('img')
+        .populate('image')
         .populate('listings')
         .then(user => {
             return res.send(user);

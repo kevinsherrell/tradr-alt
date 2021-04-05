@@ -57,7 +57,7 @@ authRouter.post('/signup', upload.single('userImage'), (req, res) => {
                         url: req.file.filename
                     })
                     const data = [user, newImage];
-                    user.img = newImage._id;
+                    user.image = newImage._id;
                     user.save();
                     newImage.save();
                     console.log(user);

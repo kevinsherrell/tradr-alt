@@ -60,7 +60,6 @@ class ListingPage extends React.Component {
             .then(user => {
                 console.log(user)
                 this.setState({
-                    ...this.state,
                     user: user.data
                 }, () => console.log(this.state))
             })
@@ -71,9 +70,14 @@ class ListingPage extends React.Component {
         const {listings, listingPage, listingPageUser, listingsByLister} = this.props.listingData
         const {authenticatedUser} = this.props.auth
         const {user} = this.state
-        // const userImage = {
-        //     backgroundImage: user && user.img ? `url(/images/${user.img.imageUrl})` : ""
+        let userImage = null
+        // if (this.state.user) {
+        //     if (this.state.user.image) {
+        //         userImage = `/images/${this.state.user.image.url}`
+        //     }
         // }
+        // const userImage = `/images/${this.state.user.image.imageUrl}`
+
         return (
 
             <div className="listing-page">
