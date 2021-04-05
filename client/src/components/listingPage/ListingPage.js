@@ -71,11 +71,11 @@ class ListingPage extends React.Component {
         const {authenticatedUser} = this.props.auth
         const {user} = this.state
         let userImage = null
-        // if (this.state.user) {
-        //     if (this.state.user.image) {
-        //         userImage = `/images/${this.state.user.image.url}`
-        //     }
-        // }
+        if (this.state.user) {
+            if (this.state.user.image) {
+                userImage = `/images/${this.state.user.image.url}`
+            }
+        }
         // const userImage = `/images/${this.state.user.image.imageUrl}`
 
         return (
@@ -104,8 +104,8 @@ class ListingPage extends React.Component {
                                 <sub className={'listing-page__age'}>Posted 3 days ago by: </sub>
                                 <p className={'listing-page__name'}>{user && user.firstName} {user && user.lastName}</p>
                                 <div className="listing-page__avatar-wrapper">
-                                    {/*<img className={'listing-page__avatar-image'}*/}
-                                    {/*     src={userImage} alt=""/>*/}
+                                    <img className={'listing-page__avatar-image'}
+                                         src={userImage} alt=""/>
                                 </div>
                             </div>
                             <h4 className={'listing-page__title'}>{listingPage.title}</h4>
