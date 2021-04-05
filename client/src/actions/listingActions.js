@@ -33,6 +33,7 @@ export const fetchAllListingsById = (user) => dispatch => {
     axios.get(`http://localhost:3070/listing/all/${user}`)
 
         .then(response => {
+            console.log(response);
             dispatch({
                 type: FETCH_ALL_LISTINGS_BY_ID,
                 payload: response.data

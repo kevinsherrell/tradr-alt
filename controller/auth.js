@@ -30,12 +30,6 @@ authRouter.post('/reconnect', (req, res) => {
     if (req.session) {
         res.send(req.session.currentUser)
     }
-    // res.send()
-    // User.findById({_id: req.session.cookie.id})
-    //     .then(user=>{
-    //         req.session.currentUser = user;
-    //         res.status(200).send(req.session);
-    //     })
 })
 
 authRouter.get('/current', (req, res) => {
@@ -46,14 +40,15 @@ authRouter.get('/current', (req, res) => {
 authRouter.post('/signup', upload.single('userImage'), (req, res) => {
 
     const {errors, isValid} = validateSignupInput(req.body);
-
+    if (!isValid) {
+        return res.status(400).send(errors)
+    }
     User.findOne({email: req.body.email}, (err, user) => {
         if (user) {
             errors.email = "There is already a user with this email address";
             res.status(400).send(errors);
         } else {
             req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
-            console.log(User.firstName)
             User.create(req.body)
                 .then(user => {
                     const newImage = new Image({
@@ -81,32 +76,7 @@ authRouter.post('/signup', upload.single('userImage'), (req, res) => {
         }
     })
 });
-// POST - log in user
-// POST - create user (without image upload) delete when debugging is finished
-// authRouter.post('/signup', (req, res) => {
-//     console.log(req.sessionID);
-//     const {errors, isValid} = validateSignupInput(req.body);
-//     if (!isValid) {
-//         return res.status(400).send(errors);
-//     }
-//     // res.send("user creation endpoint has been reached");
-//     User.findOne({email: req.body.email}, (err, user) => {
-//         if (user) {
-//             errors.email = "There is already a user with this email address";
-//             return res.status(400).send(errors);
-//         } else {
-//             req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
-//             User.create(req.body)
-//                 .then(user => {
-//                     req.session.currentUser = user;
-//                     return res.send(req.session);
-//                 })
-//                 .catch(err => {
-//                     return res.send(err);
-//                 })
-//         }
-//     })
-// });
+
 authRouter.post('/login', (req, res) => {
     console.log(req.body);
     const {isValid, errors} = validateLoginInput(req.body);
@@ -149,18 +119,3 @@ authRouter.delete('/logout', (req, res) => {
 
 })
 module.exports = authRouter;
-
-/*
-How should sessions and cookies work - brainstorming
-when user is created add session id to the user in the database
-on frontend check cookie against the session id in the database
-when the use logs out delete the session id from the database and destroy the cookie.
-
-OR create a session store
-session information is stored within the database
-a cookie is sent to the browser with the session id
-when a user closes the window or refreshes the page, the session collection is searched by the session id contained in the cookie.
-If the cookie matches the session id, the user is automatically authenticated.
-When the user logs out, the session is destroyed and removed from the database.
-
- */
