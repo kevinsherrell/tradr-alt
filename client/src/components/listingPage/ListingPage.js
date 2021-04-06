@@ -12,7 +12,8 @@ import axios from "axios";
 
 class ListingPage extends React.Component {
     state = {
-        user: {}
+        user: {},
+        authenticatedUser: ""
         // listing: this.props.listingData.listingPage
     }
 
@@ -52,7 +53,11 @@ class ListingPage extends React.Component {
     }
 
     componentDidMount = () => {
-        console.log(this.props.listingData.listingPage.user)
+        this.setState({
+            authenticatedUser: this.props.auth.authenticatedUser._id
+        })
+        console.log(this.props.auth.authenticatedUser._id)
+
         let user_id = this.props.listingData.listingPage.user
         this.props.fetchAllListingsById(user_id)
         console.log("fetching user")
@@ -68,14 +73,24 @@ class ListingPage extends React.Component {
 
     render() {
         const {listings, listingPage, listingPageUser, listingsByLister} = this.props.listingData
-        const {authenticatedUser} = this.props.auth
-        const {user} = this.state
+        // const {authenticatedUser} = this.props.auth
+        const {user, authenticatedUser} = this.state
         let userImage = null
+        let deleteMe = null
         if (this.state.user) {
             if (this.state.user.image) {
                 userImage = `/images/${this.state.user.image.url}`
             }
+            if (this.state.user._id === this.state.authenticatedUser) {
+                const deleteMe = <p className="listing-page__delete" onClick={this.deleteListing}>Delete This Post</p>
+            }
         }
+        // if(this.state.user._id){
+        //     console.log(this.state.user._id)
+        //     console.log(this.state.authenticatedUser)
+        // }
+
+        // console.log(authenticatedUser.currentUser._id === listingPage.user)
         // const userImage = `/images/${this.state.user.image.imageUrl}`
 
         return (
@@ -118,10 +133,9 @@ class ListingPage extends React.Component {
                             <h4 className={'listing-page__wanted-header'}>Will trade for:</h4>
                             <p className={'listing-page__wanted'}>{listingPage.tradeFor}</p>
 
-                            {authenticatedUser && authenticatedUser.id === listingPage.user ? (
+                            {this.state.user._id === this.state.authenticatedUser && (
                                 <p className="listing-page__delete" onClick={this.deleteListing}>Delete This Post</p>
-
-                            ) : null}
+                            )}
                         </section>
                     </div>
                     <div className="listing-page__contact-section">
