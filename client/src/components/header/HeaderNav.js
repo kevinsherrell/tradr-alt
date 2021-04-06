@@ -85,7 +85,7 @@ const HeaderNav = (props) => {
                                     My Listings
                                 </li>
                                 <li className={'header__logged-in-item'}>{authenticated && (
-                                    <div className={"header__logged-in-avatar-wrapper"}>
+                                    <div className={"header__logged-in-avatar-wrapper"} onClick={props.toggleNavMenu}>
                                         <img src={`/images/${userImage.url}`} alt=""
                                              className={'header__logged-in-avatar-image'}/>
                                     </div>)}

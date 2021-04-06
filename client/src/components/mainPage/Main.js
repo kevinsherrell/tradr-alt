@@ -43,6 +43,14 @@ class Main extends React.Component {
         })
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(prevState.listings !== prevProps.listingData.listings){
+            this.setState({
+                listings: this.props.listingData.listings
+            })
+        }
+    }
+
     render() {
         const listings = this.props.listingData.listings
         const {browserWidth} = this.state.browserWidth
