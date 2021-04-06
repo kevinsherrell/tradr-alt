@@ -16,4 +16,10 @@ imageRouter.get('/all/:listing', (req, res)=>{
         })
         .catch(err=>res.send(err))
 })
+// find one image by id
+imageRouter.get('/:id', (req,res)=>{
+    Image.findById(req.params.id)
+        .then(image=>res.send(image))
+        .catch(err=>res.send(err))
+})
 module.exports = imageRouter;

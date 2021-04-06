@@ -1,14 +1,23 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux';
 
 import location from "../../assets/images/location.png";
 import search from "../../assets/images/search.png";
+import axios from "axios";
 
 const HeaderNav = (props) => {
-
-
+    const [userImage, setUserImage] = useState({
+        image: null
+    })
+    console.log(props)
     const {authenticated, authenticatedUser} = props.auth
+    useEffect(() => {
+        console.log("headernav fetching")
+        axios.get(`http://localhost:3070/image/${authenticatedUser.image}`)
+            .then(image => setUserImage(image.data))
+            .then(image=>console.log(userImage))
+    },[])
 
     return (
         <nav className={'header__nav'}>
@@ -76,8 +85,8 @@ const HeaderNav = (props) => {
                                     My Listings
                                 </li>
                                 <li className={'header__logged-in-item'}>{authenticated && (
-                                    <div className={"header__logged-in-avatar-wrapper"}>
-                                        <img src={authenticatedUser.imageUrl} alt=""
+                                    <div className={"header__logged-in-avatar-wrapper"} onClick={props.toggleNavMenu}>
+                                        <img src={`/images/${userImage.url}`} alt=""
                                              className={'header__logged-in-avatar-image'}/>
                                     </div>)}
                                 </li>

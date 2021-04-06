@@ -5,13 +5,16 @@ import {
     FETCH_USER_BY_ID,
     DELETE_LISTING,
     DELETE_LISTING_ERROR,
-    FETCH_ALL_LISTINGS_BY_CATEGORY, FETCH_ALL_LISTINGS_BY_CATEGORY_ERROR, FETCH_ALL_LISTINGS_BY_ID,FETCH_ALL_LISTINGS_BY_ID_ERROR
+    FETCH_ALL_LISTINGS_BY_CATEGORY,
+    FETCH_ALL_LISTINGS_BY_CATEGORY_ERROR,
+    FETCH_ALL_LISTINGS_BY_ID,
+    FETCH_ALL_LISTINGS_BY_ID_ERROR
 } from "../actions/types";
 
-const initialState={
+const initialState = {
     listings: [],
     // listings by the authenticated user
-    listingsByCurrentUser:[],
+    listingsByCurrentUser: [],
     // listing by poster of the listing we are currently viewing
     listingsByLister: [],
     listingPage: {},
@@ -19,8 +22,8 @@ const initialState={
     listingError: {}
 }
 
-export default function(state = initialState, action){
-    switch(action.type){
+export default function (state = initialState, action) {
+    switch (action.type) {
         case FETCH_ALL_LISTINGS:
             // console.log("FETCH_ALL_LISTINGS")
             // console.log(action)
@@ -51,15 +54,15 @@ export default function(state = initialState, action){
             }
         case FETCH_ALL_LISTINGS_BY_ID:
             // console.log('FETCH_ALL_LISTINGS_BY_ID')
-            console.log(action.payload)
-            return{
+            // console.log(action.payload)
+            return {
                 ...state,
                 listingsByLister: action.payload
             }
         case FETCH_ALL_LISTINGS_BY_ID_ERROR:
             // console.log('FETCH_ALL_LISTINGS_BY_ID_ERROR')
-            console.log(action)
-            return{
+            // console.log(action)
+            return {
                 ...state,
                 listingError: action.payload
             }
@@ -72,18 +75,18 @@ export default function(state = initialState, action){
         //     }
         case CREATE_LISTING:
             // console.log("CREATE LISTING")
-            return{
+            return {
                 ...state,
-                listings: [action.payload, ...state.listings]
+                listings: [...state.listings, action.payload]
             }
         case DELETE_LISTING:
             // console.log("DELETE_LISTING")
-            return{
+            return {
                 ...state
             }
         case DELETE_LISTING_ERROR:
             // console.log("DELETE_LISTING_ERROR")
-            return{
+            return {
                 ...state,
                 listingError: action.payload,
                 successMessage: "listing Deleted"

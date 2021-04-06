@@ -12,7 +12,7 @@ import axios from "axios";
 
 class ListingPage extends React.Component {
     state = {
-        // user: this.props.listingData.listingPageUser,
+        user: {}
         // listing: this.props.listingData.listingPage
     }
 
@@ -55,20 +55,31 @@ class ListingPage extends React.Component {
         console.log(this.props.listingData.listingPage.user)
         let user_id = this.props.listingData.listingPage.user
         this.props.fetchAllListingsById(user_id)
-        // axios.get(`http://localhost:3070/listing/all/${user_id}`)
-        //     .then(listings=>{
-        //             this.setState({
-        //                 ...this.state,
-        //                 userListings: listings
-        //             })
-        //     })
-        //     .catch(err=>console.log(err))
+        console.log("fetching user")
+        axios.get(`http://localhost:3070/user/${user_id}`)
+            .then(user => {
+                console.log(user)
+                this.setState({
+                    user: user.data
+                }, () => console.log(this.state))
+            })
+            .catch(err => console.log(err))
     }
 
     render() {
         const {listings, listingPage, listingPageUser, listingsByLister} = this.props.listingData
         const {authenticatedUser} = this.props.auth
+        const {user} = this.state
+        let userImage = null
+        if (this.state.user) {
+            if (this.state.user.image) {
+                userImage = `/images/${this.state.user.image.url}`
+            }
+        }
+        // const userImage = `/images/${this.state.user.image.imageUrl}`
+
         return (
+
             <div className="listing-page">
 
                 <div className="listing-page__inner-container container">
@@ -91,10 +102,10 @@ class ListingPage extends React.Component {
 
                             <div className="listing-page__user-wrapper">
                                 <sub className={'listing-page__age'}>Posted 3 days ago by: </sub>
-                                <p className={'listing-page__name'}>{listingPageUser && listingPageUser.firstName} {listingPageUser && listingPageUser.lastName}</p>
+                                <p className={'listing-page__name'}>{user && user.firstName} {user && user.lastName}</p>
                                 <div className="listing-page__avatar-wrapper">
                                     <img className={'listing-page__avatar-image'}
-                                         src={listingPageUser && listingPageUser.imageUrl} alt=""/>
+                                         src={userImage} alt=""/>
                                 </div>
                             </div>
                             <h4 className={'listing-page__title'}>{listingPage.title}</h4>
@@ -132,7 +143,7 @@ class ListingPage extends React.Component {
 
                     <div className="listing-page__listings-by-user-wrapper container">
                         {listingsByLister && listingsByLister.map(listing => <ItemListing
-                            key={listing.id}{...listing}/>)}
+                            key={listing._id}{...listing}/>)}
                     </div>
                     <h4 className={'listing-page__listings-near-you-header container'}>Similar listings near you:</h4>
                     <div className="listing-page__listings-near-you-wrapper container grid">

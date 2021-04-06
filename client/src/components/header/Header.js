@@ -83,8 +83,6 @@ class Header extends React.Component {
     }
 
     render() {
-        // console.log("Browser Width: " + this.state.browserWidth)
-
         return (
             <header className={"header"}>
                 <HeaderNav

@@ -22,9 +22,9 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    img: {
+    image: {
         type: Schema.Types.ObjectId,
-        ref: "listings",
+        ref: "Image",
         default: null
     },
     listings: [{

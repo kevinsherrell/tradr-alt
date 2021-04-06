@@ -18,15 +18,9 @@ export const userSignup = (signupData, closeMenu) => dispatch => {
             type: SIGNUP_ERROR,
             payload: error.response.data
         })).then(error => console.log(error))
-
 }
+
 export const userLogin = (loginData, closeMenu) => dispatch => {
-    // axios({
-    //     method: 'post',
-    //     url: "http://localhost:3080/auth/login",
-    //     data: loginData,
-    //     withCredentials: true,
-    // })
     axios.post("http://localhost:3070/auth/login", loginData)
         .then(response => {
                 dispatch({
@@ -37,12 +31,12 @@ export const userLogin = (loginData, closeMenu) => dispatch => {
                 closeMenu();
             }
         )
-
         .catch(error => dispatch({
             type: LOGIN_ERROR,
             payload: error.response.data
         }))
 }
+
 export const userLogout = () => dispatch => {
     axios.delete("http://localhost:3070/auth/logout")
         .then(response=>{

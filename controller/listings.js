@@ -32,7 +32,8 @@ listingRouter.get('/', (req, res) => {
 });
 // get all listings by id
 listingRouter.get('/all/:user_id', (req, res) => {
-    let user_id = mongoose.Types.ObjectId(req.params.user_id);
+    // let user_id = mongoose.Types.ObjectId(req.params.user_id);
+    let user_id = req.params.user_id;
     console.log(user_id)
     Listing.find({user: req.params.user_id})
         .populate('images')
@@ -162,6 +163,7 @@ listingRouter.delete('/:id', (req, res) => {
 })
 // get listing by id
 listingRouter.get('/:id', (req, res) => {
+    // let id = new mongoose.Types.ObjectId(req.params.id)
     Listing.findById(req.params.id, (err, listing) => {
         if (err) {
             res.status(500).send(err)
