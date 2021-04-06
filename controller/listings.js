@@ -58,22 +58,7 @@ listingRouter.post('/post', upload.array('listingImage', 5), (req, res, next) =>
     isAuthenticated(req, res, () => {
         Listing.create(req.body)
             .then(listing => {
-
                 console.log(req.files);
-                req.files.forEach((file) => {
-                    const newImage = new Image({
-                        type: 'listing',
-                        listing: listing._id,
-                        url: file.filename
-                    });
-                    listing.images.push(newImage._id)
-                    listing.save();
-                    newImage.save()
-                        .then(image => {
-                            console.log('success');
-                        }).catch(err => res.send(err));
-                })
-
                 User.findOne({_id: req.body.user}, (err, user) => {
                     if (err) {
                         res.status(500).send(err)
@@ -85,11 +70,34 @@ listingRouter.post('/post', upload.array('listingImage', 5), (req, res, next) =>
                             res.send(err);
                         })
                 });
-                res.send(listing);
-            }).catch(err => {
-            console.log("listing error");
-            res.send(err.message);
-        });
+
+                req.files.forEach((file) => {
+                    const newImage = new Image({
+                        type: 'listing',
+                        listing: listing._id,
+                        url: file.filename
+                    });
+                    listing.images.push(newImage._id)
+                    newImage.save()
+                        .then(image => {
+                            console.log('success');
+                        }).catch(err => res.send(err));
+
+                })
+                listing.save()
+                    .then(result=>{
+                        Listing
+                            .populate(listing, {path: 'images'})
+                            .then(listing=> res.send(listing))
+                    })
+                    .catch(err=>res.send(err))
+
+                // res.send(listing);
+            })
+            .catch(err => {
+                console.log("listing error");
+                res.send(err.message);
+            });
     })
 
 })

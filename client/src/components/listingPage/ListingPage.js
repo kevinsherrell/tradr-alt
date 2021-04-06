@@ -40,9 +40,9 @@ class ListingPage extends React.Component {
 
 
     deleteListing = (id, history) => {
-        id = this.props.listingData.listingPage.id
+        id = this.props.listingData.listingPage._id
         history = this.props.history
-        if (this.props.auth.authenticatedUser && this.props.auth.authenticatedUser.id === this.props.listingData.listingPage.user) {
+        if (this.state.authenticatedUser === this.state.user._id) {
             this.props.deleteListing(id, history)
         }
 
@@ -85,13 +85,6 @@ class ListingPage extends React.Component {
                 const deleteMe = <p className="listing-page__delete" onClick={this.deleteListing}>Delete This Post</p>
             }
         }
-        // if(this.state.user._id){
-        //     console.log(this.state.user._id)
-        //     console.log(this.state.authenticatedUser)
-        // }
-
-        // console.log(authenticatedUser.currentUser._id === listingPage.user)
-        // const userImage = `/images/${this.state.user.image.imageUrl}`
 
         return (
 
@@ -152,8 +145,8 @@ class ListingPage extends React.Component {
                     </div>
                 </div>
                 <div className="listing-page__other-listings-section">
-                    <h4 className={'listing-page__listings-by-user-header container'}>More listings from Cloud
-                        Strife: </h4>
+                    <h4 className={'listing-page__listings-by-user-header container'}>More
+                        listings {this.state.user.firstName} {this.state.user.lastName}: </h4>
 
                     <div className="listing-page__listings-by-user-wrapper container">
                         {listingsByLister && listingsByLister.map(listing => <ItemListing
