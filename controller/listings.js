@@ -1,24 +1,16 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const listingRouter = express.Router();
-const Listing = require('../model/Listing.js');
-const User = require('../model/User.js');
-const Image = require('../model/Image.js');
-const multer = require('multer');
-const path = require('path');
-const {v4: uuidv4} = require('uuid');
-const isAuthenticated = require('../validation/isAuthenticated');
+const express = require('express'),
+    mongoose = require('mongoose'),
+    listingRouter = express.Router(),
+    Listing = require('../model/Listing.js'),
+    User = require('../model/User.js'),
+    Image = require('../model/Image.js'),
+    cloudinary = require('../helper/cloudinary'),
+    isAuthenticated = require('../validation/isAuthenticated'),
+    fs = require('fs')
 
-const fs = require('fs');
 
-// Storage
-const storage = multer.diskStorage({
-    destination: './public/images',
-    filename: function (req, file, cb) {
-        cb(null, uuidv4() + "-" + Date.now() + path.extname(file.originalname));
-    }
-})
-const upload = multer({storage: storage});
+
+const upload = require('../helper/multer');
 
 // get all listings
 listingRouter.get('/', (req, res) => {
@@ -52,7 +44,7 @@ listingRouter.get('/myListings', (req, res) => {
     })
 })
 // post new listing
-listingRouter.post('/post', upload.array('listingImage', 5), (req, res, next) => {
+listingRouter.post('/post', upload.array('listingImage', 5), async (req, res, next) => {
     req.body.user = req.session.currentUser._id;
     req.body.location = req.session.currentUser.zipCode;
     isAuthenticated(req, res, () => {
@@ -85,12 +77,12 @@ listingRouter.post('/post', upload.array('listingImage', 5), (req, res, next) =>
 
                 })
                 listing.save()
-                    .then(result=>{
+                    .then(result => {
                         Listing
                             .populate(listing, {path: 'images'})
-                            .then(listing=> res.send(listing))
+                            .then(listing => res.send(listing))
                     })
-                    .catch(err=>res.send(err))
+                    .catch(err => res.send(err))
 
                 // res.send(listing);
             })
