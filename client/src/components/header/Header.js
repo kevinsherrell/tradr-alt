@@ -100,13 +100,7 @@ class Header extends React.Component {
                     toggleNavMenu={this.toggleNavMenu}
                     {...this.state}
                 />
-                <NavMenu
-                    toggleSearchMenu={this.toggleSearchMenu}
-                    toggleSearchMenuFilter={this.toggleSearchMenuFilter}
-                    toggleNavMenu={this.toggleNavMenu}
-                    toggleSignup={this.toggleLogin}
-                    {...this.state}
-                />
+
                 {this.state.loginSignup && (
                     <LoginSignup
                         authMenuToggle={this.authMenuToggle}

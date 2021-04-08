@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import location from "../../assets/images/location.png";
 import search from "../../assets/images/search.png";
 import axios from "axios";
+import NavMenu from "./NavMenu";
 
 const HeaderNav = (props) => {
     const [userImage, setUserImage] = useState({
@@ -98,8 +99,14 @@ const HeaderNav = (props) => {
                 <i className={`material-icons ${props.browserWidth > 1023 && "hidden"} header__hamburger`}
                    onClick={props.toggleNavMenu}>menu</i>
             </div>
-
-
+            <NavMenu
+                userImage={userImage}
+                toggleSearchMenu={props.toggleSearchMenu}
+                toggleSearchMenuFilter={props.toggleSearchMenuFilter}
+                toggleNavMenu={props.toggleNavMenu}
+                toggleSignup={props.toggleLogin}
+                {...props}
+            />
         </nav>
 
     )

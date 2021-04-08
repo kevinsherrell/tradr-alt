@@ -15,7 +15,7 @@ function NavMenu(props) {
                 {/*todo - only display if the user is logged in*/}
                 <div className="header__nav-menu-user">
                     <div className="header__nav-menu-user-avatar-wrapper">
-                        <img className={'header__nav-menu-user-avatar-image'} src={ authenticatedUser && authenticatedUser.imageUrl} alt=""/>
+                        <img className={'header__nav-menu-user-avatar-image'} src={ `/images/${props.userImage.url}`} alt=""/>
                     </div>
                     <p className={'header__nav-menu-user-greeting'}>
                         {authenticated ?`Hi ${authenticatedUser.firstName}!` : 'Not Logged In'}
