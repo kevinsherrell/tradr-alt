@@ -10,33 +10,32 @@ import {retrieveSession} from "../../actions/authActions";
 import uuid from 'uuid';
 import {ListingContext} from "../../context/ListingContext";
 
-const Main = (props)=>{
+const Main = (props) => {
     const listingData = useContext(ListingContext);
-    const [browserWidth, setBrowserWidth]= useState(window.innerWidth)
-    const [catMenuOpened, setCatMenuOpened] = useState(false);
-    const [postItemForm, setPostItemForm] = useState(false);
+    const [mainState, setMainState] = useState({
+        browserWidth: window.innerWidth,
+        catMenuOpened: false,
+        postItemForm: false
+    })
     const handleCatMenu = () => {
-        setCatMenuOpened(!catMenuOpened)
+        setMainState((mainState) => ({...mainState, catMenuOpened: !mainState.catMenuOpened}))
     }
 
     const togglePostItem = (e) => {
         e.preventDefault();
-        setPostItemForm(!postItemForm)
+        setMainState((mainState) => ({...mainState, postItemForm: !mainState.postItemForm}))
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         listingData.fetchAllListings();
         window.addEventListener('resize', () => {
-            setBrowserWidth(window.innerWidth)
-            // this.setState({
-            //     browserWidth: window.innerWidth
-            // }, () => console.log(this.state))
+            setMainState((mainState) => ({...mainState, browserWidth: window.innerWidth}))
         })
-    },[])
+    }, [])
     return (
         <div className="home">
             <div className="home__inner-container container">
-                <div className={`sidebar ${browserWidth < 1023 && 'hidden'}`}>
+                <div className={`sidebar ${mainState.browserWidth < 1023 && 'hidden'}`}>
                     <p className={'sidebar__listAnItem'} onClick={togglePostItem}>List an Item</p>
                     <h4 className={'sidebar__category-header'}>Categories: </h4>
                     {/*<ul className={'sidebar__category-list'}>*/}
@@ -131,7 +130,7 @@ const Main = (props)=>{
 
 
                             <div
-                                className={`${catMenuOpened ? "content__sort-menu-drop-down--open" : "content__sort-menu-drop-down--closed"}`}>
+                                className={`${mainState.catMenuOpened ? "content__sort-menu-drop-down--open" : "content__sort-menu-drop-down--closed"}`}>
                                 <ul className={'content__sort-menu-drop-down-list'}>
                                     <li className={'content__sort-menu-drop-down-item'}>Oldest</li>
                                     <li className={'content__sort-menu-drop-down-item'}>Newest</li>
@@ -152,13 +151,15 @@ const Main = (props)=>{
                 </div>
 
             </div>
-            {browserWidth < 650 && (
+            {mainState.browserWidth < 650 && (
                 <ListAnItem/>
             )}
 
             <ListAnItem togglePostItem={togglePostItem}/>
-            {/*{this.state.postItemForm && (<PostItem {...this.state} togglePostItem={this.togglePostItem}/>*/}
-            {/*)}*/}
+            {mainState.postItemForm && (
+                <PostItem {...mainState}
+                          togglePostItem={togglePostItem}/>
+            )}
         </div>
 
     )
