@@ -117,9 +117,3 @@ const HeaderNav = (props) => {
 }
 
 export default HeaderNav
-// const mapStateToProps = state => ({
-//     auth: state.auth,
-//     listingData: state.listingData
-// })
-
-// export default connect(mapStateToProps)(HeaderNav);

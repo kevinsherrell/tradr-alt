@@ -10,7 +10,7 @@ export const AuthProvider = (props) => {
     const userSignup = (signupData, closeMenu) => {
         axios.post("http://localhost:3070/auth/signup", signupData)
             .then(response => {
-                setCurrentUser(response.data)
+                setCurrentUser(response.data.currentUser)
                 setAuthenticated(true);
                 closeMenu();
             })
@@ -40,7 +40,8 @@ export const AuthProvider = (props) => {
     const retrieveSession = ()=>{
         axios.post("http://localhost:3070/auth/reconnect")
             .then(response=>{
-                setCurrentUser(response.data)
+                setCurrentUser(response.data && response.data)
+                setAuthenticated(response.data && true);
             })
             .catch(err=>{
                 setAuthError(err.response.data)
