@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux';
 
@@ -7,15 +7,18 @@ import search from "../../assets/images/search.png";
 import axios from "axios";
 import NavMenu from "./NavMenu";
 
+import {AuthContext} from '../../context/AuthContext'
+
 const HeaderNav = (props) => {
+    const auth = useContext(AuthContext)
+
     const [userImage, setUserImage] = useState({
         image: null
     })
-    console.log(props)
-    const {authenticated, authenticatedUser} = props.auth
+
     useEffect(() => {
         console.log("headernav fetching")
-        axios.get(`http://localhost:3070/image/${authenticatedUser.image}`)
+        axios.get(`http://localhost:3070/image/${auth.currentUser.image}`)
             .then(image => setUserImage(image.data))
             .then(image=>console.log(userImage))
     },[])
@@ -23,7 +26,7 @@ const HeaderNav = (props) => {
     return (
         <nav className={'header__nav'}>
             <div
-                className={`header__nav-inner-container ${authenticated && 'header__nav-inner-container--authenticated'} container`}>
+                className={`header__nav-inner-container ${auth.authenticated && 'header__nav-inner-container--authenticated'} container`}>
                 <Link to={'/'}><h3 className={'header__logo'}>trad'r</h3></Link>
 
                 <form action="" className={`header__nav-search-form flex`}>
@@ -44,7 +47,7 @@ const HeaderNav = (props) => {
                 </form>
 
                 <div className={`header__auth-navigation`}>
-                    {!authenticated && (
+                    {!auth.authenticated && (
                         <ul className={'header__logged-out'}>
                             <>
                                 <li className={`header__logged-out-signup`} onClick={props.toggleSignup}>
@@ -63,7 +66,7 @@ const HeaderNav = (props) => {
 
                     {/*  todo - display only if the user is logged in*/}
                     {
-                        authenticated && (
+                        auth.authenticated && (
                             <ul className="header__logged-in">
                                 <li className={'header__logged-in-item'}>
                                     <i className="header__logged-in-icon material-icons">home</i>
@@ -85,7 +88,7 @@ const HeaderNav = (props) => {
                                     <i className="header__logged-in-icon material-icons">apps</i>
                                     My Listings
                                 </li>
-                                <li className={'header__logged-in-item'}>{authenticated && (
+                                <li className={'header__logged-in-item'}>{auth.authenticated && (
                                     <div className={"header__logged-in-avatar-wrapper"} onClick={props.toggleNavMenu}>
                                         <img src={`/images/${userImage.url}`} alt=""
                                              className={'header__logged-in-avatar-image'}/>
@@ -113,9 +116,10 @@ const HeaderNav = (props) => {
 
 }
 
-const mapStateToProps = state => ({
-    auth: state.auth,
-    listingData: state.listingData
-})
+export default HeaderNav
+// const mapStateToProps = state => ({
+//     auth: state.auth,
+//     listingData: state.listingData
+// })
 
-export default connect(mapStateToProps)(HeaderNav);
+// export default connect(mapStateToProps)(HeaderNav);

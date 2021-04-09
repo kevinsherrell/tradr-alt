@@ -15,7 +15,7 @@ class Main extends React.Component {
         catMenuOpened: false,
         postItemForm: false,
         browserWidth: window.innerWidth,
-        listings: this.props.listingData.listings
+        // listings: this.props.listingData.listings
     }
 
     handleCatMenu = () => {
@@ -32,9 +32,9 @@ class Main extends React.Component {
     }
 
     componentDidMount() {
-        this.props.retrieveSession()
-
-        this.props.fetchAllListings()
+        // this.props.retrieveSession()
+        //
+        // this.props.fetchAllListings()
 
         window.addEventListener('resize', () => {
             this.setState({
@@ -43,69 +43,69 @@ class Main extends React.Component {
         })
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if(prevState.listings !== prevProps.listingData.listings){
-            this.setState({
-                listings: this.props.listingData.listings
-            })
-        }
-    }
+    // componentDidUpdate(prevProps, prevState, snapshot) {
+    //     if(prevState.listings !== prevProps.listingData.listings){
+    //         this.setState({
+    //             listings: this.props.listingData.listings
+    //         })
+    //     }
+    // }
 
     render() {
-        const listings = this.props.listingData.listings
+        // const listings = this.props.listingData.listings
         const {browserWidth} = this.state.browserWidth
-        const mapListings = listings.map(listing => {
-            return (
-                <ItemListing key={uuid()} {...listing}/>
-            )
-        })
+        // const mapListings = listings.map(listing => {
+        //     return (
+        //         <ItemListing key={uuid()} {...listing}/>
+        //     )
+        // })
         return (
             <div className="home">
                 <div className="home__inner-container container">
                     <div className={`sidebar ${browserWidth < 1023 && 'hidden'}`}>
                         <p className={'sidebar__listAnItem'} onClick={this.togglePostItem}>List an Item</p>
                         <h4 className={'sidebar__category-header'}>Categories: </h4>
-                        <ul className={'sidebar__category-list'}>
-                            <li className={'sidebar__category-list-item'} onClick={this.props.fetchAllListings}>
-                                <p
-                                    className={'sidebar__category-list-link'}>All</p>
-                            </li>
-                            <li className={'sidebar__category-list-item'}
-                                onClick={() => this.props.fetchAllListingsByCategory("computers")}>
-                                <p
-                                    className={'sidebar__category-list-link'}>Computers</p>
-                            </li>
-                            <li className={'sidebar__category-list-item'}
-                                onClick={() => this.props.fetchAllListingsByCategory("tablets")}>
-                                <p
-                                    className={'sidebar__category-list-link'}>Tablets</p>
-                            </li>
-                            <li className={'sidebar__category-list-item'}
-                                onClick={() => this.props.fetchAllListingsByCategory("phones")}>
-                                <p
-                                    className={'sidebar__category-list-link'}>Phones</p>
-                            </li>
-                            <li className={'sidebar__category-list-item'}
-                                onClick={() => this.props.fetchAllListingsByCategory("tvs")}>
-                                <p
-                                    className={'sidebar__category-list-link'}>TVs</p>
-                            </li>
-                            <li className={'sidebar__category-list-item'}
-                                onClick={() => this.props.fetchAllListingsByCategory("video games/consoles")}>
-                                <p
-                                    className={'sidebar__category-list-link'}>Video
-                                    Games/Consoles</p></li>
-                            <li className={'sidebar__category-list-item'}
-                                onClick={() => this.props.fetchAllListingsByCategory("appliances")}>
-                                <p
-                                    className={'sidebar__category-list-link'}>Appliances</p>
-                            </li>
-                            <li className={'sidebar__category-list-item'}
-                                onClick={() => this.props.fetchAllListingsByCategory("vehicles")}>
-                                <p
-                                    className={'sidebar__category-list-link'}>Vehicle</p>
-                            </li>
-                        </ul>
+                        {/*<ul className={'sidebar__category-list'}>*/}
+                        {/*    <li className={'sidebar__category-list-item'} onClick={this.props.fetchAllListings}>*/}
+                        {/*        <p*/}
+                        {/*            className={'sidebar__category-list-link'}>All</p>*/}
+                        {/*    </li>*/}
+                        {/*    <li className={'sidebar__category-list-item'}*/}
+                        {/*        onClick={() => this.props.fetchAllListingsByCategory("computers")}>*/}
+                        {/*        <p*/}
+                        {/*            className={'sidebar__category-list-link'}>Computers</p>*/}
+                        {/*    </li>*/}
+                        {/*    <li className={'sidebar__category-list-item'}*/}
+                        {/*        onClick={() => this.props.fetchAllListingsByCategory("tablets")}>*/}
+                        {/*        <p*/}
+                        {/*            className={'sidebar__category-list-link'}>Tablets</p>*/}
+                        {/*    </li>*/}
+                        {/*    <li className={'sidebar__category-list-item'}*/}
+                        {/*        onClick={() => this.props.fetchAllListingsByCategory("phones")}>*/}
+                        {/*        <p*/}
+                        {/*            className={'sidebar__category-list-link'}>Phones</p>*/}
+                        {/*    </li>*/}
+                        {/*    <li className={'sidebar__category-list-item'}*/}
+                        {/*        onClick={() => this.props.fetchAllListingsByCategory("tvs")}>*/}
+                        {/*        <p*/}
+                        {/*            className={'sidebar__category-list-link'}>TVs</p>*/}
+                        {/*    </li>*/}
+                        {/*    <li className={'sidebar__category-list-item'}*/}
+                        {/*        onClick={() => this.props.fetchAllListingsByCategory("video games/consoles")}>*/}
+                        {/*        <p*/}
+                        {/*            className={'sidebar__category-list-link'}>Video*/}
+                        {/*            Games/Consoles</p></li>*/}
+                        {/*    <li className={'sidebar__category-list-item'}*/}
+                        {/*        onClick={() => this.props.fetchAllListingsByCategory("appliances")}>*/}
+                        {/*        <p*/}
+                        {/*            className={'sidebar__category-list-link'}>Appliances</p>*/}
+                        {/*    </li>*/}
+                        {/*    <li className={'sidebar__category-list-item'}*/}
+                        {/*        onClick={() => this.props.fetchAllListingsByCategory("vehicles")}>*/}
+                        {/*        <p*/}
+                        {/*            className={'sidebar__category-list-link'}>Vehicle</p>*/}
+                        {/*    </li>*/}
+                        {/*</ul>*/}
                         <form className="sidebar__update-form">
                             {/*<h4 className={'sidebar__update-form-condition-header'}>Condition: </h4>*/}
                             {/*<ul className={'sidebar__update-form-condition-list'}>*/}
@@ -173,7 +173,7 @@ class Main extends React.Component {
                                 you</p>
                         </section>
                         <section className="content__listings">
-                            {mapListings}
+                            {/*{mapListings}*/}
                         </section>
                     </div>
 
@@ -183,8 +183,8 @@ class Main extends React.Component {
                 )}
 
                 <ListAnItem togglePostItem={this.togglePostItem}/>
-                {this.state.postItemForm && (<PostItem {...this.state} togglePostItem={this.togglePostItem}/>
-                )}
+                {/*{this.state.postItemForm && (<PostItem {...this.state} togglePostItem={this.togglePostItem}/>*/}
+                {/*)}*/}
             </div>
         )
     }
@@ -194,6 +194,6 @@ const mapStateToProps = state => ({
     listingData: state.listingData
 })
 
-export default connect(mapStateToProps, {fetchAllListings, fetchAllListingsByCategory, retrieveSession})(Main);
-
+// export default connect(mapStateToProps, {fetchAllListings, fetchAllListingsByCategory, retrieveSession})(Main);
+export default Main
 
