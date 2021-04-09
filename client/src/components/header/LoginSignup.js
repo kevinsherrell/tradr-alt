@@ -17,7 +17,7 @@ const LoginSignup = (props) => {
         password: '',
         confirmPassword: '',
     });
-    const [image, setImage] = useState();
+    const [image, setImage] = useState([]);
 
 
     const lsForm = useRef()
@@ -28,7 +28,7 @@ const LoginSignup = (props) => {
 
     const fileUpload = (closeMenu) => {
 
-        closeMenu = this.props.toggleLoginSignup;
+        closeMenu = props.toggleLoginSignup;
         const formData = new FormData(ReactDOM.findDOMNode(lsForm.current))
         auth.userSignup(formData, closeMenu)
         console.log("formData", formData)
@@ -53,7 +53,7 @@ const LoginSignup = (props) => {
             email: input.email,
             password: input.password
         }
-        closeMenu = this.props.toggleLoginSignup;
+        closeMenu = props.toggleLoginSignup;
         auth.userLogin(loginData, closeMenu)
     }
     return (
