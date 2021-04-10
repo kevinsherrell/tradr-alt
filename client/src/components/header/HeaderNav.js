@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom'
-import {connect} from 'react-redux';
 
 import location from "../../assets/images/location.png";
 import search from "../../assets/images/search.png";
@@ -10,7 +9,7 @@ import NavMenu from "./NavMenu";
 import {AuthContext} from '../../context/AuthContext'
 
 const HeaderNav = (props) => {
-    const auth = useContext(AuthContext)
+    const {currentUser, authenticated} = useContext(AuthContext)
 
     const [userImage, setUserImage] = useState({
         image: null
@@ -18,15 +17,16 @@ const HeaderNav = (props) => {
 
     useEffect(() => {
         console.log("headernav fetching")
-        axios.get(`http://localhost:3070/image/${auth.currentUser.image}`)
+        console.log(currentUser)
+        axios.get(`http://localhost:3070/image/${currentUser.image}`)
             .then(image => setUserImage(image.data))
             .then(image=>console.log(userImage))
-    },[])
+    },[currentUser])
 
     return (
         <nav className={'header__nav'}>
             <div
-                className={`header__nav-inner-container ${auth.authenticated && 'header__nav-inner-container--authenticated'} container`}>
+                className={`header__nav-inner-container ${authenticated && 'header__nav-inner-container--authenticated'} container`}>
                 <Link to={'/'}><h3 className={'header__logo'}>trad'r</h3></Link>
 
                 <form action="" className={`header__nav-search-form flex`}>
@@ -47,7 +47,7 @@ const HeaderNav = (props) => {
                 </form>
 
                 <div className={`header__auth-navigation`}>
-                    {!auth.authenticated && (
+                    {!authenticated && (
                         <ul className={'header__logged-out'}>
                             <>
                                 <li className={`header__logged-out-signup`} onClick={props.toggleSignup}>
@@ -66,7 +66,7 @@ const HeaderNav = (props) => {
 
                     {/*  todo - display only if the user is logged in*/}
                     {
-                        auth.authenticated && (
+                        authenticated && (
                             <ul className="header__logged-in">
                                 <li className={'header__logged-in-item'}>
                                     <i className="header__logged-in-icon material-icons">home</i>
@@ -88,7 +88,7 @@ const HeaderNav = (props) => {
                                     <i className="header__logged-in-icon material-icons">apps</i>
                                     My Listings
                                 </li>
-                                <li className={'header__logged-in-item'}>{auth.authenticated && (
+                                <li className={'header__logged-in-item'}>{authenticated && (
                                     <div className={"header__logged-in-avatar-wrapper"} onClick={props.toggleNavMenu}>
                                         <img src={`/images/${userImage.url}`} alt=""
                                              className={'header__logged-in-avatar-image'}/>

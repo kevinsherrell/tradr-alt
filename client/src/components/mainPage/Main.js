@@ -10,18 +10,17 @@ import {ListingContext} from "../../context/ListingContext";
 
 const Main = (props) => {
     const {allListings,fetchAllListings,fetchAllListingsByCategory} = useContext(ListingContext);
-    const [mainState, setMainState] = useState({
-        browserWidth: window.innerWidth,
-        catMenuOpened: false,
-        postItemForm: false
-    })
+    const [browserWidth, setBrowserWidth]= useState(window.innerWidth)
+    const [catMenuOpened, setCatMenuOpened]= useState(false)
+    const [postItemForm, setPostItemForm]= useState(false)
+
     const handleCatMenu = () => {
-        setMainState((mainState) => ({...mainState, catMenuOpened: !mainState.catMenuOpened}))
+        setCatMenuOpened(!catMenuOpened)
     }
 
     const togglePostItem = (e) => {
         e.preventDefault();
-        setMainState((mainState) => ({...mainState, postItemForm: !mainState.postItemForm}))
+        setPostItemForm(!postItemForm)
     }
 
     const mapListings = allListings && allListings.map(listing => {
@@ -32,13 +31,13 @@ const Main = (props) => {
     useEffect(() => {
         fetchAllListings();
         window.addEventListener('resize', () => {
-            setMainState((mainState) => ({...mainState, browserWidth: window.innerWidth}))
+            setBrowserWidth(window.innerWidth)
         })
     }, [])
     return (
         <div className="home">
             <div className="home__inner-container container">
-                <div className={`sidebar ${mainState.browserWidth < 1023 && 'hidden'}`}>
+                <div className={`sidebar ${browserWidth < 1023 && 'hidden'}`}>
                     <p className={'sidebar__listAnItem'} onClick={togglePostItem}>List an Item</p>
                     <h4 className={'sidebar__category-header'}>Categories: </h4>
                     <ul className={'sidebar__category-list'}>
@@ -133,7 +132,7 @@ const Main = (props) => {
 
 
                             <div
-                                className={`${mainState.catMenuOpened ? "content__sort-menu-drop-down--open" : "content__sort-menu-drop-down--closed"}`}>
+                                className={`${catMenuOpened ? "content__sort-menu-drop-down--open" : "content__sort-menu-drop-down--closed"}`}>
                                 <ul className={'content__sort-menu-drop-down-list'}>
                                     <li className={'content__sort-menu-drop-down-item'}>Oldest</li>
                                     <li className={'content__sort-menu-drop-down-item'}>Newest</li>
@@ -154,53 +153,23 @@ const Main = (props) => {
                 </div>
 
             </div>
-            {mainState.browserWidth < 650 && (
-                <ListAnItem/>
-            )}
+            {/*{browserWidth < 1000 && (*/}
+            {/*    <ListAnItem/>*/}
+            {/*)}*/}
 
             <ListAnItem togglePostItem={togglePostItem}/>
-            {mainState.postItemForm && (
-                <PostItem {...mainState}
-                          togglePostItem={togglePostItem}/>
+            {postItemForm && (
+                <PostItem
+                    catMenuOpened={catMenuOpened}
+                    postItemForm={postItemForm}
+                    browserWidth={browserWidth}
+                    togglePostItem={togglePostItem}/>
             )}
         </div>
 
     )
 }
-// class Main extends React.Component {
-//     state = {
-//         catMenuOpened: false,
-//         postItemForm: false,
-//         browserWidth: window.innerWidth,
-//         // listings: this.props.listingData.listings
-//     }
-//
-//
-//
-//     componentDidMount() {
-//         // this.props.retrieveSession()
-//         //
-//         // this.props.fetchAllListings()
-//
-//
-//     }
-//
-//     // componentDidUpdate(prevProps, prevState, snapshot) {
-//     //     if(prevState.listings !== prevProps.listingData.listings){
-//     //         this.setState({
-//     //             listings: this.props.listingData.listings
-//     //         })
-//     //     }
-//     // }
-//
-//     render() {
-//         // const listings = this.props.listingData.listings
-//         const {browserWidth} = this.state.browserWidth
-//
-//         return (
-//         )
-//     }
-// }
+
 
 export default Main
 

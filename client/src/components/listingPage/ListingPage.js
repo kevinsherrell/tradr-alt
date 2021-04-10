@@ -13,19 +13,13 @@ import {AuthContext} from "../../context/AuthContext";
 
 const ListingPage = (props) => {
     const {currentListing, listingsByCurrent, fetchAllListingsById, deleteListing} = useContext(ListingContext);
-    // const listingData = useContext(ListingContext);
     const {currentUser} = useContext(AuthContext)
     const [state, setState] = useState({
         user: {},
         currentListing: currentListing
-        // currentUser: listingData.currentListing
     })
     console.log(currentListing)
-    // state = {
-    //     user: {},
-    //     authenticatedUser: ""
-    //     // listing: this.props.listingData.listingPage
-    // }
+
 
     const style = {
         backgroundImage: `url(${image})`,

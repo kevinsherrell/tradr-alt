@@ -1074,6 +1074,9 @@
     padding: 10px 0;
     width: 100%;
 }
+.list-an-item:hover{
+    cursor: grab;
+}
 
 .list-an-item__link {
     border-radius: 10px;

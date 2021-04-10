@@ -1,13 +1,10 @@
 import React, {useContext, useEffect} from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import {Provider} from 'react-redux';
 
 import Header from './components/header/Header';
 import Main from "./components/mainPage/Main";
 import ListingPage from "./components/listingPage/ListingPage";
 
-import {PersistGate} from 'redux-persist/integration/react'
-import {store, persistor} from './store'
 import {AuthContext} from './context/AuthContext'
 
 function App() {

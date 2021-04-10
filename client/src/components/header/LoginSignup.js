@@ -1,7 +1,5 @@
 import React, {useContext, useRef, useState} from 'react'
-import {connect} from 'react-redux'
 import ReactDOM from 'react-dom'
-import {userLogin, userSignup} from "../../actions/authActions";
 import {AuthContext} from "../../context/AuthContext";
 
 const LoginSignup = (props) => {
@@ -154,64 +152,4 @@ const LoginSignup = (props) => {
         </>
     )
 }
-
-// class LoginSignup extends React.Component {
-//     state = {
-//         signup: false,
-//         login: true,
-//         firstName: "",
-//         lastName: "",
-//         email: "",
-//         location: "",
-//         password: "",
-//         confirmPassword: "",
-//         zipCode: "",
-//         image: []
-//         // added -  file to state
-//         // file: null
-//     };
-//     form = React.createRef();
-//     onSubmitSignup = (e) => {
-//         e.preventDefault();
-//         this.fileUpload()
-//     }
-//
-//     fileUpload = (closeMenu) => {
-//         closeMenu = this.props.toggleLoginSignup;
-//         const formData = new FormData(ReactDOM.findDOMNode(this.form.current))
-//         this.props.userSignup(formData, closeMenu)
-//         console.log("formData", formData)
-//     }
-//
-//     onFileChange = (e) => {
-//         this.setState({
-//             image: [...this.state.image, e.target.files[0]]
-//         })
-//     }
-//
-//
-//     onChange = (e) => {
-//         this.setState({[e.target.name]: e.target.value})
-//     };
-//     onSubmitLogin = (e, closeMenu) => {
-//         e.preventDefault();
-//
-//
-//         let loginData = {
-//             email: this.state.email,
-//             password: this.state.password
-//         }
-//         closeMenu = this.props.toggleLoginSignup;
-//         this.props.userLogin(loginData, closeMenu)
-//     }
-//
-//
-//     // render() {
-//     //     return (
-//     //
-//     //     )
-//     // }
-// }
-
-
 export default LoginSignup

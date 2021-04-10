@@ -1,11 +1,8 @@
 import React, {useContext} from 'react';
-import {connect} from 'react-redux'
-
-import {userLogin,userLogout} from "../../actions/authActions";
 import {AuthContext} from "../../context/AuthContext";
 
 function NavMenu(props) {
-    const auth = useContext(AuthContext)
+    const {authenticated, currentUser} = useContext(AuthContext)
 
 
     return (
@@ -19,12 +16,12 @@ function NavMenu(props) {
                         <img className={'header__nav-menu-user-avatar-image'} src={ `/images/${props.userImage.url}`} alt=""/>
                     </div>
                     <p className={'header__nav-menu-user-greeting'}>
-                        {auth.authenticated ?`Hi ${auth.currentUser.firstName}!` : 'Not Logged In'}
-                        {auth.authenticated && (
+                        {authenticated ?`Hi ${currentUser.firstName}!` : 'Not Logged In'}
+                        {authenticated && (
                             <span className={'header__nav-menu-user-log-out'} onClick={props.userLogout}>(Log out)</span>
                         )}
                     </p>
-                    {auth.authenticated && (
+                    {authenticated && (
                         <ul className={"header__nav-menu-user-option-list"}>
                             <li className={'header__nav-menu-user-option-item'}><i className="header__nav-menu-user-icon material-icons">notifications</i>Notifications</li>
                             <li className={'header__nav-menu-user-option-item'}><i className="header__nav-menu-user-icon material-icons">chat</i>Messages</li>
@@ -36,8 +33,8 @@ function NavMenu(props) {
                 {/**/}
 
                 <ul className={'header__nav-menu-link-list'}>
-                    <li className={`header__nav-menu-link-item ${auth.authenticated && 'header__nav-menu-link-item--authenticated'}`} onClick={props.toggleSignup}>Sign up</li>
-                    {!auth.authenticated && (
+                    <li className={`header__nav-menu-link-item ${authenticated && 'header__nav-menu-link-item--authenticated'}`} onClick={props.toggleSignup}>Sign up</li>
+                    {!authenticated && (
                         <li className={'header__nav-menu-link-item'} onClick={props.toggleLogin}>Log in</li>
                     )}
 

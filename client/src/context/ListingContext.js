@@ -1,11 +1,6 @@
 import React, {useState, createContext} from 'react'
 import axios from "axios";
-import {
-    DELETE_LISTING, DELETE_LISTING_ERROR,
-    FETCH_ALL_LISTINGS_BY_CATEGORY,
-    FETCH_ALL_LISTINGS_BY_CATEGORY_ERROR, FETCH_ALL_LISTINGS_BY_ID, FETCH_ALL_LISTINGS_BY_ID_ERROR,
-    FETCH_LISTING_BY_ID
-} from "../actions/types";
+
 
 export const ListingContext = createContext();
 

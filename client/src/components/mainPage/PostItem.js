@@ -1,9 +1,6 @@
-import React, {Component, useContext, useRef, useState} from 'react';
-import {connect} from 'react-redux';
+import React, { useContext, useRef, useState} from 'react';
 import ReactDOM from 'react-dom';
-import {postListing} from "../../actions/listingActions";
 import UploadInput from "./UploadInput";
-import axios from "axios";
 import {ListingContext} from "../../context/ListingContext";
 
 const PostItem = (props) => {
