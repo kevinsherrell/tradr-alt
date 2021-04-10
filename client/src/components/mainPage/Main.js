@@ -26,6 +26,11 @@ const Main = (props) => {
         setMainState((mainState) => ({...mainState, postItemForm: !mainState.postItemForm}))
     }
 
+    const mapListings = listingData.selectedListings && listingData.selectedListings.map(listing => {
+            return (
+                <ItemListing key={uuid()} {...listing}/>
+            )
+        })
     useEffect(() => {
         listingData.fetchAllListings();
         window.addEventListener('resize', () => {
@@ -38,47 +43,47 @@ const Main = (props) => {
                 <div className={`sidebar ${mainState.browserWidth < 1023 && 'hidden'}`}>
                     <p className={'sidebar__listAnItem'} onClick={togglePostItem}>List an Item</p>
                     <h4 className={'sidebar__category-header'}>Categories: </h4>
-                    {/*<ul className={'sidebar__category-list'}>*/}
-                    {/*    <li className={'sidebar__category-list-item'} onClick={this.props.fetchAllListings}>*/}
-                    {/*        <p*/}
-                    {/*            className={'sidebar__category-list-link'}>All</p>*/}
-                    {/*    </li>*/}
-                    {/*    <li className={'sidebar__category-list-item'}*/}
-                    {/*        onClick={() => this.props.fetchAllListingsByCategory("computers")}>*/}
-                    {/*        <p*/}
-                    {/*            className={'sidebar__category-list-link'}>Computers</p>*/}
-                    {/*    </li>*/}
-                    {/*    <li className={'sidebar__category-list-item'}*/}
-                    {/*        onClick={() => this.props.fetchAllListingsByCategory("tablets")}>*/}
-                    {/*        <p*/}
-                    {/*            className={'sidebar__category-list-link'}>Tablets</p>*/}
-                    {/*    </li>*/}
-                    {/*    <li className={'sidebar__category-list-item'}*/}
-                    {/*        onClick={() => this.props.fetchAllListingsByCategory("phones")}>*/}
-                    {/*        <p*/}
-                    {/*            className={'sidebar__category-list-link'}>Phones</p>*/}
-                    {/*    </li>*/}
-                    {/*    <li className={'sidebar__category-list-item'}*/}
-                    {/*        onClick={() => this.props.fetchAllListingsByCategory("tvs")}>*/}
-                    {/*        <p*/}
-                    {/*            className={'sidebar__category-list-link'}>TVs</p>*/}
-                    {/*    </li>*/}
-                    {/*    <li className={'sidebar__category-list-item'}*/}
-                    {/*        onClick={() => this.props.fetchAllListingsByCategory("video games/consoles")}>*/}
-                    {/*        <p*/}
-                    {/*            className={'sidebar__category-list-link'}>Video*/}
-                    {/*            Games/Consoles</p></li>*/}
-                    {/*    <li className={'sidebar__category-list-item'}*/}
-                    {/*        onClick={() => this.props.fetchAllListingsByCategory("appliances")}>*/}
-                    {/*        <p*/}
-                    {/*            className={'sidebar__category-list-link'}>Appliances</p>*/}
-                    {/*    </li>*/}
-                    {/*    <li className={'sidebar__category-list-item'}*/}
-                    {/*        onClick={() => this.props.fetchAllListingsByCategory("vehicles")}>*/}
-                    {/*        <p*/}
-                    {/*            className={'sidebar__category-list-link'}>Vehicle</p>*/}
-                    {/*    </li>*/}
-                    {/*</ul>*/}
+                    <ul className={'sidebar__category-list'}>
+                        <li className={'sidebar__category-list-item'} onClick={listingData.fetchAllListings}>
+                            <p
+                                className={'sidebar__category-list-link'}>All</p>
+                        </li>
+                        <li className={'sidebar__category-list-item'}
+                            onClick={() => listingData.fetchAllListingsByCategory("computers")}>
+                            <p
+                                className={'sidebar__category-list-link'}>Computers</p>
+                        </li>
+                        <li className={'sidebar__category-list-item'}
+                            onClick={() => listingData.fetchAllListingsByCategory("tablets")}>
+                            <p
+                                className={'sidebar__category-list-link'}>Tablets</p>
+                        </li>
+                        <li className={'sidebar__category-list-item'}
+                            onClick={() => listingData.fetchAllListingsByCategory("phones")}>
+                            <p
+                                className={'sidebar__category-list-link'}>Phones</p>
+                        </li>
+                        <li className={'sidebar__category-list-item'}
+                            onClick={() => listingData.fetchAllListingsByCategory("tvs")}>
+                            <p
+                                className={'sidebar__category-list-link'}>TVs</p>
+                        </li>
+                        <li className={'sidebar__category-list-item'}
+                            onClick={() => listingData.fetchAllListingsByCategory("video games/consoles")}>
+                            <p
+                                className={'sidebar__category-list-link'}>Video
+                                Games/Consoles</p></li>
+                        <li className={'sidebar__category-list-item'}
+                            onClick={() => listingData.fetchAllListingsByCategory("appliances")}>
+                            <p
+                                className={'sidebar__category-list-link'}>Appliances</p>
+                        </li>
+                        <li className={'sidebar__category-list-item'}
+                            onClick={() => listingData.fetchAllListingsByCategory("vehicles")}>
+                            <p
+                                className={'sidebar__category-list-link'}>Vehicle</p>
+                        </li>
+                    </ul>
                     <form className="sidebar__update-form">
                         {/*<h4 className={'sidebar__update-form-condition-header'}>Condition: </h4>*/}
                         {/*<ul className={'sidebar__update-form-condition-list'}>*/}
@@ -146,7 +151,7 @@ const Main = (props) => {
                             you</p>
                     </section>
                     <section className="content__listings">
-                        {/*{mapListings}*/}
+                        {mapListings}
                     </section>
                 </div>
 
@@ -193,11 +198,7 @@ const Main = (props) => {
 //     render() {
 //         // const listings = this.props.listingData.listings
 //         const {browserWidth} = this.state.browserWidth
-//         // const mapListings = listings.map(listing => {
-//         //     return (
-//         //         <ItemListing key={uuid()} {...listing}/>
-//         //     )
-//         // })
+//
 //         return (
 //         )
 //     }

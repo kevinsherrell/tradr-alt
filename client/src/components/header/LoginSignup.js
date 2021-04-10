@@ -40,6 +40,7 @@ const LoginSignup = (props) => {
 
 
     const onChange = (e) => {
+        e.persist()
         setInput({
             ...input, [e.target.name]: e.target.value
         })

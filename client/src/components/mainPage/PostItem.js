@@ -21,13 +21,15 @@ const PostItem = (props) => {
     })
     const postItemForm = useRef()
     const handleCategory = (e) => {
+        e.persist()
         setPostItemState((postItemState) => ({
             ...postItemState,
             category: e.target.value
         }))
-
+        console.log(postItemState)
     }
     const onChange = (e) => {
+        e.persist()
         setPostItemState((postItemState) => ({
             ...postItemState,
             [e.target.name]: e.target.value
@@ -35,6 +37,7 @@ const PostItem = (props) => {
     }
 
     const onFileChange = (e) => {
+        e.persist()
         setPostItemState((postItemState) => ({
             ...postItemState,
             images: [...postItemState.images, e.target.files[0]]
@@ -49,7 +52,7 @@ const PostItem = (props) => {
         listingData.postListing(formData)
     }
     const addNewPhoto = (e) => {
-        e.preventDefault()
+        e.persist()
         setPostItemState((postItemState) => ({
             ...postItemState,
             imageUpload: [...postItemState.imageUpload, 'image']
@@ -61,7 +64,6 @@ const PostItem = (props) => {
             <UploadInput imageUrl={postItemState.imageUrl} onFileChange={onFileChange}/>
         )
     })
-
 
     return (
         <>

@@ -1,13 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
-
-import {fetchListingById} from "../../actions/listingActions";
+import {ListingContext} from "../../context/ListingContext";
 
 function ItemListing(props) {
+    const listingData = useContext(ListingContext)
 
     const getListingData = (id) => {
-        props.fetchListingById(id)
+        listingData.fetchListingById(id)
         window.scrollTo({
             top: 0,
             left: 0
@@ -17,13 +16,14 @@ function ItemListing(props) {
     let id = props._id;
 
     const backgroundImage = {
-        backgroundImage: props.images && `url(/images/${props.images[0].url})`,
+        backgroundImage: props.images.length > 0 && `url(/images/${props.images[0].url})`,
     }
+
     return (
-        <React.Fragment>
+        <>
             <Link to={`/listing/${props._id}`} onClick={() => getListingData(id)}>
                 <div className="item-listing">
-                    <div className="item-listing__image" style={ backgroundImage}>
+                    <div className="item-listing__image" style={backgroundImage}>
 
                     </div>
                     <div className="item-listing__item-info">
@@ -37,11 +37,8 @@ function ItemListing(props) {
                 </div>
             </Link>
 
-        </React.Fragment>
+        </>
     )
 }
 
-const mapStateToProps = state => ({
-    listingData: state.listingData
-})
-export default connect(mapStateToProps, {fetchListingById})(ItemListing);
+export default ItemListing
