@@ -5,13 +5,11 @@ import ListAnItem from "./ListAnItem";
 import ItemListing from "./ItemListing";
 import PostItem from "./PostItem";
 
-import {fetchAllListings, fetchAllListingsByCategory} from "../../actions/listingActions";
-import {retrieveSession} from "../../actions/authActions";
 import uuid from 'uuid';
 import {ListingContext} from "../../context/ListingContext";
 
 const Main = (props) => {
-    const listingData = useContext(ListingContext);
+    const {allListings,fetchAllListings,fetchAllListingsByCategory} = useContext(ListingContext);
     const [mainState, setMainState] = useState({
         browserWidth: window.innerWidth,
         catMenuOpened: false,
@@ -26,13 +24,13 @@ const Main = (props) => {
         setMainState((mainState) => ({...mainState, postItemForm: !mainState.postItemForm}))
     }
 
-    const mapListings = listingData.selectedListings && listingData.selectedListings.map(listing => {
+    const mapListings = allListings && allListings.map(listing => {
             return (
                 <ItemListing key={uuid()} {...listing}/>
             )
         })
     useEffect(() => {
-        listingData.fetchAllListings();
+        fetchAllListings();
         window.addEventListener('resize', () => {
             setMainState((mainState) => ({...mainState, browserWidth: window.innerWidth}))
         })
@@ -44,42 +42,42 @@ const Main = (props) => {
                     <p className={'sidebar__listAnItem'} onClick={togglePostItem}>List an Item</p>
                     <h4 className={'sidebar__category-header'}>Categories: </h4>
                     <ul className={'sidebar__category-list'}>
-                        <li className={'sidebar__category-list-item'} onClick={listingData.fetchAllListings}>
+                        <li className={'sidebar__category-list-item'} onClick={fetchAllListings}>
                             <p
                                 className={'sidebar__category-list-link'}>All</p>
                         </li>
                         <li className={'sidebar__category-list-item'}
-                            onClick={() => listingData.fetchAllListingsByCategory("computers")}>
+                            onClick={() => fetchAllListingsByCategory("computers")}>
                             <p
                                 className={'sidebar__category-list-link'}>Computers</p>
                         </li>
                         <li className={'sidebar__category-list-item'}
-                            onClick={() => listingData.fetchAllListingsByCategory("tablets")}>
+                            onClick={() => fetchAllListingsByCategory("tablets")}>
                             <p
                                 className={'sidebar__category-list-link'}>Tablets</p>
                         </li>
                         <li className={'sidebar__category-list-item'}
-                            onClick={() => listingData.fetchAllListingsByCategory("phones")}>
+                            onClick={() => fetchAllListingsByCategory("phones")}>
                             <p
                                 className={'sidebar__category-list-link'}>Phones</p>
                         </li>
                         <li className={'sidebar__category-list-item'}
-                            onClick={() => listingData.fetchAllListingsByCategory("tvs")}>
+                            onClick={() => fetchAllListingsByCategory("tvs")}>
                             <p
                                 className={'sidebar__category-list-link'}>TVs</p>
                         </li>
                         <li className={'sidebar__category-list-item'}
-                            onClick={() => listingData.fetchAllListingsByCategory("video games/consoles")}>
+                            onClick={() => fetchAllListingsByCategory("video games/consoles")}>
                             <p
                                 className={'sidebar__category-list-link'}>Video
                                 Games/Consoles</p></li>
                         <li className={'sidebar__category-list-item'}
-                            onClick={() => listingData.fetchAllListingsByCategory("appliances")}>
+                            onClick={() => fetchAllListingsByCategory("appliances")}>
                             <p
                                 className={'sidebar__category-list-link'}>Appliances</p>
                         </li>
                         <li className={'sidebar__category-list-item'}
-                            onClick={() => listingData.fetchAllListingsByCategory("vehicles")}>
+                            onClick={() => fetchAllListingsByCategory("vehicles")}>
                             <p
                                 className={'sidebar__category-list-link'}>Vehicle</p>
                         </li>

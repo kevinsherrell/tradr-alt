@@ -22,7 +22,7 @@ export const AuthProvider = (props) => {
     const userLogin = (loginData, closeMenu)=>{
         axios.post("http://localhost:3070/auth/login", loginData)
             .then(response => {
-                setCurrentUser(response.data)
+                setCurrentUser(response.data.currentUser)
                 setAuthenticated(true)
                 closeMenu();
             })

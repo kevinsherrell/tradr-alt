@@ -8,31 +8,24 @@ import {
 } from "../actions/types";
 
 export const ListingContext = createContext();
+
 export const ListingProvider = (props) => {
 
-    const [contextState, setContextState] = useState({
-        // selectedlistings: [],
-        // listingsByPoster: [],
-        // currentListing: {},
-        // listingsByCurrentUser: [],
-        // listingError: {}
-    })
+    const [allListings, setAllListings] = useState([])
+    const [selectedListings, setSelectedListings] = useState([])
+    const [currentListing, setCurrentListing] = useState({})
+    const [listingsByCurrent, setListingsByCurrent] = useState([])
+    const [listingError, setListingError] = useState({})
+
     const fetchAllListings = () => {
         axios.get("http://localhost:3070/listing/")
             .then(response => {
                 console.log(response.data)
-
-                setContextState((contextState) => ({
-                    ...contextState,
-                    selectedListings: response.data
-                }))
+                setAllListings(response.data)
             })
             .catch(err => {
                 console.log(err)
-                setContextState((contextState) => ({
-                    ...contextState,
-                    listingError: err.response.data
-                }))
+                setListingError(err.response)
             })
     }
 
@@ -41,16 +34,10 @@ export const ListingProvider = (props) => {
         axios.get(`http://localhost:8080/api/listing?category=${category}`)
 
             .then(response => {
-                setContextState({
-                    ...contextState,
-                    selectedlistings: response.data
-                })
+                setSelectedListings(response.data)
             })
             .catch(err => {
-                setContextState((contextState) => ({
-                    ...contextState,
-                    listingError: err.response.data
-                }))
+                setListingError(err.response)
             })
     }
 
@@ -59,17 +46,10 @@ export const ListingProvider = (props) => {
         axios.get(`http://localhost:3070/listing/${id}`)
 
             .then(response => {
-                setContextState((contextState) => ({
-                    ...contextState,
-                    currentListing: response.data
-                }))
-                console.log(contextState)
+                setCurrentListing(response.data)
             })
             .catch(err => [
-                setContextState((contextState => ({
-                    ...contextState,
-                    listingError: err.response.data
-                })))
+                setListingError(err.response)
             ])
 
 
@@ -77,10 +57,10 @@ export const ListingProvider = (props) => {
     const postListing = (listingData) => {
         axios.post("http://localhost:3070/listing/post", listingData)
             .then(response => {
-                setContextState((contextState) => ({
-                    ...contextState,
-                    allListings: [...contextState.allListings, response.data]
-                }))
+                setAllListings([...allListings, response.data])
+            })
+            .catch(err => {
+                setListingError(err.response)
             })
     }
 
@@ -89,18 +69,13 @@ export const ListingProvider = (props) => {
         axios.delete(`http://localhost:3070/listing/${id}`)
 
             .then(response => {
-                setContextState({
-                    ...contextState
-                })
+                setAllListings(allListings)
             })
 
             .then(() => history.push("/"))
 
             .catch(err => {
-                setContextState((contextState) => ({
-                    ...contextState,
-                    listingError: err.response.data
-                }))
+                setListingError(err.response)
             })
 
     }
@@ -110,24 +85,21 @@ export const ListingProvider = (props) => {
         axios.get(`http://localhost:3070/listing/all/${user}`)
             .then(response => {
                 console.log(response.data)
-                setContextState((contextState) = ({
-                    ...contextState,
-                    listingsByCurrent: response.data
-                }))
+                setListingsByCurrent(response.data)
             })
             .catch(err => {
-                setContextState((contextState) => ({
-                    ...contextState,
-                    listingError: err
-                }))
+                setListingError(err.response)
             })
 
 
     }
     return (
         <ListingContext.Provider value={{
-            ...contextState,
-            setContextState: setContextState,
+            allListings: allListings,
+            selectedListings: selectedListings,
+            currentListing: currentListing,
+            listingsByCurrent: listingsByCurrent,
+            listingError: listingError,
             fetchAllListings: fetchAllListings,
             postListing: postListing,
             fetchAllListingsByCategory: fetchAllListingsByCategory,
