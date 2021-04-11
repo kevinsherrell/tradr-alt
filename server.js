@@ -61,7 +61,7 @@ app.use('/listing', require('./controller/listings.js'));
 app.use('/image', require('./controller/image.js'))
 // database connection
 // server listen
-app.listen(port, () => console.log(`server is listening on port: ${port}`));
+app.listen(port, () => console.log(`server is listening on port: ${port}`, process.env));
 
 
 // Current Issues -

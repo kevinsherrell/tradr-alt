@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {GoogleMap, Marker} from 'react-google-maps';
-
+import {API_KEY} from 'env-create-react-app'
 import ItemListing from "../mainPage/ItemListing";
 
 import image from '../../assets/images/listing-pic.jpg'
@@ -13,6 +13,11 @@ import {AuthContext} from "../../context/AuthContext";
 import Map from "./Map";
 
 const ListingPage = (props) => {
+    const apiKey = process.env.REACT_APP_API_KEY
+    const apikey2 = process.env.REACT_APP_GMAPS_KEY
+    console.log(API_KEY)
+    console.log(apiKey)
+    console.log(apikey2)
     const {currentListing, listingsByCurrent, fetchAllListingsById, deleteListing} = useContext(ListingContext);
     const {currentUser} = useContext(AuthContext)
     const [state, setState] = useState({
@@ -135,10 +140,9 @@ const ListingPage = (props) => {
                         </section>
                     </div>
                     <div className="listing-page__contact-section">
-                        {/*<img className={'listing-page__map'} src={map} alt=""/>*/}
                         <Map
                             isMarkerShown
-                            googleMapURL={"https://maps.googleapis.com/maps/api/js?key=AIzaSyAUadBDUI_Mmb2cESddLNwlFB30u1yDER8&callback=initMap&libraries=&v=weekly"}
+                            googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&libraries=&v=weekly`}
                             loadingElement={<div style={{height: '100%'}}/>}
                             containerElement={<div style={{height: '400px'}}/>}
                             mapElement={<div style={{height: '100%'}}/>}

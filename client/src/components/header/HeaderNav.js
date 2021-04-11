@@ -17,7 +17,7 @@ const HeaderNav = (props) => {
 
     useEffect(() => {
         console.log("headernav fetching")
-        console.log(currentUser)
+        console.log(currentUser.location)
         axios.get(`http://localhost:3070/image/${currentUser.image}`)
             .then(image => setUserImage(image.data))
             .then(image=>console.log(userImage))
