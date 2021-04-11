@@ -2,3 +2,4 @@ node_modules
 .DS_Store
 .idea
 SEED_IMAGES_DO_NOT_PUSH
+.env
