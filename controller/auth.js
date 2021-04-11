@@ -14,7 +14,7 @@ const validateLoginInput = require('../validation/login.js')
 const validateSignupInput = require('../validation/signup.js');
 
 const upload = require('../helper/multer')
-
+const getLocation = require('../helper/getLocation')
 // Retrieve Session
 authRouter.post('/reconnect', (req, res) => {
     req.session.cookie.name = 'random'
@@ -50,7 +50,8 @@ authRouter.post('/signup', upload.single('userImage'), (req, res) => {
                     })
                     const data = [user, newImage];
                     user.image = newImage._id;
-                    user.save();
+                    getLocation(user)
+                    // user.save();
                     newImage.save();
                     console.log(user);
                     req.session.currentUser = user
@@ -70,12 +71,14 @@ authRouter.post('/signup', upload.single('userImage'), (req, res) => {
 });
 
 authRouter.post('/login', (req, res) => {
+
     console.log(req.body);
     const {isValid, errors} = validateLoginInput(req.body);
     if (!isValid) {
         return res.status(400).send(errors);
     }
     User.findOne({email: req.body.email}, (err, user) => {
+        getLocation(user)
         if (err) {
             console.log("Login Error");
             return res.status(500).send(err);

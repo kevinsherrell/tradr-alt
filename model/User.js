@@ -13,6 +13,10 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
+    location: {
+        type: Object,
+        // required: true
+    },
     email: {
         type: String,
         unique: true,

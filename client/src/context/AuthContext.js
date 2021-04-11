@@ -17,7 +17,7 @@ export const AuthProvider = (props) => {
                 closeMenu();
             })
             .catch(err => {
-                setAuthError(err.response.data)
+                setAuthError(err.response)
             })
 
     }
@@ -29,7 +29,7 @@ export const AuthProvider = (props) => {
                 closeMenu();
             })
             .catch(err => {
-                setAuthError(err.response.data)
+                setAuthError(err.response)
             })
     }
     const userLogout = () => {

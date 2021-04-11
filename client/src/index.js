@@ -19,5 +19,6 @@ ReactDOM.render(
         </ListingProvider>
     </AuthProvider>
     ,
-    document.getElementById('root'));
+    document.getElementById('root')
+);
 

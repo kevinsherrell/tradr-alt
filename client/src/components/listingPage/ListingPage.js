@@ -1,15 +1,16 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {connect} from 'react-redux'
+import {GoogleMap, Marker} from 'react-google-maps';
 
 import ItemListing from "../mainPage/ItemListing";
 
-
 import image from '../../assets/images/listing-pic.jpg'
 import map from '../../assets/images/storelocator_clothing.png'
+
 import axios from "axios";
+
 import {ListingContext} from "../../context/ListingContext";
 import {AuthContext} from "../../context/AuthContext";
-
+import Map from "./Map";
 
 const ListingPage = (props) => {
     const {currentListing, listingsByCurrent, fetchAllListingsById, deleteListing} = useContext(ListingContext);
@@ -89,7 +90,7 @@ const ListingPage = (props) => {
         }
     }
 
-    if(currentListing){
+    if (currentListing) {
         return (
             // <p>hello world</p>
             <div className="listing-page">
@@ -134,10 +135,14 @@ const ListingPage = (props) => {
                         </section>
                     </div>
                     <div className="listing-page__contact-section">
-
-
-                        <img className={'listing-page__map'} src={map} alt=""/>
-
+                        {/*<img className={'listing-page__map'} src={map} alt=""/>*/}
+                        <Map
+                            isMarkerShown
+                            googleMapURL={"https://maps.googleapis.com/maps/api/js?key=AIzaSyAUadBDUI_Mmb2cESddLNwlFB30u1yDER8&callback=initMap&libraries=&v=weekly"}
+                            loadingElement={<div style={{height: '100%'}}/>}
+                            containerElement={<div style={{height: '400px'}}/>}
+                            mapElement={<div style={{height: '100%'}}/>}
+                        />
                         <form action="" className="listing-page__offer-form">
                             <textarea className={'listing-page__offer-form-input'} name="makeAnOffer" id="makeAnOffer"
                                       cols="30" rows="10"
