@@ -2,8 +2,12 @@ import React, {useContext} from 'react';
 import {AuthContext} from "../../context/AuthContext";
 
 function NavMenu(props) {
-    const {authenticated, currentUser} = useContext(AuthContext)
+    const {authenticated, currentUser, userLogout} = useContext(AuthContext)
 
+    const logout = ()=>{
+        userLogout();
+        props.toggleNavMenu();
+    }
 
     return (
             <>
@@ -18,7 +22,7 @@ function NavMenu(props) {
                     <p className={'header__nav-menu-user-greeting'}>
                         {authenticated ?`Hi ${currentUser.firstName}!` : 'Not Logged In'}
                         {authenticated && (
-                            <span className={'header__nav-menu-user-log-out'} onClick={props.userLogout}>(Log out)</span>
+                            <span className={'header__nav-menu-user-log-out'} onClick={logout}>(Log out)</span>
                         )}
                     </p>
                     {authenticated && (

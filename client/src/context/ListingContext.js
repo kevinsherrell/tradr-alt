@@ -26,7 +26,7 @@ export const ListingProvider = (props) => {
 
     const fetchAllListingsByCategory = (category) => {
 
-        axios.get(`http://localhost:8080/api/listing?category=${category}`)
+        axios.get(`http://localhost:3070/listing?category=${category}`)
 
             .then(response => {
                 setSelectedListings(response.data)
