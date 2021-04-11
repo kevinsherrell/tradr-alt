@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {GoogleMap, Marker} from 'react-google-maps';
-import {API_KEY} from 'env-create-react-app'
 import ItemListing from "../mainPage/ItemListing";
 
 import image from '../../assets/images/listing-pic.jpg'
@@ -14,17 +13,12 @@ import Map from "./Map";
 
 const ListingPage = (props) => {
     const apiKey = process.env.REACT_APP_API_KEY
-    const apikey2 = process.env.REACT_APP_GMAPS_KEY
-    console.log(API_KEY)
-    console.log(apiKey)
-    console.log(apikey2)
     const {currentListing, listingsByCurrent, fetchAllListingsById, deleteListing} = useContext(ListingContext);
     const {currentUser} = useContext(AuthContext)
     const [state, setState] = useState({
         user: {},
         currentListing: currentListing
     })
-    console.log(currentListing)
 
 
     const style = {
@@ -35,19 +29,6 @@ const ListingPage = (props) => {
     }
 
     let browserWidth = window.innerWidth
-
-    // const handleSlider = (index, images) => {
-    //     if (index < images.length - 1) {
-    //         this.setState({
-    //             sliderImageIndex: this.state.sliderImageIndex + 1,
-    //         })
-    //     } else {
-    //         this.setState({
-    //             sliderImageIndex: 0
-    //         })
-    //     }
-    // }
-
 
     const handleDelete = (id, history) => {
         id = currentListing._id
@@ -61,14 +42,11 @@ const ListingPage = (props) => {
         fetchAllListingsById(user)
     }
     const getListingData = async (listingData) => {
-        console.log(listingData)
 
     }
     useEffect(() => {
-        console.log(currentListing)
         if (currentListing) {
             let user_id = currentListing.user
-            console.log(user_id)
             fetchAllListingsById(user_id)
             console.log("fetching user")
             axios.get(`http://localhost:3070/user/${user_id}`)
@@ -96,6 +74,7 @@ const ListingPage = (props) => {
     }
 
     if (currentListing) {
+        console.log('listing page is RENDERING!!!!!')
         return (
             // <p>hello world</p>
             <div className="listing-page">
@@ -140,13 +119,18 @@ const ListingPage = (props) => {
                         </section>
                     </div>
                     <div className="listing-page__contact-section">
-                        <Map
-                            isMarkerShown
-                            googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&libraries=&v=weekly`}
-                            loadingElement={<div style={{height: '100%'}}/>}
-                            containerElement={<div style={{height: '400px'}}/>}
-                            mapElement={<div style={{height: '100%'}}/>}
-                        />
+                        {state.user.location && (
+                            <Map
+                                user={state.user}
+                                {...state.user.location}
+                                isMarkerShown={true}
+                                googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&libraries=&v=weekly`}
+                                loadingElement={<div style={{height: '100%'}}/>}
+                                containerElement={<div style={{height: '400px'}}/>}
+                                mapElement={<div style={{height: '100%'}}/>}
+                            />
+                        )}
+
                         <form action="" className="listing-page__offer-form">
                             <textarea className={'listing-page__offer-form-input'} name="makeAnOffer" id="makeAnOffer"
                                       cols="30" rows="10"

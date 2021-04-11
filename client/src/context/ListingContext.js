@@ -15,11 +15,9 @@ export const ListingProvider = (props) => {
     const fetchAllListings = () => {
         axios.get("http://localhost:3070/listing/")
             .then(response => {
-                console.log(response.data)
                 setAllListings(response.data)
             })
             .catch(err => {
-                console.log(err)
                 setListingError(err.response)
             })
     }
@@ -79,7 +77,6 @@ export const ListingProvider = (props) => {
         console.log("FETCHING ALL LISTINGS BY THE LISTER OF THIS POST")
         axios.get(`http://localhost:3070/listing/all/${user}`)
             .then(response => {
-                console.log(response.data)
                 setListingsByCurrent(response.data)
             })
             .catch(err => {
