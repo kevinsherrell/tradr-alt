@@ -1,44 +1,39 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
-class ListAnItem extends React.Component {
-    state = {
-        mobile: false,
-        browserWidth: window.innerWidth,
-    }
+const ListAnItem = (props)=> {
 
+    const [mobile, setMobile]= useState(false)
+    const [browserWidth, setBrowserWidth]= useState(window.innerWidth)
 
-    mobileToggle = (e) => {
-        if (this.state.browserWidth < 767) {
-            this.setState({
-                mobile: !this.state.mobile
-            })
+    const mobileToggle = (e) => {
+        if (browserWidth < 767) {
+            setMobile(!mobile)
         }
 
     }
-    browserWidthListener = (e) => {
+    const browserWidthListener = (e) => {
         window.addEventListener('resize', () => {
-            this.setState({
-                browserWidth: window.innerWidth
-            })
+            setBrowserWidth(window.innerWidth)
         })
     }
 
-    componentDidMount() {
-        this.browserWidthListener()
-    }
+    useEffect(()=>{
+        browserWidthListener()
+    })
 
 
-    render() {
+
+
         return (
             <section className="list-an-item">
-                <div className="container" onClick={this.props.togglePostItem}>
-                    {this.state.browserWidth < 650 && (
+                <div className="container" onClick={props.togglePostItem}>
+                    {browserWidth < 1000 && (
                         <p className={'list-an-item__link'}>List an item!</p>
                     )}
                 </div>
             </section>
         )
-    }
+
 
 }
 

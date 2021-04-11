@@ -1,93 +1,97 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {connect} from 'react-redux'
 
 import ItemListing from "../mainPage/ItemListing";
 
-import {deleteListing, fetchAllListingsById} from "../../actions/listingActions";
 
 import image from '../../assets/images/listing-pic.jpg'
 import map from '../../assets/images/storelocator_clothing.png'
 import axios from "axios";
+import {ListingContext} from "../../context/ListingContext";
+import {AuthContext} from "../../context/AuthContext";
 
 
-class ListingPage extends React.Component {
-    state = {
+const ListingPage = (props) => {
+    const {currentListing, listingsByCurrent, fetchAllListingsById, deleteListing} = useContext(ListingContext);
+    const {currentUser} = useContext(AuthContext)
+    const [state, setState] = useState({
         user: {},
-        authenticatedUser: ""
-        // listing: this.props.listingData.listingPage
-    }
+        currentListing: currentListing
+    })
+    console.log(currentListing)
 
-    style = {
+
+    const style = {
         backgroundImage: `url(${image})`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center'
     }
 
-    browserWidth = window.innerWidth
+    let browserWidth = window.innerWidth
 
-    handleSlider = (index, images) => {
-        if (index < images.length - 1) {
-            this.setState({
-                sliderImageIndex: this.state.sliderImageIndex + 1,
-            })
-        } else {
-            this.setState({
-                sliderImageIndex: 0
-            })
+    // const handleSlider = (index, images) => {
+    //     if (index < images.length - 1) {
+    //         this.setState({
+    //             sliderImageIndex: this.state.sliderImageIndex + 1,
+    //         })
+    //     } else {
+    //         this.setState({
+    //             sliderImageIndex: 0
+    //         })
+    //     }
+    // }
+
+
+    const handleDelete = (id, history) => {
+        id = currentListing._id
+        history = props.history
+        if (currentUser._id === state.user._id) {
+            deleteListing(id, history)
         }
     }
 
+    const getAllListingDataByUser = (user) => {
+        fetchAllListingsById(user)
+    }
+    const getListingData = async (listingData) => {
+        console.log(listingData)
 
-    deleteListing = (id, history) => {
-        id = this.props.listingData.listingPage._id
-        history = this.props.history
-        if (this.state.authenticatedUser === this.state.user._id) {
-            this.props.deleteListing(id, history)
+    }
+    useEffect(() => {
+        console.log(currentListing)
+        if (currentListing) {
+            let user_id = currentListing.user
+            console.log(user_id)
+            fetchAllListingsById(user_id)
+            console.log("fetching user")
+            axios.get(`http://localhost:3070/user/${user_id}`)
+                .then(user => {
+                    setState((state) => ({
+                        user: user.data
+                    }))
+                })
+                .catch(err => console.log(err))
         }
 
-    }
-    getAllListingDataByUser = (user) => {
-        console.log(this.props.listingData.listingPage && this.props.listingData.listingPage)
-        this.props.fetchAllListingsById(user)
-    }
 
-    componentDidMount = () => {
-        this.setState({
-            authenticatedUser: this.props.auth.authenticatedUser._id
-        })
-        console.log(this.props.auth.authenticatedUser._id)
+    }, [currentListing])
 
-        let user_id = this.props.listingData.listingPage.user
-        this.props.fetchAllListingsById(user_id)
-        console.log("fetching user")
-        axios.get(`http://localhost:3070/user/${user_id}`)
-            .then(user => {
-                console.log(user)
-                this.setState({
-                    user: user.data
-                }, () => console.log(this.state))
-            })
-            .catch(err => console.log(err))
-    }
 
-    render() {
-        const {listings, listingPage, listingPageUser, listingsByLister} = this.props.listingData
-        // const {authenticatedUser} = this.props.auth
-        const {user, authenticatedUser} = this.state
-        let userImage = null
-        let deleteMe = null
-        if (this.state.user) {
-            if (this.state.user.image) {
-                userImage = `/images/${this.state.user.image.url}`
-            }
-            if (this.state.user._id === this.state.authenticatedUser) {
-                const deleteMe = <p className="listing-page__delete" onClick={this.deleteListing}>Delete This Post</p>
-            }
+    let userImage = null
+    let deleteMe = null
+    if (state.user) {
+        if (state.user.image) {
+            userImage = `/images/${state.user.image.url}`
         }
+        if (state.user._id === currentUser._id) {
+            const deleteMe = <p className="listing-page__delete" onClick={handleDelete}>Delete This Post</p>
+        }
+    }
 
+    if(currentListing){
         return (
-
+            // <p>hello world</p>
             <div className="listing-page">
 
                 <div className="listing-page__inner-container container">
@@ -96,38 +100,36 @@ class ListingPage extends React.Component {
 
                         <section className="listing-page__listing-image-section">
                             <img className={'listing-page__listing-image'}
-                                 src={`/images/${listingPage.images && listingPage.images[0].url}`}
+                                 src={`/images/${currentListing.images && currentListing.images[0].url}`}
                                  alt=""/>
 
-                            <p className={'listing-page__price-btn'}>{listingPage.price < 1 ? "Trade Only" : `Trade + $${listingPage.price}`}</p>
+                            <p className={'listing-page__price-btn'}>{currentListing.price < 1 ? "Trade Only" : `Trade + $${currentListing.price}`}</p>
                             <p className={'listing-page__photo-btn'}>View photos
-                                ({listingPage.images && listingPage.images.length})</p>
-
-
+                                ({currentListing.images && currentListing.images.length})</p>
                         </section>
                         <section className="listing-page__info-section">
 
 
                             <div className="listing-page__user-wrapper">
                                 <sub className={'listing-page__age'}>Posted 3 days ago by: </sub>
-                                <p className={'listing-page__name'}>{user && user.firstName} {user && user.lastName}</p>
+                                <p className={'listing-page__name'}>{state.user && state.user.firstName} {state.user && state.user.lastName}</p>
                                 <div className="listing-page__avatar-wrapper">
                                     <img className={'listing-page__avatar-image'}
                                          src={userImage} alt=""/>
                                 </div>
                             </div>
-                            <h4 className={'listing-page__title'}>{listingPage.title}</h4>
+                            <h4 className={'listing-page__title'}>{currentListing.title}</h4>
                             {/*<p>Trade + $250</p>*/}
                             {/*<p className={'listing-page__location'}>{location}</p>*/}
                             <h4 className={'listing-page__description-header'}>Description:</h4>
                             <p className={'listing-page__description-text'}>
-                                {listingPage.description}
+                                {currentListing.description}
                             </p>
                             <h4 className={'listing-page__wanted-header'}>Will trade for:</h4>
-                            <p className={'listing-page__wanted'}>{listingPage.tradeFor}</p>
+                            <p className={'listing-page__wanted'}>{currentListing.tradeFor}</p>
 
-                            {this.state.user._id === this.state.authenticatedUser && (
-                                <p className="listing-page__delete" onClick={this.deleteListing}>Delete This Post</p>
+                            {state.user._id === currentUser._id && (
+                                <p className="listing-page__delete" onClick={handleDelete}>Delete This Post</p>
                             )}
                         </section>
                     </div>
@@ -146,10 +148,10 @@ class ListingPage extends React.Component {
                 </div>
                 <div className="listing-page__other-listings-section">
                     <h4 className={'listing-page__listings-by-user-header container'}>More
-                        listings {this.state.user.firstName} {this.state.user.lastName}: </h4>
+                        listings {state.user.firstName} {state.user.lastName}: </h4>
 
                     <div className="listing-page__listings-by-user-wrapper container">
-                        {listingsByLister && listingsByLister.map(listing => <ItemListing
+                        {listingsByCurrent.length > 0 && listingsByCurrent.map(listing => <ItemListing
                             key={listing._id}{...listing}/>)}
                     </div>
                     <h4 className={'listing-page__listings-near-you-header container'}>Similar listings near you:</h4>
@@ -165,11 +167,9 @@ class ListingPage extends React.Component {
 
             </div>
         )
+
     }
+
 }
 
-const mapStateToProps = state => ({
-    auth: state.auth,
-    listingData: state.listingData
-})
-export default connect(mapStateToProps, {deleteListing, fetchAllListingsById})(ListingPage);
+export default ListingPage

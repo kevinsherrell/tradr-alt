@@ -1,24 +1,27 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom'
-import {connect} from 'react-redux';
 
 import location from "../../assets/images/location.png";
 import search from "../../assets/images/search.png";
 import axios from "axios";
 import NavMenu from "./NavMenu";
 
+import {AuthContext} from '../../context/AuthContext'
+
 const HeaderNav = (props) => {
+    const {currentUser, authenticated} = useContext(AuthContext)
+
     const [userImage, setUserImage] = useState({
         image: null
     })
-    console.log(props)
-    const {authenticated, authenticatedUser} = props.auth
+
     useEffect(() => {
         console.log("headernav fetching")
-        axios.get(`http://localhost:3070/image/${authenticatedUser.image}`)
+        console.log(currentUser)
+        axios.get(`http://localhost:3070/image/${currentUser.image}`)
             .then(image => setUserImage(image.data))
             .then(image=>console.log(userImage))
-    },[])
+    },[currentUser])
 
     return (
         <nav className={'header__nav'}>
@@ -113,9 +116,4 @@ const HeaderNav = (props) => {
 
 }
 
-const mapStateToProps = state => ({
-    auth: state.auth,
-    listingData: state.listingData
-})
-
-export default connect(mapStateToProps)(HeaderNav);
+export default HeaderNav

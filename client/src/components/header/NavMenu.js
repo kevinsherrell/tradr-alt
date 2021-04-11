@@ -1,11 +1,9 @@
-import React from 'react';
-import {connect} from 'react-redux'
-
-import {userLogin,userLogout} from "../../actions/authActions";
+import React, {useContext} from 'react';
+import {AuthContext} from "../../context/AuthContext";
 
 function NavMenu(props) {
+    const {authenticated, currentUser} = useContext(AuthContext)
 
-    const {authenticated, authenticatedUser} = props.auth
 
     return (
             <>
@@ -18,7 +16,7 @@ function NavMenu(props) {
                         <img className={'header__nav-menu-user-avatar-image'} src={ `/images/${props.userImage.url}`} alt=""/>
                     </div>
                     <p className={'header__nav-menu-user-greeting'}>
-                        {authenticated ?`Hi ${authenticatedUser.firstName}!` : 'Not Logged In'}
+                        {authenticated ?`Hi ${currentUser.firstName}!` : 'Not Logged In'}
                         {authenticated && (
                             <span className={'header__nav-menu-user-log-out'} onClick={props.userLogout}>(Log out)</span>
                         )}
@@ -60,9 +58,6 @@ function NavMenu(props) {
     )
 }
 
-const mapStateToProps = state => ({
-    auth: state.auth,
-    listingData: state.listingData
-})
 
-export default connect(mapStateToProps,{userLogout,userLogin})(NavMenu);
+
+export default NavMenu

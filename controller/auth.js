@@ -13,15 +13,7 @@ const isAuthenticated = require('../validation/isAuthenticated');
 const validateLoginInput = require('../validation/login.js')
 const validateSignupInput = require('../validation/signup.js');
 
-// Storage
-const storage = multer.diskStorage({
-    destination: './public/images',
-    filename: function (req, file, cb) {
-        cb(null, uuidv4() + "-" + Date.now() + path.extname(file.originalname));
-    }
-})
-const upload = multer({storage: storage});
-
+const upload = require('../helper/multer')
 
 // Retrieve Session
 authRouter.post('/reconnect', (req, res) => {
