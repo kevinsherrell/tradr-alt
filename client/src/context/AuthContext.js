@@ -1,6 +1,8 @@
 import React, {useState, createContext} from 'react'
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
+
 export const AuthContext = createContext();
 export const AuthProvider = (props) => {
     const [currentUser, setCurrentUser] = useState({});
@@ -19,31 +21,31 @@ export const AuthProvider = (props) => {
             })
 
     }
-    const userLogin = (loginData, closeMenu)=>{
+    const userLogin = (loginData, closeMenu) => {
         axios.post("http://localhost:3070/auth/login", loginData)
             .then(response => {
                 setCurrentUser(response.data.currentUser)
                 setAuthenticated(true)
                 closeMenu();
             })
-            .catch(err=>{
+            .catch(err => {
                 setAuthError(err.response.data)
             })
     }
-    const userLogout = ()=>{
+    const userLogout = () => {
         axios.delete("http://localhost:3070/auth/logout")
-            .then(response =>{
+            .then(response => {
                 setCurrentUser({})
                 setAuthenticated(false)
             })
     }
-    const retrieveSession = ()=>{
+    const retrieveSession = () => {
         axios.post("http://localhost:3070/auth/reconnect")
-            .then(response=>{
+            .then(response => {
                 setCurrentUser(response.data && response.data)
                 setAuthenticated(response.data && true);
             })
-            .catch(err=>{
+            .catch(err => {
                 setAuthError(err.response.data)
             })
     }
