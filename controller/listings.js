@@ -9,7 +9,6 @@ const express = require('express'),
     fs = require('fs')
 
 
-
 const upload = require('../helper/multer');
 
 // get all listings
@@ -47,6 +46,8 @@ listingRouter.get('/myListings', (req, res) => {
 listingRouter.post('/post', upload.array('listingImage', 5), async (req, res, next) => {
     req.body.user = req.session.currentUser._id;
     req.body.location = req.session.currentUser.zipCode;
+    // req.body.cityState = req.session.currentUser.cityState;
+    // listing.cityState = req.session.currentUser.cityState
     isAuthenticated(req, res, () => {
         Listing.create(req.body)
             .then(listing => {

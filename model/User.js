@@ -17,6 +17,10 @@ const UserSchema = new Schema({
         type: Object,
         // required: true
     },
+    cityState: {
+        type: String,
+
+    },
     email: {
         type: String,
         unique: true,

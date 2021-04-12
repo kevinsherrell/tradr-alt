@@ -7,7 +7,8 @@ import LoginSignup from "./LoginSignup";
 
 
 const Header = (props) => {
-    const {authenticated} = useContext(AuthContext)
+    const {authenticated, currentUser} = useContext(AuthContext)
+    console.log(currentUser)
     const [browserWidth, setBrowserWidth] = useState(window.innerWidth)
     const [searchToggle, setSearchToggle] = useState(false)
     const [searchMenuFilter, setSearchMenuFilter] = useState(false)

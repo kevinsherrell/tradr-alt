@@ -27,6 +27,10 @@ const ListingSchema = new Schema({
         type: String,
         required: true
     },
+    // cityState: {
+    //     type: String,
+    //     required: true
+    // },
     tradeOnly: {
         type: Boolean,
         default: false
