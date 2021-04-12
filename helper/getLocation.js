@@ -18,6 +18,7 @@ const getLocation = (user) => {
             console.log("STATE_FILTER", stateFilter[0])
             user.location = location
             user.cityState = cityState
+            console.log("ADDING CITY AND STATE TO USER")
             user.save()
         })
         .catch(err => console.log(err))

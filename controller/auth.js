@@ -48,12 +48,14 @@ authRouter.post('/signup', upload.single('userImage'), (req, res) => {
                         user: user._id,
                         url: req.file.filename
                     })
-                    const data = [user, newImage];
                     user.image = newImage._id;
                     getLocation(user)
                     // user.save();
                     newImage.save();
-                    console.log(user);
+                    console.log("USER", user);
+
+                })
+                .then(user => {
                     req.session.currentUser = user
                     // Send current user to the front end
                     res.send(req.session);

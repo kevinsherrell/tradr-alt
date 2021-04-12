@@ -25,7 +25,7 @@ listingRouter.get('/', (req, res) => {
 listingRouter.get('/all/:user_id', (req, res) => {
     // let user_id = mongoose.Types.ObjectId(req.params.user_id);
     let user_id = req.params.user_id;
-    console.log(user_id)
+    // console.log(user_id)
     Listing.find({user: req.params.user_id})
         .populate('images')
         .then(listings => res.send(listings))
@@ -44,16 +44,19 @@ listingRouter.get('/myListings', (req, res) => {
 })
 // post new listing
 listingRouter.post('/post', upload.array('listingImage', 5), async (req, res, next) => {
-    req.body.user = req.session.currentUser._id;
-    req.body.location = req.session.currentUser.zipCode;
-    req.body.cityState = req.session.currentUser.cityState;
+
     isAuthenticated(req, res, () => {
+        req.body.user = req.session.currentUser._id;
+        req.body.location = req.session.currentUser.zipCode;
+        req.body.cityState = req.session.currentUser.cityState;
+
+        console.log("LISTING REQUEST SESSION", req.session.currentUser)
         Listing.create(req.body)
             .then(listing => {
-                // listing.cityState = req.session.currentUser.cityState
 
-                console.log(req.files);
+                // console.log(req.files);
                 User.findOne({_id: req.body.user}, (err, user) => {
+                    // listing.cityState = user.cityState
                     if (err) {
                         res.status(500).send(err)
                     }
