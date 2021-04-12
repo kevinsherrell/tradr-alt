@@ -46,11 +46,12 @@ listingRouter.get('/myListings', (req, res) => {
 listingRouter.post('/post', upload.array('listingImage', 5), async (req, res, next) => {
     req.body.user = req.session.currentUser._id;
     req.body.location = req.session.currentUser.zipCode;
-    // req.body.cityState = req.session.currentUser.cityState;
-    // listing.cityState = req.session.currentUser.cityState
+    req.body.cityState = req.session.currentUser.cityState;
     isAuthenticated(req, res, () => {
         Listing.create(req.body)
             .then(listing => {
+                // listing.cityState = req.session.currentUser.cityState
+
                 console.log(req.files);
                 User.findOne({_id: req.body.user}, (err, user) => {
                     if (err) {

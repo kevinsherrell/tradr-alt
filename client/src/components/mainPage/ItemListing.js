@@ -31,7 +31,7 @@ function ItemListing(props) {
                         <p className={'item-listing__item-info-price'}>{
                             props.price < 1 ?
                                 "Trade" : props.price > 1 ? `Trade + $${props.price}` : undefined}</p>
-                        <p className={'item-listing__item-info-location'}>Belleville, IL</p>
+                        <p className={'item-listing__item-info-location'}>{props.cityState}</p>
                     </div>
 
                 </div>
