@@ -23,8 +23,8 @@ app.get('/', (req, res) => {
 // app.use(cors());
 app.use(cors({
     origin: "http://localhost:3000",
-    methods:['GET','POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type','Authorization','Origin','Accept', 'X-Requested-With'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept', 'X-Requested-With'],
     credentials: true,
     exposedHeaders: ['set-cookies']
 }));
@@ -55,21 +55,13 @@ app.use(session({
 
 }))
 // routes
-app.use('/auth',require('./controller/auth.js'));
+app.use('/auth', require('./controller/auth.js'));
 app.use('/user', require('./controller/users.js'));
 app.use('/seed', require('./controller/users.js'));
 app.use('/listing', require('./controller/listings.js'));
 app.use('/image', require('./controller/image.js'))
 // database connection
 
-
-if(process.env.NODE_ENV = 'production'){
-    app.use(express.static('client/build'));
-
-    app.get('*', (req, res)=>{
-        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-    })
-}
 
 // server listen
 app.listen(port, () => console.log(`server is listening on port: ${port}`));
