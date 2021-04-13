@@ -44,6 +44,13 @@ const ListingPage = (props) => {
     const getListingData = async (listingData) => {
 
     }
+    const timeOptions = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    }
+
     useEffect(() => {
         if (currentListing) {
             let user_id = currentListing.user
@@ -96,7 +103,7 @@ const ListingPage = (props) => {
 
 
                             <div className="listing-page__user-wrapper">
-                                <sub className={'listing-page__age'}>Posted 3 days ago by: </sub>
+                                <sub className={'listing-page__age'}>{new Date(currentListing.dateCreated).toLocaleString('en-US', timeOptions)} </sub>
                                 <p className={'listing-page__name'}>{state.user && state.user.firstName} {state.user && state.user.lastName}</p>
                                 <div className="listing-page__avatar-wrapper">
                                     <img className={'listing-page__avatar-image'}

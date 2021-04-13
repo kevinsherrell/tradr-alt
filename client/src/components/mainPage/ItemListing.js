@@ -16,7 +16,7 @@ function ItemListing(props) {
     let id = props._id;
 
     const backgroundImage = {
-        backgroundImage: props.images  && `url(/images/${props.images[0].url})`,
+        backgroundImage: props.images && `url(/images/${props.images[0].url})`,
     }
 
     return (
@@ -27,11 +27,11 @@ function ItemListing(props) {
 
                     </div>
                     <div className="item-listing__item-info">
-                        <p className="item-listing__item-info-title">{props.title} </p>
+                        <p className="item-listing__item-info-title"><strong>{props.title}</strong> </p>
                         <p className={'item-listing__item-info-price'}>{
                             props.price < 1 ?
                                 "Trade" : props.price > 1 ? `Trade + $${props.price}` : undefined}</p>
-                        <p className={'item-listing__item-info-location'}>{props.cityState}</p>
+                        <p className={'item-listing__item-info-location'}><i>{props.cityState}</i></p>
                     </div>
 
                 </div>

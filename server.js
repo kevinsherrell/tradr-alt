@@ -20,9 +20,8 @@ app.get('/', (req, res) => {
     res.render('index');
 })
 // middleware
-// app.use(cors());
 app.use(cors({
-    origin: "https://tradr-app.herokuapp.com/ ",
+    origin: "http://localhost:3000",
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept', 'X-Requested-With'],
     credentials: true,
@@ -73,6 +72,3 @@ if(process.env.NODE_ENV === 'production'){
 app.listen(port, () => console.log(`server is listening on port: ${port}`));
 
 
-// Current Issues -
-//      Data order does not match the models.
-// Temporary solution: Data is in correct order when I manually order of the object to match schema in res.send();
