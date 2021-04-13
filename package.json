@@ -24,6 +24,6 @@
   },
   "scripts": {
     "sass": "node-sass -w public/scss -o public/css --recursive",
-    "heroku-postbuild" : "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild" : "NPM_CONFIG_PRODUCTION=true npm install --prefix client && npm run build --prefix client"
   }
 }
