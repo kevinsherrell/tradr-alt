@@ -92,7 +92,7 @@ const ListingPage = (props) => {
 
                         <section className="listing-page__listing-image-section">
                             <img className={'listing-page__listing-image'}
-                                 src={`/images/${currentListing.images && currentListing.images[0].url}`}
+                                 src={currentListing.images && currentListing.images[0].url}
                                  alt=""/>
 
                             <p className={'listing-page__price-btn'}>{currentListing.price < 1 ? "Trade Only" : `Trade + $${currentListing.price}`}</p>

@@ -16,7 +16,7 @@ function ItemListing(props) {
     let id = props._id;
 
     const backgroundImage = {
-        backgroundImage: props.images && `url(/images/${props.images[0].url})`,
+        backgroundImage: props.images && `url(${props.images[0].url})`,
     }
 
     return (

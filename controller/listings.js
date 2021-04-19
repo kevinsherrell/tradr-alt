@@ -85,14 +85,6 @@ listingRouter.post('/post', upload.array('listingImage', 5), async (req, res, ne
                     console.log('result', result)
                 })
                 listing.images.push(newImage._id)
-                // newImage.save()
-                //     .then(image => {
-                //         console.log('success');
-                //     }).catch(err => {
-                //         console.log(err)
-                //     // res.send(err)
-                // });
-
             })
             listing.save((err, listing )=>{
                 if(err){
@@ -101,19 +93,7 @@ listingRouter.post('/post', upload.array('listingImage', 5), async (req, res, ne
                 listing.populate()
                 res.send(listing)
             })
-            // listing.save()
-            //     .populate(listing, {path: 'images'})
-            //     .then(result => {
-            //         Listing
-            //             .populate(listing, {path: 'images'})
-            //             .then(listing => {
-            //                 return res.send(listing)
-            //             })
-            //     })
-            //     .catch(err => {
-            //         console.log(err)
-            //         // return res.send(err)
-            //     })
+
         })
     })
 
