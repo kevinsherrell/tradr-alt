@@ -9,7 +9,7 @@ const express = require('express'),
     fs = require('fs'),
     dataUri = require("datauri"),
     DataURIParser = require('datauri/parser')
-    parseImage = new DataURIParser();
+parseImage = new DataURIParser();
 
 const upload = require('../helper/multer');
 const uploads = require("../helper/cloudinary")
@@ -53,50 +53,68 @@ listingRouter.post('/post', upload.array('listingImage', 5), async (req, res, ne
         req.body.cityState = req.session.currentUser.cityState;
 
         console.log("LISTING REQUEST SESSION", req.session.currentUser)
-        Listing.create(req.body)
-            .then(listing => {
 
-                // console.log(req.files);
-                User.findOne({_id: req.body.user}, (err, user) => {
-                    // listing.cityState = user.cityState
-                    if (err) {
-                        res.status(500).send(err)
-                    }
-                    user.listings.push(listing._id);
-                    user.save()
-                        .then(() => console.log("user has been updated with listing"))
-                        .catch(err => {
-                            res.send(err);
-                        })
-                });
+        Listing.create(req.body, (err, listing) => {
+            if (err) {
+                return res.send(err)
+            }
 
-                req.files.forEach((file) => {
-                    const newImage = new Image({
-                        type: 'listing',
-                        listing: listing._id,
-                        url: file.filename
-                    });
-                    listing.images.push(newImage._id)
-                    newImage.save()
-                        .then(image => {
-                            console.log('success');
-                        }).catch(err => res.send(err));
-
-                })
-                listing.save()
-                    .then(result => {
-                        Listing
-                            .populate(listing, {path: 'images'})
-                            .then(listing => res.send(listing))
+            // Fine the user and add the listing id to the listings array
+            User.findOne({_id: req.body.user}, (err, user) => {
+                // listing.cityState = user.cityState
+                if (err) {
+                    res.status(500).send(err)
+                }
+                user.listings.push(listing._id);
+                user.save()
+                    .then(() => console.log("user has been updated with listing"))
+                    .catch(err => {
+                        console.log(err)
+                        // res.send(err);
                     })
-                    .catch(err => res.send(err))
-
-                // res.send(listing);
-            })
-            .catch(err => {
-                console.log("listing error");
-                res.send(err.message);
             });
+
+            req.files.forEach((file) => {
+                const newImage = new Image({
+                    type: 'listing',
+                    listing: listing._id,
+                    // url: ""
+                });
+                let image = parseImage.format(file.mimetype, file.buffer)
+                uploads(image.content, newImage, (err, result) => {
+                    console.log('result', result)
+                })
+                listing.images.push(newImage._id)
+                // newImage.save()
+                //     .then(image => {
+                //         console.log('success');
+                //     }).catch(err => {
+                //         console.log(err)
+                //     // res.send(err)
+                // });
+
+            })
+            listing.save((err, listing )=>{
+                if(err){
+                    res.send(err)
+                }
+                listing.populate()
+                res.send(listing)
+            })
+            // listing.save()
+            //     .populate(listing, {path: 'images'})
+            //     .then(result => {
+            //         Listing
+            //             .populate(listing, {path: 'images'})
+            //             .then(listing => {
+            //                 return res.send(listing)
+            //             })
+            //     })
+            //     .catch(err => {
+            //         console.log(err)
+            //         // return res.send(err)
+            //     })
+        })
     })
 
 })
@@ -179,17 +197,17 @@ listingRouter.get('/:id', (req, res) => {
     }).populate('images')
 })
 
-listingRouter.post('/test', upload.array('testImage', 5), (req, res)=>{
-
-    // console.log(req.files);
-    req.files.forEach(file=>{
-        // let image = parseImage.format(file.mimetype, file.buffer).base64
-        let image = parseImage.format(file.mimetype, file.buffer)
-        console.log(image)
-        // console.log(image)
-        // uploads(`data:${image.fileName};base64${image}`)
-        uploads(image.content)
-    })
-    res.send('success ?')
-})
+// listingRouter.post('/test', upload.array('testImage', 5), (req, res)=>{
+//
+//     // console.log(req.files);
+//     req.files.forEach(file=>{
+//         // let image = parseImage.format(file.mimetype, file.buffer).base64
+//         let image = parseImage.format(file.mimetype, file.buffer)
+//         console.log(image)
+//         // console.log(image)
+//         // uploads(`data:${image.fileName};base64${image}`)
+//         uploads(image.content)
+//     })
+//     res.send('success ?')
+// })
 module.exports = listingRouter;

@@ -9,18 +9,20 @@ config({
     api_secret: CLOUDINARY_API_SECRET
 })
 
-const uploads = (file)=>{
+const uploads = (file, newImage) => {
     console.log("cloudinary running")
     // const options = {
     //     resourceType: "auto",
     //     folder: folder
     // }
-   uploader.upload(file, (err, image)=>{
-       if(err){
-           console.log(err)
-       }
-       console.log(image)
-   })
+    uploader.upload(file, (err, image) => {
+        if (err) {
+            console.log(err)
+        }
+        console.log(image)
+        newImage.url = image.url
+        newImage.save()
+    })
 }
 // exports.uploads = (file, folder) => {
 //     return "success"
