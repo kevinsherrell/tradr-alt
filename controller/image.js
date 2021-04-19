@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const imageRouter = express.Router();
 const Image = require('../model/Image.js');
-const multer = require('multer');
-const upload = multer({dest: '../public/images'});
+const upload  = require('../helper/multer');
 
 imageRouter.post('/',(req, res)=>{
 
@@ -22,4 +21,6 @@ imageRouter.get('/:id', (req,res)=>{
         .then(image=>res.send(image))
         .catch(err=>res.send(err))
 })
+
+
 module.exports = imageRouter;

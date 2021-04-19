@@ -4,13 +4,15 @@ const express = require('express'),
     Listing = require('../model/Listing.js'),
     User = require('../model/User.js'),
     Image = require('../model/Image.js'),
-    cloudinary = require('../helper/cloudinary'),
+    // cloudinary = require('../helper/cloudinary'),
     isAuthenticated = require('../validation/isAuthenticated'),
-    fs = require('fs')
-
+    fs = require('fs'),
+    dataUri = require("datauri"),
+    DataURIParser = require('datauri/parser')
+    parseImage = new DataURIParser();
 
 const upload = require('../helper/multer');
-
+const uploads = require("../helper/cloudinary")
 // get all listings
 listingRouter.get('/', (req, res) => {
     Listing.find()
@@ -175,5 +177,19 @@ listingRouter.get('/:id', (req, res) => {
         }
         res.send(listing);
     }).populate('images')
+})
+
+listingRouter.post('/test', upload.array('testImage', 5), (req, res)=>{
+
+    // console.log(req.files);
+    req.files.forEach(file=>{
+        // let image = parseImage.format(file.mimetype, file.buffer).base64
+        let image = parseImage.format(file.mimetype, file.buffer)
+        console.log(image)
+        // console.log(image)
+        // uploads(`data:${image.fileName};base64${image}`)
+        uploads(image.content)
+    })
+    res.send('success ?')
 })
 module.exports = listingRouter;

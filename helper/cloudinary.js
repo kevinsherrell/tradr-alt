@@ -1,24 +1,39 @@
-const {config, uploader} = require('cloudinary');
-const {CLOUD_NAME, CLOUDINARY_URL, CLOUDINARY_SECRET, CLOUDINARY_KEY} = process.env;
+const {config, uploader} = require('cloudinary').v2;
+const {CLOUD_NAME, CLOUDINARY_API_SECRET, CLOUDINARY_API_KEY} = process.env;
 const dotenv = require('dotenv')
 dotenv.config()
 
 config({
     cloud_name: CLOUD_NAME,
-    api_key: CLOUDINARY_KEY,
-    api_secret: CLOUDINARY_SECRET
+    api_key: CLOUDINARY_API_KEY,
+    api_secret: CLOUDINARY_API_SECRET
 })
 
-exports.uploads = (file, folder) => {
-    return new Promise(resolve => {
-        uploader.upload(file, (result) => {
-            resolve({
-                url: result.url,
-                id: result.public_id
-            })
-        }, {
-            resource_type: "auto",
-            folder: folder
-        })
-    })
+const uploads = (file)=>{
+    console.log("cloudinary running")
+    // const options = {
+    //     resourceType: "auto",
+    //     folder: folder
+    // }
+   uploader.upload(file, (err, image)=>{
+       if(err){
+           console.log(err)
+       }
+       console.log(image)
+   })
 }
+// exports.uploads = (file, folder) => {
+//     return "success"
+//     // return new Promise(resolve => {
+//     //     uploader.upload(file, (result) => {
+//     //         resolve({
+//     //             url: result.url,
+//     //             id: result.public_id
+//     //         })
+//     //     }, {
+//     //         resource_type: "auto",
+//     //         folder: folder
+//     //     })
+//     // })
+// }
+module.exports = uploads;
