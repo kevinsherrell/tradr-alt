@@ -16,7 +16,7 @@ const validateLoginInput = require('../validation/login.js')
 const validateSignupInput = require('../validation/signup.js');
 
 const upload = require('../helper/multer')
-const uploads = require("../helper/cloudinary")
+const {uploads} = require("../helper/cloudinary")
 const getLocation = require('../helper/getLocation')
 // Retrieve Session
 authRouter.post('/reconnect', (req, res) => {
@@ -86,7 +86,8 @@ authRouter.post('/login', (req, res) => {
         return res.status(400).send(errors);
     }
     User.findOne({email: req.body.email}, (err, user) => {
-        getLocation(user)
+        user.populate('image')
+        // getLocation(user)
         if (err) {
             console.log("Login Error");
             return res.status(500).send(err);

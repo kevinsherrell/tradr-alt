@@ -15,11 +15,17 @@ const HeaderNav = (props) => {
         image: null
     })
 
-    useEffect(() => {
-        axios.get(`http://localhost:3070/image/${currentUser.image}`)
-            .then(image => setUserImage(image.data))
-            // .then(image=>console.log(userImage))
-    },[currentUser])
+    // useEffect(() => {
+    //     axios.get(`http://localhost:3070/image/${currentUser.image}`)
+    //         .then(image => {
+    //             console.log(image)
+    //             if(image){
+    //
+    //             setUserImage(image.data)
+    //             }
+    //         })
+    //         // .then(image=>console.log(userImage))
+    // },[currentUser])
 
     return (
         <nav className={'header__nav'}>
@@ -88,7 +94,7 @@ const HeaderNav = (props) => {
                                 </li>
                                 <li className={'header__logged-in-item'}>{authenticated && (
                                     <div className={"header__logged-in-avatar-wrapper"} onClick={props.toggleNavMenu}>
-                                        <img src={`/images/${userImage.url}`} alt=""
+                                        <img src={userImage.url} alt=""
                                              className={'header__logged-in-avatar-image'}/>
                                     </div>)}
                                 </li>
