@@ -11,31 +11,27 @@ config({
 
 const uploads = (file, newImage) => {
     console.log("cloudinary running")
-    // const options = {
-    //     resourceType: "auto",
-    //     folder: folder
-    // }
+
     uploader.upload(file, (err, image) => {
         if (err) {
             console.log(err)
         }
         console.log(image)
         newImage.url = image.url
+        newImage.public_id = image.public_id
         newImage.save()
     })
 }
-// exports.uploads = (file, folder) => {
-//     return "success"
-//     // return new Promise(resolve => {
-//     //     uploader.upload(file, (result) => {
-//     //         resolve({
-//     //             url: result.url,
-//     //             id: result.public_id
-//     //         })
-//     //     }, {
-//     //         resource_type: "auto",
-//     //         folder: folder
-//     //     })
-//     // })
-// }
-module.exports = uploads;
+
+const deleteImage = async (public_id)=>{
+    console.log("deleting image");
+    uploader.destroy(public_id, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        console.log(result)
+        return result
+    })
+}
+
+module.exports = {uploads, deleteImage}

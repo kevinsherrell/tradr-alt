@@ -7,13 +7,16 @@ const Image = require('../model/Image.js');
 const multer = require('multer');
 const {v4: uuidv4} = require('uuid');
 const path = require('path');
-
+const dataUri = require('datauri');
+const DataURIParser = require('datauri/parser')
+const parseImage = new DataURIParser();
 const isAuthenticated = require('../validation/isAuthenticated');
 
 const validateLoginInput = require('../validation/login.js')
 const validateSignupInput = require('../validation/signup.js');
 
 const upload = require('../helper/multer')
+const uploads = require("../helper/cloudinary")
 const getLocation = require('../helper/getLocation')
 // Retrieve Session
 authRouter.post('/reconnect', (req, res) => {
@@ -46,12 +49,15 @@ authRouter.post('/signup', upload.single('userImage'), (req, res) => {
                     const newImage = new Image({
                         type: 'user',
                         user: user._id,
-                        url: req.file.filename
                     })
                     user.image = newImage._id;
                     getLocation(user)
-                    // user.save();
-                    newImage.save();
+                    const file = req.file
+                    let image = parseImage.format(file.mimetype, file.buffer)
+                    uploads(image.content, newImage, (err, result) => {
+                        console.log('result', result)
+                    })
+                    // newImage.save();
                     console.log("USER", user);
 
                 })

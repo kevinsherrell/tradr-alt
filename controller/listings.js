@@ -12,7 +12,8 @@ const express = require('express'),
 parseImage = new DataURIParser();
 
 const upload = require('../helper/multer');
-const uploads = require("../helper/cloudinary")
+const {uploads, deleteImage} = require("../helper/cloudinary")
+// const deleteImage = require("../helper/cloudinary")
 // get all listings
 listingRouter.get('/', (req, res) => {
     Listing.find()
@@ -86,8 +87,8 @@ listingRouter.post('/post', upload.array('listingImage', 5), async (req, res, ne
                 })
                 listing.images.push(newImage._id)
             })
-            listing.save((err, listing )=>{
-                if(err){
+            listing.save((err, listing) => {
+                if (err) {
                     res.send(err)
                 }
                 listing.populate()
@@ -149,16 +150,16 @@ listingRouter.delete('/:id', (req, res) => {
                     res.status(500).send(err);
                 }
                 if (data.length !== 0) {
+                    // For each image, delete first the image from cloudinary, then from the database.
                     data.forEach(image => {
-                        const path = `./public/images/${image.url}`
-                        fs.unlink(path, (err) => {
-                            if (err) {
-                                console.log(err)
-                            }
-                        })
-                        image.remove()
-                            .then(image => console.log('success'))
-                            .catch(err => console.log(err))
+                        deleteImage(image.public_id)
+                            .then(result => {
+                                console.log(result)
+                                image.remove()
+                                    .then(image => console.log('success'))
+                                    .catch(err => console.log(err))
+                            })
+                            .catch(err => res.send(err))
                     })
                 }
             })
