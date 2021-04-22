@@ -73,7 +73,7 @@ const ListingPage = (props) => {
     let deleteMe = null
     if (state.user) {
         if (state.user.image) {
-            userImage = `/images/${state.user.image.url}`
+            userImage = state.user.image.url
         }
         if (state.user._id === currentUser._id) {
             const deleteMe = <p className="listing-page__delete" onClick={handleDelete}>Delete This Post</p>
@@ -103,7 +103,8 @@ const ListingPage = (props) => {
 
 
                             <div className="listing-page__user-wrapper">
-                                <sub className={'listing-page__age'}>{new Date(currentListing.dateCreated).toLocaleString('en-US', timeOptions)} </sub>
+                                <sub
+                                    className={'listing-page__age'}>{new Date(currentListing.dateCreated).toLocaleString('en-US', timeOptions)} </sub>
                                 <p className={'listing-page__name'}>{state.user && state.user.firstName} {state.user && state.user.lastName}</p>
                                 <div className="listing-page__avatar-wrapper">
                                     <img className={'listing-page__avatar-image'}

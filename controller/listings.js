@@ -8,10 +8,11 @@ const express = require('express'),
     isAuthenticated = require('../validation/isAuthenticated'),
     fs = require('fs'),
     dataUri = require("datauri"),
-    DataURIParser = require('datauri/parser')
-parseImage = new DataURIParser();
+    DataURIParser = require('datauri/parser'),
+    parseImage = new DataURIParser();
 
 const upload = require('../helper/multer');
+const createImage = require("../helper/createImage");
 const {uploads, deleteImage} = require("../helper/cloudinary")
 // const deleteImage = require("../helper/cloudinary")
 // get all listings
@@ -75,23 +76,13 @@ listingRouter.post('/post', upload.array('listingImage', 5), async (req, res, ne
                     })
             });
 
-            req.files.forEach((file) => {
-                const newImage = new Image({
-                    type: 'listing',
-                    listing: listing._id,
-                    // url: ""
-                });
-                let image = parseImage.format(file.mimetype, file.buffer)
-                uploads(image.content, newImage, (err, result) => {
-                    console.log('result', result)
-                })
-                listing.images.push(newImage._id)
-            })
+            createImage(req, res, listing)
+                .then(listing => console.log("listing", listing))
             listing.save((err, listing) => {
                 if (err) {
                     res.send(err)
                 }
-                listing.populate()
+                listing.populate('images')
                 res.send(listing)
             })
 
