@@ -59,13 +59,18 @@ authRouter.post('/signup', upload.single('userImage'), (req, res) => {
                     })
                     // newImage.save();
                     console.log("USER", user);
-
-                })
-                .then(user => {
                     req.session.currentUser = user
+                    console.log(req.session)
                     // Send current user to the front end
                     res.send(req.session);
+
                 })
+                // .then(user => {
+                //     req.session.currentUser = user
+                //     console.log(req.session)
+                //     // Send current user to the front end
+                //     res.send(req.session);
+                // })
                 .catch(err => {
                     if (!isValid) {
                         res.status(400).send(errors);

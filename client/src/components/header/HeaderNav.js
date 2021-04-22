@@ -15,18 +15,20 @@ const HeaderNav = (props) => {
         image: null
     })
 
-    // useEffect(() => {
-    //     axios.get(`http://localhost:3070/image/${currentUser.image}`)
-    //         .then(image => {
-    //             console.log(image)
-    //             if(image){
-    //
-    //             setUserImage(image.data)
-    //             }
-    //         })
-    //         // .then(image=>console.log(userImage))
-    // },[currentUser])
+    useEffect(() => {
+        axios.get(`http://localhost:3070/image/${currentUser.image}`)
+            .then(image => {
+                console.log(image)
+                if(image){
 
+                setUserImage(image.data)
+                }
+            })
+            // .then(image=>console.log(userImage))
+    },[currentUser])
+if(currentUser){
+
+}
     return (
         <nav className={'header__nav'}>
             <div
